@@ -2857,19 +2857,10 @@ function aplicarProcessoSalvoLocal(tipo,processo){
 }
 function deleteProcess(tipo,id){
   if(!confirm('Excluir este registro? Esta ação não pode ser desfeita.'))return;
-  showLoading('Excluindo…');
-  var timeout=setTimeout(function(){hideLoading();showToast('Tempo esgotado ao excluir. Tente novamente.');},20000);
-  call('deleteProcess',{tipo:tipo,id:id}).then(function(res){
-    clearTimeout(timeout);
-    if(res.ok){
-      showToast('Registro excluído.');
-      var key=tipo==='contrato'?'contratos':(tipo==='paf'?'paf':'judicial');
-      state[key]=(state[key]||[]).filter(function(x){return x.id!==id;});
-      buildNotifications();renderAgenda();renderContratoKPIs();renderJudicialKPIs();applyFilters(tipo);
-      hideLoading();
-    }
-    else{showToast('Erro: '+(res.error||''));hideLoading();}
-  }).catch(function(e){clearTimeout(timeout);showToast('Erro: '+e.message);hideLoading();});
+  var key=tipo==='contrato'?'contratos':(tipo==='paf'?'paf':'judicial');
+  excluirOtimista({ id:id, action:'deleteProcess', payload:{tipo:tipo,id:id}, msg:'Registro excluído.',
+    get:function(){return state[key];}, set:function(v){state[key]=v;},
+    render:function(){buildNotifications();renderAgenda();renderContratoKPIs();renderJudicialKPIs();applyFilters(tipo);} });
 }
 
 // ═══════════════════════════════════════════
@@ -2948,7 +2939,7 @@ function savePrompt(){
 function deletePrompt(idx){
   var p=cwPrompts[idx]; if(!p)return;
   if(!confirm('Excluir este prompt?'))return;
-  call('deleteCowork',{kind:'prompt',id:p.id}).then(function(res){ if(res.ok){showToast('Prompt excluído.');loadCowork();} else showToast('Erro: '+(res.error||'')); }).catch(function(e){showToast('Erro: '+e.message);});
+  excluirOtimista({ id:p.id, action:'deleteCowork', payload:{kind:'prompt',id:p.id}, msg:'Prompt excluído.', get:function(){return cwPrompts;}, set:function(v){cwPrompts=v;}, render:renderPrompts });
 }
 
 // ═══════════════════════════════════════════
@@ -2998,7 +2989,7 @@ function saveModelo(){
 function deleteModelo(idx){
   var m=cwModelos[idx]; if(!m)return;
   if(!confirm('Excluir este modelo?'))return;
-  call('deleteCowork',{kind:'modelo',id:m.id}).then(function(res){ if(res.ok){showToast('Modelo excluído.');loadCowork();} else showToast('Erro: '+(res.error||'')); }).catch(function(e){showToast('Erro: '+e.message);});
+  excluirOtimista({ id:m.id, action:'deleteCowork', payload:{kind:'modelo',id:m.id}, msg:'Modelo excluído.', get:function(){return cwModelos;}, set:function(v){cwModelos=v;}, render:renderModelos });
 }
 
 // ═══════════════════════════════════════════
@@ -3121,7 +3112,7 @@ function renderChaves(){
 }
 function quickDeleteChave(id){
   if(!confirm('Excluir esta chave?')) return;
-  call('deleteChave',{id:id}).then(function(res){ if(res.ok){showToast('Chave excluída.');loadChaves();} else showToast('Erro: '+(res.error||'')); }).catch(function(e){showToast('Erro: '+e.message);});
+  excluirOtimista({ id:id, action:'deleteChave', payload:{id:id}, msg:'Chave excluída.', get:function(){return chaveItems;}, set:function(v){chaveItems=v;}, render:renderChaves });
 }
 function openChaveModal(id){
   editingChaveId=id||null;
@@ -3165,7 +3156,7 @@ function deleteChave(){
   if(!editingChaveId) return;
   if(!confirm('Excluir esta chave?')) return;
   var id=editingChaveId; closeChaveModal();
-  call('deleteChave',{id:id}).then(function(res){ if(res.ok){showToast('Chave excluída.');loadChaves();} else showToast('Erro: '+(res.error||'')); }).catch(function(e){showToast('Erro: '+e.message);});
+  excluirOtimista({ id:id, action:'deleteChave', payload:{id:id}, msg:'Chave excluída.', get:function(){return chaveItems;}, set:function(v){chaveItems=v;}, render:renderChaves });
 }
 function copiarCampoChave(id,campo,btnEl){
   var c=chaveItems.find(function(x){return x.id===id;});
@@ -3229,7 +3220,7 @@ function renderSites(){
 }
 function quickDeleteSite(id){
   if(!confirm('Excluir este site?')) return;
-  call('deleteSite',{id:id}).then(function(res){ if(res.ok){showToast('Site excluído.');loadSites();} else showToast('Erro: '+(res.error||'')); }).catch(function(e){showToast('Erro: '+e.message);});
+  excluirOtimista({ id:id, action:'deleteSite', payload:{id:id}, msg:'Site excluído.', get:function(){return siteItems;}, set:function(v){siteItems=v;}, render:renderSites });
 }
 function onSiteImagemSelecionada(ev){
   var file=ev.target.files && ev.target.files[0];
@@ -3305,7 +3296,7 @@ function deleteSite(){
   if(!editingSiteId) return;
   if(!confirm('Excluir este site?')) return;
   var id=editingSiteId; closeSiteModal();
-  call('deleteSite',{id:id}).then(function(res){ if(res.ok){showToast('Site excluído.');loadSites();} else showToast('Erro: '+(res.error||'')); }).catch(function(e){showToast('Erro: '+e.message);});
+  excluirOtimista({ id:id, action:'deleteSite', payload:{id:id}, msg:'Site excluído.', get:function(){return siteItems;}, set:function(v){siteItems=v;}, render:renderSites });
 }
 
 // ============================================================
@@ -3394,7 +3385,7 @@ function renderPrazos(){
 }
 function quickDeletePrazo(id){
   if(!confirm('Excluir este prazo?')) return;
-  call('deletePrazo',{id:id}).then(function(res){ if(res.ok){showToast('Prazo excluído.');loadPrazos();} else showToast('Erro: '+(res.error||'')); }).catch(function(e){showToast('Erro: '+e.message);});
+  excluirOtimista({ id:id, action:'deletePrazo', payload:{id:id}, msg:'Prazo excluído.', get:function(){return prazos;}, set:function(v){prazos=v;}, render:function(){renderPrazos();renderPrazosPJE();} });
 }
 function openPrazoModal(id){
   editingPrazoId=id||null;
@@ -3439,7 +3430,7 @@ function deletePrazoItem(){
   if(!editingPrazoId) return;
   if(!confirm('Excluir este prazo?')) return;
   var id=editingPrazoId; closePrazoModal();
-  call('deletePrazo',{id:id}).then(function(res){ if(res.ok){showToast('Prazo excluído.');loadPrazos();} else showToast('Erro: '+(res.error||'')); }).catch(function(e){showToast('Erro: '+e.message);});
+  excluirOtimista({ id:id, action:'deletePrazo', payload:{id:id}, msg:'Prazo excluído.', get:function(){return prazos;}, set:function(v){prazos=v;}, render:function(){renderPrazos();renderPrazosPJE();} });
 }
 
 // ============================================================
@@ -3471,7 +3462,7 @@ function renderOficios(){
 }
 function quickDeleteOficio(id){
   if(!confirm('Excluir este ofício?')) return;
-  call('deleteOficio',{id:id}).then(function(res){ if(res.ok){showToast('Ofício excluído.');loadOficios();} else showToast('Erro: '+(res.error||'')); }).catch(function(e){showToast('Erro: '+e.message);});
+  excluirOtimista({ id:id, action:'deleteOficio', payload:{id:id}, msg:'Ofício excluído.', get:function(){return oficios;}, set:function(v){oficios=v;}, render:renderOficios });
 }
 function fillOficioSelects(){
   var selM=document.getElementById('ofMunicipio'), selR=document.getElementById('ofResponsavel');
@@ -3527,7 +3518,7 @@ function deleteOficioItem(){
   if(!editingOficioId) return;
   if(!confirm('Excluir este ofício?')) return;
   var id=editingOficioId; closeOficioModal();
-  call('deleteOficio',{id:id}).then(function(res){ if(res.ok){showToast('Ofício excluído.');loadOficios();} else showToast('Erro: '+(res.error||'')); }).catch(function(e){showToast('Erro: '+e.message);});
+  excluirOtimista({ id:id, action:'deleteOficio', payload:{id:id}, msg:'Ofício excluído.', get:function(){return oficios;}, set:function(v){oficios=v;}, render:renderOficios });
 }
 
 // ============================================================
@@ -3567,7 +3558,7 @@ function renderEventos(){
 }
 function quickDeleteEvento(id){
   if(!confirm('Excluir este evento?')) return;
-  call('deleteEvento',{id:id}).then(function(res){ if(res.ok){showToast('Evento excluído.');loadEventos();} else showToast('Erro: '+(res.error||'')); }).catch(function(e){showToast('Erro: '+e.message);});
+  excluirOtimista({ id:id, action:'deleteEvento', payload:{id:id}, msg:'Evento excluído.', get:function(){return eventos;}, set:function(v){eventos=v;}, render:renderEventos });
 }
 function preencherSelectResponsavelAtividade(){
   var sel=document.getElementById('evAtividadeResponsavel');
@@ -3701,7 +3692,7 @@ function deleteEvento(){
   if(!editingEventoId) return;
   if(!confirm('Excluir este evento?')) return;
   var id=editingEventoId; closeEventoModal();
-  call('deleteEvento',{id:id}).then(function(res){ if(res.ok){showToast('Evento excluído.');loadEventos();} else showToast('Erro: '+(res.error||'')); }).catch(function(e){showToast('Erro: '+e.message);});
+  excluirOtimista({ id:id, action:'deleteEvento', payload:{id:id}, msg:'Evento excluído.', get:function(){return eventos;}, set:function(v){eventos=v;}, render:renderEventos });
 }
 
 // ═══════════════════════════════════════════
@@ -4129,10 +4120,10 @@ function excluirTrelloCard(){
   if(!editingTrelloCardId) return;
   if(!confirm('Arquivar este card no Trello? Ele sai de todas as listas, mas continua recuperável direto no Trello.')) return;
   var id=editingTrelloCardId;
+  removerTrelloCardLocal(id); fecharTrelloCardModal(); showToast('Card arquivado.');
   call('deleteTrelloCard',{cardId:id}).then(function(res){
-    if(res.ok){ removerTrelloCardLocal(id); fecharTrelloCardModal(); showToast('Card arquivado.'); }
-    else showToast('Erro: '+(res.error||''));
-  }).catch(function(e){ showToast('Erro: '+e.message); });
+    if(!res||!res.ok) throw new Error((res&&res.error)||'o Trello recusou');
+  }).catch(function(e){ showToast('Não foi possível arquivar: '+e.message+'. Recarregando o quadro.'); loadTrello(true); });
 }
 
 // ═══════════════════════════════════════════
@@ -4412,12 +4403,29 @@ function toggleNotaFavorite(id){
 function deleteNota(){
   if(!editingNotaId)return;
   if(!confirm('Excluir esta anotação?'))return;
-  call('deleteNota',{id:editingNotaId}).then(function(res){
-    if(!res||!res.ok)throw new Error((res&&res.error)||'Não foi possível excluir.');
-    notas=notas.filter(function(n){return n.id!==editingNotaId;});editingNotaId=null;notaDraft=false;renderNotas();updateNotasBadge();renderTarefasAnotacoes();showToast('Nota excluída.');
-  }).catch(function(e){showToast(e.message||String(e));});
+  var id=editingNotaId; editingNotaId=null; notaDraft=false;
+  excluirOtimista({ id:id, action:'deleteNota', payload:{id:id}, msg:'Nota excluída.', get:function(){return notas;}, set:function(v){notas=v;},
+    render:function(){renderNotas();updateNotasBadge();renderTarefasAnotacoes();} });
 }
 
+// EXCLUSÃO OTIMISTA: o item some da tela na hora e o servidor é avisado
+// em segundo plano. Se o servidor recusar, o item volta pro mesmo lugar.
+function excluirOtimista(o){
+  var lista=o.get()||[];
+  var idx=lista.findIndex(function(x){return x.id===o.id;});
+  var item=idx>=0?lista[idx]:null;
+  o.set(lista.filter(function(x){return x.id!==o.id;}));
+  try{ o.render(); }catch(e){}
+  showToast(o.msg||'Excluído.');
+  call(o.action,o.payload).then(function(res){
+    if(!res||!res.ok) throw new Error((res&&res.error)||'o servidor recusou a exclusão');
+  }).catch(function(e){
+    var atual=(o.get()||[]).slice();
+    if(item && !atual.some(function(x){return x.id===o.id;})){ atual.splice(Math.min(idx,atual.length),0,item); o.set(atual); }
+    try{ o.render(); }catch(err){}
+    showToast('Não foi possível excluir: '+(e&&e.message?e.message:e)+'. O item foi restaurado.');
+  });
+}
 function showLoading(m){document.getElementById('loadingMsg').textContent=m||'Carregando…';document.getElementById('globalLoading').classList.remove('hidden');}
 function hideLoading(){document.getElementById('globalLoading').classList.add('hidden');}
 function showToast(m){var t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(function(){t.classList.remove('show');},2800);}
