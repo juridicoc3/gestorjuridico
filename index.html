@@ -1450,6 +1450,7 @@ button.agenda-stat{text-align:left;font:inherit;color:inherit;cursor:pointer;pos
     <div class="form-grid">
       <div class="field span2"><label>Gênero do avatar</label><div class="avatar-swatch-row" id="profileGeneroRow"></div></div>
       <div class="field span2"><label>Cor de pele</label><div class="avatar-swatch-row" id="profileSkinRow"></div></div>
+      <div class="field span2"><label>Cor dos olhos</label><div class="avatar-swatch-row" id="profileEyeRow"></div></div>
       <div class="field span2"><label>Cabelo</label><div class="avatar-swatch-row" id="profileHairStyleRow"></div></div>
       <div class="field span2"><label>Cor do cabelo</label><div class="avatar-swatch-row" id="profileHairColorRow"></div></div>
       <div class="field span2"><label>Rosto</label><div class="avatar-swatch-row" id="profileFaceRow"></div></div>
@@ -1773,7 +1774,8 @@ var AVATAR_HAIR_STYLES_MASC=['Raspado','Curto','Topete','Longo','Cacheado','Coqu
 var AVATAR_HAIR_STYLES_FEM=['Chanel','Longo Liso','Ondulado','Coque','Franja Reta','Rabo de Cavalo','Lateral'];
 var AVATAR_FACE_STYLES_MASC=['Sorridente','Sério','Confiante','Barba Curta','Barba Cheia','Bigode','Cavanhaque','Barba por Fazer'];
 var AVATAR_FACE_STYLES_FEM=['Sorridente','Sério','Doce','Cílios','Corada','Batom','Sardas'];
-var AVATAR_GLASSES=['Nenhum','Redondo','Quadrado','Escuro'];
+var AVATAR_GLASSES=['Nenhum','Redondo','Quadrado','Escuro','Juliete'];
+var AVATAR_EYE=['#4A2E20','#7A4B2A','#A8742A','#4F8A4B','#2F8F86','#3E7CC4','#7D8A96','#1E1716','#7A5BB5'];
 var AVATAR_CAP_STYLES=['Nenhum','Clássico','Lateral','Gorro','Aba Reta'];
 var AVATAR_SHIRT_CORTES=['Camiseta','Moletom','Social','Xadrez','Listrada','Jaqueta','Regata','Gola V'];
 var perfilAvatarAtual=null;
@@ -1929,14 +1931,19 @@ function avGarment(corte,cor,skin,uid,defs){
 }
 
 // ── rosto ──
-function avEyes(fem,forte,skin){
+function avEyes(fem,forte,skin,iris){
   var d='#2A1B16', out='';
+  iris=iris||AVATAR_EYE[0];
+  var aro=avShade(iris,-0.55), claro=avShade(iris,0.3);
   [[50,56.5],[70,56.5]].forEach(function(e,k){
     var x=e[0], y=e[1], s=k===0?-1:1;
-    out+='<ellipse cx="'+x+'" cy="'+y+'" rx="3.9" ry="5" fill="'+d+'"/>'
-      +'<ellipse cx="'+x+'" cy="'+(y+1.6)+'" rx="2.7" ry="2.6" fill="#5A3A28" opacity=".85"/>'
+    out+='<ellipse cx="'+x+'" cy="'+y+'" rx="3.9" ry="5" fill="'+aro+'"/>'
+      +'<ellipse cx="'+x+'" cy="'+(y+0.5)+'" rx="3.05" ry="4.1" fill="'+iris+'"/>'
+      +'<ellipse cx="'+x+'" cy="'+(y+2.1)+'" rx="2.3" ry="1.9" fill="'+claro+'" opacity=".55"/>'
+      +'<ellipse cx="'+x+'" cy="'+(y+0.3)+'" rx="1.55" ry="2.15" fill="#140D0B"/>'
       +'<circle cx="'+(x+1.2)+'" cy="'+(y-1.9)+'" r="1.5" fill="#fff"/>'
-      +'<circle cx="'+(x-1.2)+'" cy="'+(y+2)+'" r=".65" fill="#fff" opacity=".75"/>';
+      +'<circle cx="'+(x-1.2)+'" cy="'+(y+2)+'" r=".65" fill="#fff" opacity=".75"/>'
+      +avS('M'+(x-3.6)+','+(y-3.2)+' Q'+x+','+(y-5.6)+' '+(x+3.6)+','+(y-3.2),d,.9,' opacity=".55"');
     if(fem){
       out+=avS('M'+(x-4.2)+','+(y-3)+' Q'+x+','+(y-6.2)+' '+(x+4.2)+','+(y-3),d,forte?1.9:1.4);
       out+=avS('M'+(x+s*3.8)+','+(y-3.6)+' L'+(x+s*6)+','+(y-5.2),d,forte?1.5:1.1);
@@ -1972,7 +1979,23 @@ function avBeard(tipo,hc){
     default: return '';
   }
 }
-function avGlasses(i){
+function avGlassesJuliete(uid,defs){
+  var g=uid+'jl', m=uid+'jm';
+  defs.push('<linearGradient id="'+g+'" x1="0" y1="0" x2=".35" y2="1"><stop offset="0" stop-color="#B9E6FF"/><stop offset=".35" stop-color="#3D8BE0"/><stop offset=".7" stop-color="#3B2F8F"/><stop offset="1" stop-color="#7B2A7A"/></linearGradient>');
+  defs.push('<linearGradient id="'+m+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#EEF2F5"/><stop offset=".5" stop-color="#9AA3AC"/><stop offset="1" stop-color="#5E666F"/></linearGradient>');
+  var L='M38.5,51.2 L57.8,51.2 Q58.7,51.5 58.2,53.6 Q57,60 52,61.8 Q46,63.4 42,60.5 Q38.6,57.8 38.5,51.2Z';
+  var R='M81.5,51.2 L62.2,51.2 Q61.3,51.5 61.8,53.6 Q63,60 68,61.8 Q74,63.4 78,60.5 Q81.4,57.8 81.5,51.2Z';
+  var aro=' stroke="url(#'+m+')" stroke-width="1.7" stroke-linejoin="round"';
+  return avS('M38.8,52 L36.8,53.6 M81.2,52 L83.2,53.6','#6E767F',2.2)
+    +avP(L,'url(#'+g+')',aro)+avP(R,'url(#'+g+')',aro)
+    +avP('M42,53.6 L48.6,52.3 L50.8,52.3 L43.6,56.2Z','#fff',' opacity=".42"')+avP('M66,53.6 L72.6,52.3 L74.8,52.3 L67.6,56.2Z','#fff',' opacity=".42"')
+    +avS('M37.8,50.6 L82.2,50.6','url(#'+m+')',2.3)
+    +avS('M57.8,52.4 Q60,50.9 62.2,52.4','#8D959E',1.8)
+    +'<circle cx="40.6" cy="51.3" r=".95" fill="#DCE2E7" stroke="#6E767F" stroke-width=".4"/><circle cx="79.4" cy="51.3" r=".95" fill="#DCE2E7" stroke="#6E767F" stroke-width=".4"/>'
+    +'<circle cx="56.4" cy="51.4" r=".75" fill="#DCE2E7"/><circle cx="63.6" cy="51.4" r=".75" fill="#DCE2E7"/>';
+}
+function avGlasses(i,uid,defs){
+  if(Number(i)===4) return avGlassesJuliete(uid,defs);
   switch(Number(i)){
     case 1: var gd='#B08A4A';
       return '<circle cx="50" cy="56.5" r="6.4" fill="#fff" fill-opacity=".12" stroke="'+gd+'" stroke-width="1.4"/><circle cx="70" cy="56.5" r="6.4" fill="#fff" fill-opacity=".12" stroke="'+gd+'" stroke-width="1.4"/>'
@@ -2009,7 +2032,7 @@ function avCap(i,cor,uid,defs){
 
 // ── montagem ──
 function avatarConfigPadrao(){
-  return { genero:0, skin:1, hairStyle:1, hairColor:1, capStyle:0, capColor:8, face:0, glasses:0, shirtColor:8, shirtCorte:0, bg:0 };
+  return { genero:0, skin:1, hairStyle:1, hairColor:1, capStyle:0, capColor:8, face:0, glasses:0, eyes:0, shirtColor:8, shirtCorte:0, bg:0 };
 }
 function parseAvatarConfig(v){
   if(!v) return avatarConfigPadrao();
@@ -2029,7 +2052,7 @@ function avatarNormalizar(cfg){
   cfg.hairStyle=lim(cfg.hairStyle,nh,1); cfg.face=lim(cfg.face,nf,0);
   cfg.skin=lim(cfg.skin,AVATAR_SKIN.length,1); cfg.hairColor=lim(cfg.hairColor,AVATAR_HAIR_COLOR.length,1);
   cfg.capStyle=lim(cfg.capStyle,AVATAR_CAP_STYLES.length,0); cfg.capColor=lim(cfg.capColor,AVATAR_COR.length,8);
-  cfg.glasses=lim(cfg.glasses,AVATAR_GLASSES.length,0); cfg.shirtColor=lim(cfg.shirtColor,AVATAR_COR.length,8);
+  cfg.glasses=lim(cfg.glasses,AVATAR_GLASSES.length,0); cfg.eyes=lim(cfg.eyes,AVATAR_EYE.length,0); cfg.shirtColor=lim(cfg.shirtColor,AVATAR_COR.length,8);
   cfg.shirtCorte=lim(cfg.shirtCorte,AVATAR_SHIRT_CORTES.length,0); cfg.bg=lim(cfg.bg,AVATAR_BG.length,0);
   return cfg;
 }
@@ -2075,7 +2098,7 @@ function renderAvatarSvg(cfg,tamanho,opts){
   // sombra do cabelo na testa
   if(!(hair.buzz)&&!(hair.bun&&!fem)) s+=avP('M39,44 Q60,36 81,44 Q60,41.5 39,48Z',skD,' opacity=".35"');
   // olhos, nariz, bochechas
-  s+=avEyes(fem,fem&&cfg.face===3,skin);
+  s+=avEyes(fem,fem&&cfg.face===3,skin,AVATAR_EYE[cfg.eyes]);
   s+=avS('M59.3,62.6 Q60.6,64.6 62,63.3',avShade(skin,-0.35),1.1)+'<ellipse cx="60.4" cy="61.2" rx=".9" ry="1.3" fill="#fff" opacity=".35"/>';
   var blushA=fem?(cfg.face===4?0.5:0.28):0.16;
   s+='<ellipse cx="44.5" cy="65" rx="4.2" ry="2.5" fill="#FF7F7A" opacity="'+blushA+'"/><ellipse cx="75.5" cy="65" rx="4.2" ry="2.5" fill="#FF7F7A" opacity="'+blushA+'"/>';
@@ -2094,7 +2117,7 @@ function renderAvatarSvg(cfg,tamanho,opts){
   // sobrancelhas
   s+=avBrows(avShade(hc,-0.25),fem,faceTipo==='serio');
   // acessórios
-  s+=avGlasses(cfg.glasses);
+  s+=avGlasses(cfg.glasses,uid,defs);
   s+=avCap(cfg.capStyle,capC,uid,defs);
 
   var vb=opts.viewBox||(t<=40?'20 12 80 80':'10 5 100 100');
@@ -2134,7 +2157,7 @@ function sortearAvatar(){
     genero:fem?1:0, skin:r(AVATAR_SKIN.length), hairColor:r(AVATAR_HAIR_COLOR.length),
     hairStyle:r((fem?AVATAR_HAIR_STYLES_FEM:AVATAR_HAIR_STYLES_MASC).length),
     face:r((fem?AVATAR_FACE_STYLES_FEM:AVATAR_FACE_STYLES_MASC).length),
-    glasses:Math.random()<0.7?0:1+r(3), capStyle:Math.random()<0.75?0:1+r(4), capColor:r(AVATAR_COR.length),
+    glasses:Math.random()<0.7?0:1+r(AVATAR_GLASSES.length-1), eyes:Math.random()<0.6?r(2):r(AVATAR_EYE.length), capStyle:Math.random()<0.75?0:1+r(4), capColor:r(AVATAR_COR.length),
     shirtCorte:r(AVATAR_SHIRT_CORTES.length), shirtColor:r(AVATAR_COR.length), bg:(function(){ var b; do{ b=r(AVATAR_BG.length); }while(b===7); return b; })()
   });
   atualizarProfileUI();
@@ -2145,6 +2168,7 @@ function atualizarProfileUI(){
   var pv=document.getElementById('profilePreviewWrap'); if(pv) pv.innerHTML=renderAvatarSvg(cfg,120);
   renderAvatarStyleRow('profileGeneroRow',['Masculino','Feminino'],'genero',cfg.genero);
   renderAvatarColorRow('profileSkinRow',AVATAR_SKIN,cfg.skin,'skin');
+  renderAvatarColorRow('profileEyeRow',AVATAR_EYE,cfg.eyes,'eyes');
   renderAvatarStyleRow('profileHairStyleRow',fem?AVATAR_HAIR_STYLES_FEM:AVATAR_HAIR_STYLES_MASC,'hairStyle',cfg.hairStyle);
   renderAvatarColorRow('profileHairColorRow',AVATAR_HAIR_COLOR,cfg.hairColor,'hairColor');
   renderAvatarStyleRow('profileFaceRow',fem?AVATAR_FACE_STYLES_FEM:AVATAR_FACE_STYLES_MASC,'face',cfg.face);
