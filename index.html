@@ -1774,7 +1774,7 @@ var AVATAR_HAIR_STYLES_MASC=['Raspado','Curto','Topete','Longo','Cacheado','Coqu
 var AVATAR_HAIR_STYLES_FEM=['Chanel','Longo Liso','Ondulado','Coque','Franja Reta','Rabo de Cavalo','Lateral'];
 var AVATAR_FACE_STYLES_MASC=['Sorridente','Sério','Confiante','Barba Curta','Barba Cheia','Bigode','Cavanhaque','Barba por Fazer'];
 var AVATAR_FACE_STYLES_FEM=['Sorridente','Sério','Doce','Cílios','Corada','Batom','Sardas'];
-var AVATAR_GLASSES=['Nenhum','Redondo','Quadrado','Escuro','Juliete'];
+var AVATAR_GLASSES=['Nenhum','Redondo','Quadrado','Escuro','Juliete Ruby','Juliete Azul'];
 var AVATAR_EYE=['#4A2E20','#7A4B2A','#A8742A','#4F8A4B','#2F8F86','#3E7CC4','#7D8A96','#1E1716','#7A5BB5'];
 var AVATAR_CAP_STYLES=['Nenhum','Clássico','Lateral','Gorro','Aba Reta'];
 var AVATAR_SHIRT_CORTES=['Camiseta','Moletom','Social','Xadrez','Listrada','Jaqueta','Regata','Gola V'];
@@ -1979,23 +1979,35 @@ function avBeard(tipo,hc){
     default: return '';
   }
 }
-function avGlassesJuliete(uid,defs){
+// Óculos Juliete (Juliet X-Metal): lente oval espelhada, armação fina de
+// metal escuro, ponte dupla e junta em "X" nas hastes. variante: 'ruby' ou 'azul'.
+function avGlassesJuliete(uid,defs,variante){
   var g=uid+'jl', m=uid+'jm';
-  defs.push('<linearGradient id="'+g+'" x1="0" y1="0" x2=".35" y2="1"><stop offset="0" stop-color="#B9E6FF"/><stop offset=".35" stop-color="#3D8BE0"/><stop offset=".7" stop-color="#3B2F8F"/><stop offset="1" stop-color="#7B2A7A"/></linearGradient>');
-  defs.push('<linearGradient id="'+m+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#EEF2F5"/><stop offset=".5" stop-color="#9AA3AC"/><stop offset="1" stop-color="#5E666F"/></linearGradient>');
-  var L='M38.5,51.2 L57.8,51.2 Q58.7,51.5 58.2,53.6 Q57,60 52,61.8 Q46,63.4 42,60.5 Q38.6,57.8 38.5,51.2Z';
-  var R='M81.5,51.2 L62.2,51.2 Q61.3,51.5 61.8,53.6 Q63,60 68,61.8 Q74,63.4 78,60.5 Q81.4,57.8 81.5,51.2Z';
-  var aro=' stroke="url(#'+m+')" stroke-width="1.7" stroke-linejoin="round"';
-  return avS('M38.8,52 L36.8,53.6 M81.2,52 L83.2,53.6','#6E767F',2.2)
+  var st=variante==='azul'
+    ? [['0','#6FE3FF'],['.35','#1F7BFF'],['.75','#12308F'],['1','#070B2E']]
+    : [['0','#FFD23F'],['.3','#FF7A1A'],['.62','#D8182A'],['1','#3A0710']];
+  defs.push('<radialGradient id="'+g+'" cx=".55" cy=".72" r=".85">'+st.map(function(x){return '<stop offset="'+x[0]+'" stop-color="'+x[1]+'"/>';}).join('')+'</radialGradient>');
+  defs.push('<linearGradient id="'+m+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8E959D"/><stop offset=".45" stop-color="#2A2D33"/><stop offset="1" stop-color="#121317"/></linearGradient>');
+  var L='M57.6,53.6 C57.1,51.1 53,50.2 47.8,50.4 C42.8,50.6 38.9,51.5 38.4,53.9 C37.9,56.7 40,60.9 44.5,62.1 C49.5,63.4 55.1,61.9 57.1,58.6 C57.9,57.1 58,55.1 57.6,53.6Z';
+  var R='M62.4,53.6 C62.9,51.1 67,50.2 72.2,50.4 C77.2,50.6 81.1,51.5 81.6,53.9 C82.1,56.7 80,60.9 75.5,62.1 C70.5,63.4 64.9,61.9 62.9,58.6 C62.1,57.1 62,55.1 62.4,53.6Z';
+  var aro=' stroke="url(#'+m+')" stroke-width="1.9" stroke-linejoin="round"';
+  var brilho=variante==='azul'?'#BFF3FF':'#FFE9B0';
+  return avS('M38.6,53.2 L35.6,54.6 M81.4,53.2 L84.4,54.6','#1B1D22',2.4)
+    // junta em X das hastes
+    +avS('M37.2,52.2 L39.8,55 M39.8,52.2 L37.2,55 M82.8,52.2 L80.2,55 M80.2,52.2 L82.8,55','#3A3E45',1.1)
     +avP(L,'url(#'+g+')',aro)+avP(R,'url(#'+g+')',aro)
-    +avP('M42,53.6 L48.6,52.3 L50.8,52.3 L43.6,56.2Z','#fff',' opacity=".42"')+avP('M66,53.6 L72.6,52.3 L74.8,52.3 L67.6,56.2Z','#fff',' opacity=".42"')
-    +avS('M37.8,50.6 L82.2,50.6','url(#'+m+')',2.3)
-    +avS('M57.8,52.4 Q60,50.9 62.2,52.4','#8D959E',1.8)
-    +'<circle cx="40.6" cy="51.3" r=".95" fill="#DCE2E7" stroke="#6E767F" stroke-width=".4"/><circle cx="79.4" cy="51.3" r=".95" fill="#DCE2E7" stroke="#6E767F" stroke-width=".4"/>'
-    +'<circle cx="56.4" cy="51.4" r=".75" fill="#DCE2E7"/><circle cx="63.6" cy="51.4" r=".75" fill="#DCE2E7"/>';
+    // reflexo espelhado
+    +avS('M41.5,54.6 Q46,51.9 52.5,52.1','#fff',1.3,' opacity=".55"')+avS('M66.5,54.6 Q71,51.9 77.5,52.1','#fff',1.3,' opacity=".55"')
+    +avP('M44,59.6 Q49,61.4 54.5,59.2 Q50,62.6 44,59.6Z',brilho,' opacity=".45"')+avP('M65.5,59.2 Q71,61.4 76,59.6 Q70,62.6 65.5,59.2Z',brilho,' opacity=".45"')
+    // ponte dupla de metal
+    +avS('M57.5,53.7 Q60,51.9 62.5,53.7','#2A2D33',1.6)+avS('M57.4,55.6 Q60,54.4 62.6,55.6','#2A2D33',1.1)
+    +avS('M58.2,53.1 Q60,52 61.8,53.1','#9AA1A9',.5,' opacity=".8"')
+    // filete de luz na armação
+    +avS('M40,51.9 Q47,50.1 55.6,51.2 M64.4,51.2 Q73,50.1 80,51.9','#B7BEC6',.6,' opacity=".7"');
 }
 function avGlasses(i,uid,defs){
-  if(Number(i)===4) return avGlassesJuliete(uid,defs);
+  if(Number(i)===4) return avGlassesJuliete(uid,defs,'ruby');
+  if(Number(i)===5) return avGlassesJuliete(uid,defs,'azul');
   switch(Number(i)){
     case 1: var gd='#B08A4A';
       return '<circle cx="50" cy="56.5" r="6.4" fill="#fff" fill-opacity=".12" stroke="'+gd+'" stroke-width="1.4"/><circle cx="70" cy="56.5" r="6.4" fill="#fff" fill-opacity=".12" stroke="'+gd+'" stroke-width="1.4"/>'
