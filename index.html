@@ -422,6 +422,78 @@ select.filter-sel option{background:var(--surface-2);color:var(--text);}
 #profilePreviewWrap{box-shadow:0 0 0 3px var(--surface),0 0 0 4px var(--accent-line),0 10px 28px rgba(0,0,0,.18);}
 .avatar-sortear{margin-top:8px;font-size:11.5px;padding:5px 12px;}
 
+/* ── PAINEL (antiga Agenda) ─────────────────────────────── */
+#page-agenda .painel-head{align-items:center;min-height:250px;}
+.painel-clock{position:relative;z-index:1;}
+.painel-eyebrow{display:inline-flex;align-items:center;gap:9px;font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#cde6ff;}
+.painel-eyebrow::before{content:"";width:7px;height:7px;border-radius:50%;background:#30d158;box-shadow:0 0 12px #30d158;}
+.painel-hora{margin-top:12px;font-size:clamp(52px,7.4vw,92px);font-weight:600;letter-spacing:-.06em;line-height:.95;font-variant-numeric:tabular-nums;}
+.painel-hora span{font-size:.42em;letter-spacing:-.02em;color:var(--text-3);margin-left:4px;}
+.painel-data{margin-top:12px;font-size:15px;color:var(--text-2);}
+.painel-user{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:10px;cursor:pointer;}
+.painel-avatar{width:112px;height:112px;border-radius:50%;overflow:hidden;background:var(--surface-2);
+  box-shadow:0 0 0 4px rgba(255,255,255,.12),0 0 0 5px rgba(41,151,255,.45),0 18px 44px rgba(0,0,0,.45);transition:transform .25s var(--ease);}
+.painel-avatar svg{display:block;width:100%;height:100%;}
+.painel-user:hover .painel-avatar{transform:scale(1.04);}
+.painel-ola{font-size:13px;font-weight:600;color:var(--text-2);max-width:160px;text-align:center;}
+.painel-summary{grid-template-columns:repeat(3,minmax(0,1fr)) !important;}
+button.agenda-stat{text-align:left;font:inherit;color:inherit;cursor:pointer;position:relative;width:100%;}
+.agenda-stat .painel-ver{position:absolute;right:18px;top:20px;font-size:10.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text-3);transition:color .2s;}
+.agenda-stat .painel-ver::after{content:" \2193";}
+.agenda-stat.is-active{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent),var(--sh-1);}
+.agenda-stat.is-active .painel-ver{color:var(--accent);}
+.agenda-stat.is-active .painel-ver::after{content:" \2191";}
+.painel-det{display:none;}
+.painel-det.open{display:block;animation:painelIn .28s var(--ease);}
+@keyframes painelIn{from{opacity:0;transform:translateY(-6px);}to{opacity:1;transform:none;}}
+
+/* ── PERFIS ─────────────────────────────────────────────── */
+.perfis-head{padding:6px 2px 22px;}
+.perfis-head h2{font-size:clamp(34px,4.6vw,54px);font-weight:600;letter-spacing:-.05em;line-height:1;}
+.perfis-head p{margin-top:10px;font-size:14px;color:var(--text-2);}
+.perfil-card{position:relative;border:1px solid var(--line-2);border-radius:24px;background:var(--surface);overflow:hidden;box-shadow:var(--sh-1);}
+.perfil-banner{height:120px;background:linear-gradient(120deg,#0a84ff,#5e5ce6);position:relative;}
+.perfil-banner::after{content:"";position:absolute;inset:0;background:radial-gradient(420px 160px at 85% 0%,rgba(255,255,255,.28),transparent 70%);}
+.perfil-av{position:absolute;left:28px;top:58px;width:124px;height:124px;border-radius:50%;overflow:hidden;background:var(--surface-2);box-shadow:0 0 0 5px var(--surface),0 16px 36px rgba(0,0,0,.4);}
+.perfil-av svg{display:block;width:100%;height:100%;}
+.perfil-main{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:26px;padding:74px 28px 26px;}
+.perfil-nome{font-size:26px;font-weight:600;letter-spacing:-.035em;}
+.perfil-user{font-size:12.5px;color:var(--text-3);margin-top:3px;}
+.perfil-voce{display:inline-block;margin-left:8px;padding:3px 9px;border-radius:999px;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:var(--accent-soft);color:var(--accent);vertical-align:middle;}
+.perfil-kpi{display:flex;align-items:baseline;gap:10px;margin-top:18px;}
+.perfil-kpi .n{font-size:40px;font-weight:600;letter-spacing:-.05em;line-height:1;color:#579dff;}
+.perfil-kpi .l{font-size:12.5px;color:var(--text-2);}
+.perfil-tarefas{margin-top:14px;display:flex;flex-direction:column;gap:7px;}
+.perfil-tarefa{display:flex;justify-content:space-between;gap:10px;padding:9px 12px;border-radius:12px;background:var(--surface-2);border:1px solid var(--line);font-size:12.5px;cursor:pointer;}
+.perfil-tarefa:hover{border-color:var(--accent-line);}
+.perfil-tarefa span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.perfil-edit{display:flex;flex-direction:column;gap:16px;}
+.perfil-edit label{display:block;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text-3);margin-bottom:8px;}
+.perfil-edit select{width:100%;max-width:340px;}
+.banner-swatches{display:flex;flex-wrap:wrap;gap:9px;}
+.banner-swatch{width:44px;height:28px;border-radius:9px;border:2px solid transparent;cursor:pointer;padding:0;box-shadow:inset 0 0 0 1px rgba(255,255,255,.12);transition:transform .15s var(--ease);}
+.banner-swatch:hover{transform:translateY(-2px);}
+.banner-swatch.selected{border-color:#fff;box-shadow:0 0 0 2px var(--accent);}
+.perfis-equipe-head{margin-top:34px;}
+.perfis-count{font-size:12px;color:var(--text-3);}
+.perfis-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;}
+.perfil-mini{border:1px solid var(--line);border-radius:18px;background:var(--surface);overflow:hidden;transition:transform .25s var(--ease),border-color .25s;}
+.perfil-mini:hover{transform:translateY(-3px);border-color:var(--line-2);}
+.perfil-mini .perfil-banner{height:58px;}
+.perfil-mini-av{width:72px;height:72px;margin:-36px auto 0;border-radius:50%;overflow:hidden;position:relative;z-index:1;background:var(--surface-2);box-shadow:0 0 0 4px var(--surface);}
+.perfil-mini-av svg{display:block;width:100%;height:100%;}
+.perfil-mini-body{padding:10px 16px 18px;text-align:center;}
+.perfil-mini-nome{font-size:15px;font-weight:600;letter-spacing:-.02em;}
+.perfil-mini-trello{font-size:11.5px;color:var(--text-3);margin-top:3px;}
+.perfil-mini-kpi{margin-top:12px;display:inline-flex;align-items:baseline;gap:6px;padding:6px 12px;border-radius:999px;background:var(--surface-2);border:1px solid var(--line);font-size:11.5px;color:var(--text-2);}
+.perfil-mini-kpi b{font-size:15px;color:#579dff;}
+.perfis-vazio{padding:28px;text-align:center;color:var(--text-3);font-size:13px;border:1px dashed var(--line-2);border-radius:18px;}
+@media (max-width:760px){
+  .perfil-main{grid-template-columns:1fr;padding-top:70px;}
+  .painel-avatar{width:84px;height:84px;}
+  .painel-summary{grid-template-columns:1fr !important;}
+}
+
 /* ── AGENDA ──────────────────────────────────────────────── */
 #page-agenda .agenda-head{
   position:relative;overflow:hidden;min-height:280px;padding:clamp(28px,4vw,52px);
@@ -1033,8 +1105,9 @@ select.filter-sel option{background:var(--surface-2);color:var(--text);}
     <div class="org">Controle de Processos</div>
   </div>
   <nav>
-    <button class="nav-item" onclick="showPage('agenda',this)"><span class="ic"><svg class="nav-svg" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="17" rx="3"/><path d="M8 2v4M16 2v4M3 10h18M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></svg></span><span>Agenda</span></button>
+    <button class="nav-item" onclick="showPage('agenda',this)"><span class="ic"><svg class="nav-svg" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="17" rx="3"/><path d="M8 2v4M16 2v4M3 10h18M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></svg></span><span>Painel</span></button>
     <button class="nav-item" onclick="showPage('notificacoes',this)"><span class="ic"><svg class="nav-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></svg></span><span>Notificações (PUSH)</span><span class="nav-badge zero" id="navNotifBadge">0</span></button>
+    <button class="nav-item" onclick="showPage('perfis',this)"><span class="ic"><svg class="nav-svg" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19c.6-3.2 2.9-5 5.5-5s4.9 1.8 5.5 5"/><circle cx="17" cy="9" r="2.4"/><path d="M15.8 14.3c2.3.1 4 1.6 4.7 4.2"/></svg></span><span>Perfis</span></button>
     <div class="nav-section">Gestão</div>
     <button class="nav-item" onclick="showPage('processos',this)"><span class="ic"><svg class="nav-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18M5 7h14M5 7l3 6a3 3 0 0 1-6 0zM19 7l3 6a3 3 0 0 1-6 0zM7 21h10"/></svg></span><span>Processos</span></button>
     <div class="nav-section">Ferramentas</div>
@@ -1055,7 +1128,7 @@ select.filter-sel option{background:var(--surface-2);color:var(--text);}
       <button class="sidebar-toggle" id="sidebarToggle" onclick="toggleSidebar()" title="Mostrar ou ocultar o menu lateral">&#9776;</button>
       <div class="topbar-titles">
         <span class="topbar-eyebrow" id="topbarEyebrow">Organização</span>
-        <span class="topbar-title" id="topbarTitle">Agenda</span>
+        <span class="topbar-title" id="topbarTitle">Painel</span>
       </div>
     </div>
     <div class="topbar-actions">
@@ -1069,30 +1142,42 @@ select.filter-sel option{background:var(--surface-2);color:var(--text);}
 
 <!-- ══ AGENDA ══ -->
 <div class="page active" id="page-agenda">
-  <div class="agenda-head">
-    <div>
-      <h2>Agenda</h2>
-      <p>Eventos da equipe, suas anotações com prazo, contratos a vencer e compromissos do Trello, tudo em um só lugar.</p>
+  <div class="agenda-head painel-head">
+    <div class="painel-clock">
+      <div class="painel-eyebrow">Painel &middot; Horário de Brasília</div>
+      <div class="painel-hora" id="painelHora">--:--<span id="painelSeg">:--</span></div>
+      <div class="painel-data" id="painelData">&nbsp;</div>
     </div>
-    <button class="agenda-cta-btn" onclick="openEventoModal()">+ Cadastrar Evento</button>
+    <div class="painel-user" onclick="abrirPerfil()" title="Editar avatar">
+      <div class="painel-avatar" id="painelAvatar"></div>
+      <div class="painel-ola" id="painelOla">Olá!</div>
+    </div>
   </div>
-  <div class="agenda-summary">
-    <div class="agenda-stat"><div class="n" id="agendaEventos">0</div><div class="l">eventos cadastrados</div></div>
-    <div class="agenda-stat stat-contract"><div class="n" id="agendaContratosVencer90">0</div><div class="l">contratos a vencer em 90 dias</div></div>
-    <div class="agenda-stat"><div class="n" id="agendaMinhasTarefas">0</div><div class="l">suas anotações com prazo</div></div>
-    <div class="agenda-stat stat-prazospje"><div class="n" id="agendaPrazosPJE">0</div><div class="l">prazos PJE em aberto</div></div>
-    <div class="agenda-stat stat-trello"><div class="n" id="agendaTrello14">0</div><div class="l">compromissos do Trello em 14 dias</div></div>
+  <div class="agenda-summary painel-summary">
+    <button type="button" class="agenda-stat stat-prazospje" data-painel="prazos" onclick="togglePainelLista('prazos')"><div class="n" id="agendaPrazosPJE">0</div><div class="l">prazos PJE em aberto</div><span class="painel-ver">ver lista</span></button>
+    <button type="button" class="agenda-stat stat-contract" data-painel="contratos" onclick="togglePainelLista('contratos')"><div class="n" id="agendaContratosVencer90">0</div><div class="l">contratos a vencer em 90 dias</div><span class="painel-ver">ver lista</span></button>
+    <button type="button" class="agenda-stat stat-trello" data-painel="trello" onclick="togglePainelLista('trello')"><div class="n" id="agendaTrello14">0</div><div class="l">compromissos do Trello em 14 dias</div><span class="painel-ver">ver lista</span></button>
   </div>
 
   <div class="agenda-content">
-    <div class="agenda-section">
-      <div class="agenda-section-head"><h3>Eventos</h3></div>
-      <div class="evento-grid" id="eventoGrid"></div>
+    <div class="agenda-section painel-det" id="painelDet-prazos">
+      <div class="agenda-section-head"><h3>Prazos PJE em aberto</h3><button class="btn btn-outline btn-sm" onclick="togglePainelLista('prazos')">Fechar</button></div>
+      <div class="panel"><div class="agenda-list" id="agendaPrazosList"></div></div>
+    </div>
+
+    <div class="agenda-section painel-det" id="painelDet-contratos">
+      <div class="agenda-section-head"><h3>Contratos a vencer (90 dias)</h3><button class="btn btn-outline btn-sm" onclick="togglePainelLista('contratos')">Fechar</button></div>
+      <div class="panel"><div class="agenda-list" id="agendaContratosList"></div></div>
+    </div>
+
+    <div class="agenda-section painel-det" id="painelDet-trello">
+      <div class="agenda-section-head"><h3>Compromissos do Trello (14 dias)</h3><div style="display:flex;gap:8px;align-items:center;"><select class="filter-sel" id="respAgendaTrello" onchange="renderCompromissosTrello()"><option value="">Todos os responsáveis</option></select><button class="btn btn-outline btn-sm" onclick="togglePainelLista('trello')">Fechar</button></div></div>
+      <div class="panel"><div class="agenda-list" id="agendaTrelloList"></div></div>
     </div>
 
     <div class="agenda-section">
-      <div class="agenda-section-head"><h3>Contratos a vencer (90 dias)</h3></div>
-      <div class="panel"><div class="agenda-list" id="agendaContratosList"></div></div>
+      <div class="agenda-section-head"><h3>Eventos</h3><button class="btn btn-primary btn-sm" onclick="openEventoModal()">+ Cadastrar Evento</button></div>
+      <div class="evento-grid" id="eventoGrid"></div>
     </div>
 
     <div class="agenda-section">
@@ -1100,16 +1185,17 @@ select.filter-sel option{background:var(--surface-2);color:var(--text);}
       <div class="panel"><div class="agenda-list" id="agendaTarefasList"></div></div>
     </div>
 
-    <div class="agenda-section">
-      <div class="agenda-section-head"><h3>Prazos PJE</h3></div>
-      <div class="panel"><div class="agenda-list" id="agendaPrazosList"></div></div>
-    </div>
-
-    <div class="agenda-section">
-      <div class="agenda-section-head"><h3>Compromissos do Trello (14 dias)</h3><select class="filter-sel" id="respAgendaTrello" onchange="renderCompromissosTrello()"><option value="">Todos os responsáveis</option></select></div>
-      <div class="panel"><div class="agenda-list" id="agendaTrelloList"></div></div>
-    </div>
   </div>
+</div>
+
+<!-- ══ PERFIS ══ -->
+<div class="page" id="page-perfis">
+  <div class="perfis-head">
+    <div><h2>Perfis</h2><p>Sua equipe, com as atividades atribuídas a cada pessoa no Trello.</p></div>
+  </div>
+  <div id="perfilMeu"></div>
+  <div class="agenda-section-head perfis-equipe-head"><h3>Equipe</h3><span class="perfis-count" id="perfisCount"></span></div>
+  <div class="perfis-grid" id="perfisGrid"></div>
 </div>
 
 <!-- ══ NOTAS ══ -->
@@ -1650,7 +1736,7 @@ select.filter-sel option{background:var(--surface-2);color:var(--text);}
 // URL do Apps Script, pode deixar como está: essa URL não é usada nesse
 // caso. Veja a função call(), logo abaixo, pra entender como isso é usado.
 // ═══════════════════════════════════════════
-var API_URL = 'https://script.google.com/macros/s/AKfycby9bBT58nRWPMt6Plx1Tb4H3tPG_FCUnc1u_oR-pm1ZsbZLIbg8oPz7xyAghpwP0p6OGA/exec';
+var API_URL = 'https://script.google.com/macros/s/AKfycbweQyYa_XT6quvafxVi35yXxUFCksPR4uIq-6Hs-OmD17xgk2DRZhC32qcshZEi8WrSqQ/exec';
 
 // ═══════════════════════════════════════════
 // CONSTANTES
@@ -1681,8 +1767,8 @@ var currentUser=null;
 // ═══════════════════════════════════════════
 var AVATAR_SKIN=['#F6D3B8','#EDBE98','#D9A077','#B97B52','#8A5534','#5E3A24','#F3C9A6','#C68E62'];
 var AVATAR_HAIR_COLOR=['#231A17','#3E2A20','#6A4630','#D8AE5E','#9C3F1E','#A9A39B','#C9879C','#2F4A73','#EDD39A','#8E74B8','#C4652C','#5A2E22'];
-var AVATAR_COR=['#6E2233','#23272F','#1F5E57','#5B3F8C','#A83232','#F2EFE8','#C98A2E','#3A4453','#26395A','#4F5D3A','#8E8A82','#2F6FA8'];
-var AVATAR_BG=['#EFE7DC','#E3EAF2','#E6EFE6','#F1E4E4','#ECE6F3','#F4ECD6','#DDE3E8','#2A2F38'];
+var AVATAR_COR=['#6E2233','#23272F','#1F5E57','#5B3F8C','#A83232','#F2EFE8','#C98A2E','#3A4453','#26395A','#4F5D3A','#8E8A82','#2F6FA8','#D6457E'];
+var AVATAR_BG=['#EFE7DC','#E3EAF2','#E6EFE6','#F1E4E4','#ECE6F3','#F4ECD6','#DDE3E8','#2A2F38','#F8D6E5'];
 var AVATAR_HAIR_STYLES_MASC=['Raspado','Curto','Topete','Longo','Cacheado','Coque','Espetado','Social'];
 var AVATAR_HAIR_STYLES_FEM=['Chanel','Longo Liso','Ondulado','Coque','Franja Reta','Rabo de Cavalo','Lateral'];
 var AVATAR_FACE_STYLES_MASC=['Sorridente','Sério','Confiante','Barba Curta','Barba Cheia','Bigode','Cavanhaque','Barba por Fazer'];
@@ -2049,7 +2135,7 @@ function sortearAvatar(){
     hairStyle:r((fem?AVATAR_HAIR_STYLES_FEM:AVATAR_HAIR_STYLES_MASC).length),
     face:r((fem?AVATAR_FACE_STYLES_FEM:AVATAR_FACE_STYLES_MASC).length),
     glasses:Math.random()<0.7?0:1+r(3), capStyle:Math.random()<0.75?0:1+r(4), capColor:r(AVATAR_COR.length),
-    shirtCorte:r(AVATAR_SHIRT_CORTES.length), shirtColor:r(AVATAR_COR.length), bg:r(AVATAR_BG.length-1)
+    shirtCorte:r(AVATAR_SHIRT_CORTES.length), shirtColor:r(AVATAR_COR.length), bg:(function(){ var b; do{ b=r(AVATAR_BG.length); }while(b===7); return b; })()
   });
   atualizarProfileUI();
 }
@@ -2086,9 +2172,151 @@ function salvarPerfil(){
   var btn=document.getElementById('profileSaveBtn'); btn.disabled=true; btn.textContent='Salvando…';
   call('saveProfile',{ nome_exibicao:nome, avatar:JSON.stringify(perfilAvatarAtual||avatarConfigPadrao()) }).then(function(res){
     btn.disabled=false; btn.textContent='Salvar';
-    if(res.ok){ currentUser=res.user; updateSidebarUser(); fecharPerfil(); showToast('Perfil salvo.'); }
+    if(res.ok){ currentUser=Object.assign({},currentUser,res.user); var pp=perfis.find(function(x){return x.id===currentUser.id;}); if(pp) Object.assign(pp,res.user); updateSidebarUser(); renderPerfis(); fecharPerfil(); showToast('Perfil salvo.'); }
     else showToast('Erro: '+(res.error||''));
   }).catch(function(e){ btn.disabled=false; btn.textContent='Salvar'; showToast('Erro: '+e.message); });
+}
+
+// ═══════════════════════════════════════════
+// PAINEL: relógio de Brasília, avatar e listas das métricas
+// ═══════════════════════════════════════════
+var painelListaAtiva=null;
+var _fmtHora=null,_fmtData=null;
+function atualizarRelogioPainel(){
+  try{
+    if(!_fmtHora){
+      _fmtHora=new Intl.DateTimeFormat('pt-BR',{timeZone:'America/Sao_Paulo',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false});
+      _fmtData=new Intl.DateTimeFormat('pt-BR',{timeZone:'America/Sao_Paulo',weekday:'long',day:'numeric',month:'long',year:'numeric'});
+    }
+    var agora=new Date(), partes=_fmtHora.format(agora).split(':');
+    var h=document.getElementById('painelHora');
+    if(h) h.innerHTML=partes[0]+':'+partes[1]+'<span>:'+partes[2]+'</span>';
+    var d=document.getElementById('painelData'); if(d){ var t=_fmtData.format(agora); d.textContent=t.charAt(0).toUpperCase()+t.slice(1); }
+  }catch(e){}
+}
+atualizarRelogioPainel();
+setInterval(atualizarRelogioPainel,1000);
+
+function atualizarAvatarPainel(){
+  var el=document.getElementById('painelAvatar'), ola=document.getElementById('painelOla');
+  if(el) el.innerHTML=currentUser?renderAvatarSvg(parseAvatarConfig(currentUser.avatar),112):'';
+  if(ola){
+    var nome=currentUser?(currentUser.nome_exibicao||currentUser.usuario||''):'';
+    ola.textContent=nome?('Olá, '+String(nome).split(' ')[0]+'!'):'Olá!';
+  }
+}
+function togglePainelLista(qual){
+  painelListaAtiva=(painelListaAtiva===qual)?null:qual;
+  document.querySelectorAll('.painel-summary .agenda-stat').forEach(function(b){ b.classList.toggle('is-active', b.getAttribute('data-painel')===painelListaAtiva); });
+  document.querySelectorAll('.painel-det').forEach(function(sec){ sec.classList.toggle('open', sec.id==='painelDet-'+painelListaAtiva); });
+  if(painelListaAtiva){
+    var sec=document.getElementById('painelDet-'+painelListaAtiva);
+    if(sec) setTimeout(function(){ sec.scrollIntoView({behavior:'smooth',block:'nearest'}); },60);
+  }
+}
+
+// ═══════════════════════════════════════════
+// PERFIS
+// ═══════════════════════════════════════════
+var PERFIL_BANNERS=[
+  ['Azul','linear-gradient(120deg,#0a84ff,#5e5ce6)'],
+  ['Violeta','linear-gradient(120deg,#6d3fd1,#bf5af2)'],
+  ['Rosa','linear-gradient(120deg,#ff6fae,#d6457e)'],
+  ['Verde','linear-gradient(120deg,#16865c,#30d158)'],
+  ['Turquesa','linear-gradient(120deg,#0f766e,#2dd4bf)'],
+  ['Âmbar','linear-gradient(120deg,#c9771a,#ffc94d)'],
+  ['Vermelho','linear-gradient(120deg,#a8261f,#ff6b5a)'],
+  ['Bordô','linear-gradient(120deg,#4a1322,#9e3550)'],
+  ['Grafite','linear-gradient(120deg,#262c37,#5b6474)']
+];
+var perfis=[], perfisCarregados=false;
+function bannerCss(v){ var i=parseInt(v,10); if(isNaN(i)||i<0||i>=PERFIL_BANNERS.length) i=0; return PERFIL_BANNERS[i][1]; }
+function trelloMembrosUnicos(){
+  var mapa={};
+  (trelloBoards||[]).forEach(function(b){ (b.membros||[]).forEach(function(m){ if(m&&m.id) mapa[m.id]=m.nome; }); });
+  return Object.keys(mapa).map(function(id){ return {id:id,nome:mapa[id]}; }).sort(function(a,b){ return a.nome.localeCompare(b.nome,'pt-BR'); });
+}
+function nomeMembroTrello(id){ var m=trelloMembrosUnicos().find(function(x){return x.id===id;}); return m?m.nome:''; }
+function cardsTrelloDoMembro(id){
+  if(!id) return [];
+  return (trelloAllCards||[]).filter(function(c){ return !c.concluido && (c.idMembers||[]).indexOf(id)>=0; })
+    .sort(function(a,b){ var da=diasAgenda(a.due), db=diasAgenda(b.due); return (da===null?99999:da)-(db===null?99999:db); });
+}
+function loadPerfis(){
+  renderPerfis();
+  if(!trelloLoaded){ fetchTrelloData(false).then(renderPerfis).catch(function(){}); }
+  if(!currentUser) return Promise.resolve();
+  return call('getPerfis',{}).then(function(res){
+    if(res&&res.ok){ perfis=res.data||[]; perfisCarregados=true; }
+    else { perfisCarregados=true; perfis=[]; showToast('Perfis: '+((res&&res.error)||'erro ao carregar')+(String(res&&res.error).indexOf('desconhecida')>=0?' (atualize o Code.gs)':'')); }
+    renderPerfis();
+  }).catch(function(e){ showToast('Erro ao carregar perfis: '+e.message); });
+}
+function perfilNome(p){ return p.nome_exibicao||p.usuario||'Sem nome'; }
+function renderPerfis(){
+  var meuEl=document.getElementById('perfilMeu'), grid=document.getElementById('perfisGrid');
+  if(!meuEl||!grid) return;
+  if(!currentUser){ meuEl.innerHTML='<div class="perfis-vazio">Faça login para ver os perfis.</div>'; grid.innerHTML=''; return; }
+  var eu=perfis.find(function(p){return p.id===currentUser.id;})||currentUser;
+  eu=Object.assign({},eu,{avatar:currentUser.avatar,nome_exibicao:currentUser.nome_exibicao,trello_membro:currentUser.trello_membro!==undefined?currentUser.trello_membro:eu.trello_membro,banner:currentUser.banner!==undefined?currentUser.banner:eu.banner});
+  var membros=trelloMembrosUnicos();
+  var meusCards=cardsTrelloDoMembro(eu.trello_membro);
+  var opts='<option value="">'+(membros.length?'Selecione o seu nome no Trello…':(trelloLoaded?'Nenhum membro encontrado no Trello':'Carregando membros do Trello…'))+'</option>'
+    +membros.map(function(m){ return '<option value="'+escHtml(m.id)+'"'+(m.id===eu.trello_membro?' selected':'')+'>'+escHtml(m.nome)+'</option>'; }).join('');
+  var sw=PERFIL_BANNERS.map(function(b,i){ return '<button type="button" class="banner-swatch'+(String(i)===String(eu.banner||0)?' selected':'')+'" style="background:'+b[1]+'" title="'+b[0]+'" onclick="salvarPerfilExtra({banner:\''+i+'\'})"></button>'; }).join('');
+  var lista=meusCards.slice(0,6).map(function(c){
+    var link=c.url?' onclick="window.open(\''+escHtml(c.url)+'\',\'_blank\')"':'';
+    return '<div class="perfil-tarefa"'+link+'><span>'+escHtml(c.nome||'(sem título)')+'</span><span>'+(c.due?fmtDate(c.due)+diasPill(c.due):'<span style="color:var(--text-3)">sem prazo</span>')+'</span></div>';
+  }).join('');
+  meuEl.innerHTML='<div class="perfil-card">'
+    +'<div class="perfil-banner" style="background:'+bannerCss(eu.banner)+'"></div>'
+    +'<div class="perfil-av">'+renderAvatarSvg(parseAvatarConfig(eu.avatar),124)+'</div>'
+    +'<div class="perfil-main">'
+      +'<div>'
+        +'<div class="perfil-nome">'+escHtml(perfilNome(eu))+'<span class="perfil-voce">Você</span></div>'
+        +'<div class="perfil-user">@'+escHtml(eu.usuario||'')+(eu.trello_membro?' &middot; Trello: '+escHtml(nomeMembroTrello(eu.trello_membro)||'membro vinculado'):'')+'</div>'
+        +'<div class="perfil-kpi"><span class="n">'+(eu.trello_membro?meusCards.length:'–')+'</span><span class="l">'+(eu.trello_membro?'atividades atribuídas a você no Trello':'vincule seu nome do Trello ao lado para ver suas atividades')+'</span></div>'
+        +(lista?'<div class="perfil-tarefas">'+lista+'</div>':'')
+        +(meusCards.length>6?'<div style="font-size:11.5px;color:var(--text-3);margin-top:8px;">+ '+(meusCards.length-6)+' outras atividades</div>':'')
+      +'</div>'
+      +'<div class="perfil-edit">'
+        +'<div><label>Responsável no Trello</label><select class="filter-sel" onchange="salvarPerfilExtra({trello_membro:this.value})">'+opts+'</select></div>'
+        +'<div><label>Cor do banner</label><div class="banner-swatches">'+sw+'</div></div>'
+        +'<div><button class="btn btn-outline btn-sm" onclick="abrirPerfil()">Editar avatar e nome</button></div>'
+      +'</div>'
+    +'</div></div>';
+
+  var outros=perfis.filter(function(p){return p.id!==currentUser.id;});
+  setTxt('perfisCount', perfisCarregados?(outros.length+(outros.length===1?' pessoa':' pessoas')):'');
+  if(!perfisCarregados){ grid.innerHTML='<div class="perfis-vazio">Carregando perfis…</div>'; return; }
+  if(!outros.length){ grid.innerHTML='<div class="perfis-vazio">Nenhuma outra pessoa cadastrada ainda.</div>'; return; }
+  grid.innerHTML=outros.map(function(p){
+    var n=cardsTrelloDoMembro(p.trello_membro).length;
+    return '<div class="perfil-mini">'
+      +'<div class="perfil-banner" style="background:'+bannerCss(p.banner)+'"></div>'
+      +'<div class="perfil-mini-av">'+renderAvatarSvg(parseAvatarConfig(p.avatar),72)+'</div>'
+      +'<div class="perfil-mini-body">'
+        +'<div class="perfil-mini-nome">'+escHtml(perfilNome(p))+'</div>'
+        +'<div class="perfil-mini-trello">'+(p.trello_membro?'Trello: '+escHtml(nomeMembroTrello(p.trello_membro)||'membro vinculado'):'Sem vínculo com o Trello')+'</div>'
+        +'<div class="perfil-mini-kpi"><b>'+(p.trello_membro?n:'–')+'</b> atividades no Trello</div>'
+      +'</div></div>';
+  }).join('');
+}
+// Salva o vínculo com o Trello e/ou a cor do banner. A tela muda na hora
+// e o servidor é avisado em segundo plano; se falhar, volta ao que era.
+function salvarPerfilExtra(campos){
+  if(!currentUser) return;
+  var antes={trello_membro:currentUser.trello_membro,banner:currentUser.banner};
+  Object.assign(currentUser,campos);
+  var p=perfis.find(function(x){return x.id===currentUser.id;}); if(p) Object.assign(p,campos);
+  renderPerfis();
+  call('saveProfile',campos).then(function(res){
+    if(!res||!res.ok) throw new Error((res&&res.error)||'falha ao salvar');
+    showToast('Perfil atualizado.');
+  }).catch(function(e){
+    Object.assign(currentUser,antes); if(p) Object.assign(p,antes); renderPerfis();
+    showToast('Não foi possível salvar: '+e.message);
+  });
 }
 
 var chaveItems=[];
@@ -2228,7 +2456,8 @@ function showError(msg, showHelp){
 // ═══════════════════════════════════════════
 var pageMeta={
   notificacoes:{t:'Notificações (PUSH)',e:'Organização'},
-  agenda:      {t:'Agenda',e:'Organização'},
+  agenda:      {t:'Painel',e:'Organização'},
+  perfis:      {t:'Perfis',e:'Organização'},
   processos:   {t:'Processos',e:'Gestão'},
   cowork:      {t:'Cowork',e:'Ferramentas'},
   notas:       {t:'Bloco de Anotações',e:'Ferramentas',newLabel:'+ Nova Anotação'},
@@ -2258,12 +2487,13 @@ function showPage(id,btn){
     document.getElementById('topbarEyebrow').textContent=m.e;
     var topBtn=document.getElementById('btnNovoTopbar');
     if(m.newTipo){topBtn.style.display='';topBtn.textContent=m.newLabel;topBtn.onclick=function(){openModal(m.newTipo);};}
-    else if(['notificacoes','agenda','cowork','processos','notas','trello'].indexOf(id)>=0){topBtn.style.display='none';}
+    else if(['notificacoes','agenda','perfis','cowork','processos','notas','trello'].indexOf(id)>=0){topBtn.style.display='none';}
     else if(id==='notas'){topBtn.style.display='';topBtn.textContent='+ Nova Anotação';topBtn.onclick=function(){openNotaModal();};}
     else{topBtn.style.display='';topBtn.textContent='+ Novo Registro';topBtn.onclick=function(){openModal();};}
     if(id==='processos'){ showProcTab(currentProcTab); }
     if(id==='notificacoes'){ if(currentNotifTab==='prazos'){ renderPrazos(); } else { renderNotifications(); } }
     if(id==='agenda') renderAgenda();
+    if(id==='perfis') loadPerfis();
     if(id==='cowork'){ renderPrompts(); renderModelos(); loadCowork(); }
     if(id==='notas'){ renderNotas(); }
     if(id==='trello'){ loadTrello(); }
@@ -2516,6 +2746,7 @@ function montarCompromissosTrello(){
   }).sort(function(a,b){ return diasAgenda(a.due)-diasAgenda(b.due); });
 }
 function renderCompromissosTrello(){
+  try{ if(document.getElementById('page-perfis').classList.contains('active')) renderPerfis(); }catch(e){}
   var list=document.getElementById('agendaTrelloList'); if(!list) return;
   var itens=montarCompromissosTrello();
   setTxt('agendaTrello14',itens.length);
@@ -4233,6 +4464,7 @@ function updateSidebarUser(){
     else { av.innerHTML='?'; av.title=''; }
   }
   if(logoutBtn) logoutBtn.style.display=currentUser?'':'none';
+  atualizarAvatarPainel();
 }
 
 function showAuthError(msg){ var el=document.getElementById('authError'); if(el){el.style.display='';el.textContent=msg;} }
