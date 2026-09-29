@@ -784,6 +784,21 @@ button.agenda-stat{text-align:left;font:inherit;color:inherit;cursor:pointer;pos
 .notes-save-state{display:inline-flex;align-items:center;gap:6px;}
 .notes-save-state.saving{color:var(--amber);}
 .notes-save-state.saved{color:var(--green);}
+.workspace-badge{display:flex;align-items:center;gap:14px;padding:10px 20px 10px 10px;border-radius:20px;background:rgba(255,255,255,.05);border:1px solid var(--line);flex-shrink:0;}
+.workspace-badge-av{width:60px;height:60px;border-radius:50%;overflow:hidden;background:var(--surface-2);flex-shrink:0;box-shadow:0 0 0 3px var(--surface);}
+.workspace-badge-av svg{display:block;width:100%;height:100%;}
+.workspace-badge-info{display:flex;flex-direction:column;gap:5px;}
+.workspace-badge-label{font-size:11px;font-weight:700;letter-spacing:.03em;color:var(--text-2);white-space:nowrap;}
+.workspace-badge-counts{display:flex;gap:12px;flex-wrap:wrap;}
+.wb-count{font-size:11.5px;color:var(--text-3);white-space:nowrap;}
+.wb-count strong{color:var(--text);font-weight:700;}
+.nota-addons{display:flex;flex-direction:column;gap:10px;padding:14px 16px;border-radius:var(--r-lg,14px);background:rgba(255,255,255,.03);border:1px solid var(--line);}
+.nota-addon-title{font-size:10.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--text-3);}
+.nota-addon-row{display:flex;align-items:center;gap:9px;flex-wrap:wrap;}
+.nota-addon-row label{font-size:11.5px;font-weight:600;color:var(--text-2);width:88px;flex-shrink:0;}
+.nota-addon-row select,.nota-addon-row input{flex:1;min-width:140px;font-size:12px;padding:7px 11px;border-radius:10px;background:rgba(255,255,255,.045);border:1px solid var(--line);color:var(--text);outline:none;}
+.nota-addon-row select option{background:var(--surface-2);}
+.nota-addon-row select:focus,.nota-addon-row input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft);}
 
 /* ── CHAVES (COFRE PESSOAL, PRIVADO POR USUÁRIO) ────────────── */
 .chave-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px;}
@@ -1127,8 +1142,7 @@ button.agenda-stat{text-align:left;font:inherit;color:inherit;cursor:pointer;pos
     <button class="nav-item" onclick="showPage('processos',this)"><span class="ic"><svg class="nav-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18M5 7h14M5 7l3 6a3 3 0 0 1-6 0zM19 7l3 6a3 3 0 0 1-6 0zM7 21h10"/></svg></span><span>Processos</span></button>
     <div class="nav-section">Ferramentas</div>
     <button class="nav-item" onclick="showPage('cowork',this)"><span class="ic"><svg class="nav-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3-1.7 5.3L5 10l5.3 1.7L12 17l1.7-5.3L19 10l-5.3-1.7zM19 16l-.7 2.3L16 19l2.3.7L19 22l.7-2.3L22 19l-2.3-.7z"/></svg></span><span>Cowork</span></button>
-    <button class="nav-item" onclick="showPage('notas',this)"><span class="ic"><svg class="nav-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="m14 6 4 4M5 19l1.2-4.8L16.8 3.6a2.1 2.1 0 0 1 3 3L9.2 17.2z"/></svg></span><span>Anotações</span><span class="nav-badge zero" id="navNotasBadge">0</span></button>
-    <button class="nav-item" onclick="showPage('trello',this)"><span class="ic"><svg class="nav-svg" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2.5"/><rect x="6.3" y="7.3" width="5" height="9.4" rx="1.1"/><rect x="12.7" y="7.3" width="5" height="6" rx="1.1"/></svg></span><span>Trello</span></button>
+    <button class="nav-item" onclick="showPage('work',this)"><span class="ic"><svg class="nav-svg" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7.5" width="18" height="12.5" rx="2.3"/><path d="M8.5 7.5V6a2.5 2.5 0 0 1 2.5-2.5h2A2.5 2.5 0 0 1 15.5 6v1.5"/><path d="M3 12.5h18"/><path d="M10.5 12.5h3v1.8h-3z"/></svg></span><span>Work</span><span class="nav-badge zero" id="navNotasBadge">0</span></button>
   </nav>
   <div class="sidebar-footer">
     <span class="sf-dot"></span>
@@ -1213,24 +1227,81 @@ button.agenda-stat{text-align:left;font:inherit;color:inherit;cursor:pointer;pos
   <div class="perfis-grid" id="perfisGrid"></div>
 </div>
 
-<!-- ══ NOTAS ══ -->
-<div class="page" id="page-notas">
-  <div class="notes-head">
-    <div><div class="notes-title">Bloco de Anotações</div><p class="notes-sub">Registre ideias, providências e referências com salvamento automático.</p></div>
-    <div class="notes-controls">
-      <input class="search-input" id="notesSearch" placeholder="Buscar nota..." oninput="renderNotas()">
-      <select class="filter-sel" id="notesCategory" onchange="renderNotas()"><option value="">Todas as categorias</option></select>
-      <button class="btn btn-primary btn-sm" onclick="openNotaModal()">+ Nova anotação</button>
+<!-- ══ WORK (Work Space + Trello) ══ -->
+<div class="page" id="page-work">
+  <div class="cowork-tabs">
+    <button class="cw-tab active" onclick="showWorkTab('workspace',this)">Work Space</button>
+    <button class="cw-tab" onclick="showWorkTab('trello',this)">Trello</button>
+  </div>
+
+  <div class="cw-pane active" id="workpane-workspace">
+    <div class="notes-head">
+      <div><div class="notes-title">Work Space</div><p class="notes-sub">Seu espaço individual: anotações, prompts e modelos à mão, com salvamento automático.</p></div>
+      <div class="workspace-badge" title="Este é o seu espaço individual">
+        <span class="workspace-badge-av" id="workspaceAvatar"></span>
+        <div class="workspace-badge-info">
+          <span class="workspace-badge-label">Seu espaço</span>
+          <div class="workspace-badge-counts">
+            <span class="wb-count" title="Atividades em aberto no Trello"><strong id="workspaceCountTrello">0</strong> no Trello</span>
+            <span class="wb-count" title="Anotações no Work Space"><strong id="workspaceCountNotas">0</strong> no Work Space</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="notes-controls" style="justify-content:space-between;margin-top:2px;">
+      <div class="view-toggle" id="workEspacoToggle">
+        <button class="view-toggle-btn active" data-work-espaco="" onclick="filtrarNotaEspaco('')">Todos</button>
+        <button class="view-toggle-btn" data-work-espaco="Interno" onclick="filtrarNotaEspaco('Interno')">Internos</button>
+        <button class="view-toggle-btn" data-work-espaco="Externo" onclick="filtrarNotaEspaco('Externo')">Externo</button>
+      </div>
+      <div class="notes-controls" style="gap:9px;">
+        <input class="search-input" id="notesSearch" placeholder="Buscar nota..." oninput="renderNotas()">
+        <select class="filter-sel" id="notesCategory" onchange="renderNotas()"><option value="">Todas as categorias</option></select>
+        <button class="btn btn-primary btn-sm" onclick="openNotaModal()">+ Nova anotação</button>
+      </div>
+    </div>
+    <datalist id="notaCategorias"><option value="Geral"><option value="Contratos"><option value="Processos"><option value="Reuniões"><option value="Ideias"></datalist>
+    <div class="notes-unclaimed" id="notesUnclaimed" style="display:none;">
+      <div class="nu-head">Anotações sem dono <span id="nuCount">0</span></div>
+      <div class="nu-list" id="nuList"></div>
+    </div>
+    <div class="notes-layout">
+      <div class="notes-list" id="notesList"></div>
+      <div class="notes-editor" id="notesEditor"><div class="note-empty">Selecione uma nota ou crie uma nova anotação.</div></div>
     </div>
   </div>
-  <datalist id="notaCategorias"><option value="Geral"><option value="Contratos"><option value="Processos"><option value="Reuniões"><option value="Ideias"></datalist>
-  <div class="notes-unclaimed" id="notesUnclaimed" style="display:none;">
-    <div class="nu-head">Anotações sem dono <span id="nuCount">0</span></div>
-    <div class="nu-list" id="nuList"></div>
-  </div>
-  <div class="notes-layout">
-    <div class="notes-list" id="notesList"></div>
-    <div class="notes-editor" id="notesEditor"><div class="note-empty">Selecione uma nota ou crie uma nova anotação.</div></div>
+
+  <div class="cw-pane" id="workpane-trello">
+    <div class="notes-head">
+      <div><div class="notes-title">Trello</div><p class="notes-sub">Todos os quadros do Trello num só lugar. Clique em um card para editar nome, data e lista, ou use "+ Novo card" em qualquer coluna.</p></div>
+      <button class="btn btn-outline btn-sm" id="trelloRefreshBtn" onclick="loadTrello(true)">Atualizar</button>
+    </div>
+    <div id="trelloStatus"></div>
+    <div class="trello-people" id="trelloPeople" style="display:none;"></div>
+    <div class="panel" id="trelloPanel" style="display:none;">
+      <div class="panel-h">
+        <span class="t">Cards do Trello</span>
+        <input class="search-input" placeholder="Buscar card, quadro, lista…" id="searchTrello" oninput="renderTrelloView()">
+        <select class="filter-sel" id="respTrello" onchange="renderTrelloView()"><option value="">Todos os responsáveis</option></select>
+        <select class="filter-sel" id="boardTrello" onchange="renderTrelloView()"><option value="">Todos os quadros</option></select>
+        <select class="filter-sel" id="statusTrello" onchange="renderTrelloView()">
+          <option value="">Todos os status</option>
+          <option value="concluido">Concluídos</option>
+          <option value="pendente">Pendentes</option>
+        </select>
+        <div class="view-toggle" id="trelloViewToggle">
+          <button class="view-toggle-btn active" data-trello-view="lista" onclick="toggleTrelloView('lista')" title="Ver em lista">Lista</button>
+          <button class="view-toggle-btn" data-trello-view="funil" onclick="toggleTrelloView('funil')" title="Ver em formato de funil">Funil</button>
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="abrirNovoTrelloCardGenerico()">+ Novo Card</button>
+      </div>
+      <div class="table-wrap" id="trelloTableWrap"><table>
+        <thead><tr><th>Card</th><th>Quadro</th><th>Lista</th><th>Responsável</th><th>Vencimento</th><th>Concluído</th><th></th></tr></thead>
+        <tbody id="tbodyTrello"></tbody>
+      </table></div>
+      <div class="cowork-tabs" id="trelloTabs" style="display:none;margin:0 20px 14px;"></div>
+      <div class="board" id="trelloBoard" style="display:none;padding:0 20px 20px;"></div>
+    </div>
   </div>
 </div>
 
@@ -1364,6 +1435,7 @@ button.agenda-stat{text-align:left;font:inherit;color:inherit;cursor:pointer;pos
   <div class="cowork-tabs">
     <button class="cw-tab active" onclick="showCwTab('prompts',this)">Prompts</button>
     <button class="cw-tab" onclick="showCwTab('modelos',this)">Modelos</button>
+    <button class="cw-tab" onclick="showCwTab('memorias',this)">Memórias</button>
     <button class="cw-tab" onclick="showCwTab('chaves',this)">Chaves</button>
     <button class="cw-tab" onclick="showCwTab('sites',this)">Sites</button>
   </div>
@@ -1382,6 +1454,14 @@ button.agenda-stat{text-align:left;font:inherit;color:inherit;cursor:pointer;pos
       <button class="btn btn-primary btn-sm" onclick="openModeloModal()">+ Novo Modelo</button>
     </div>
     <div class="modelo-grid" id="modeloGrid"></div>
+  </div>
+
+  <div class="cw-pane" id="cwpane-memorias">
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:14px;">
+      <div><div style="font-size:26px;font-weight:600;letter-spacing:-.035em;">Memórias</div><div style="font-size:13.5px;color:var(--text-2);margin-top:5px;">Nome e link para materiais de referência, usáveis direto nas anotações do Work Space.</div></div>
+      <button class="btn btn-primary btn-sm" onclick="openMemoriaModal()">+ Nova Memória</button>
+    </div>
+    <div class="modelo-grid" id="memoriaGrid"></div>
   </div>
 
   <div class="cw-pane" id="cwpane-chaves">
@@ -1406,39 +1486,6 @@ button.agenda-stat{text-align:left;font:inherit;color:inherit;cursor:pointer;pos
   </div>
 </div>
 
-<!-- ══ TRELLO (somente leitura) ══ -->
-<div class="page" id="page-trello">
-  <div class="notes-head">
-    <div><div class="notes-title">Trello</div><p class="notes-sub">Todos os quadros do Trello num só lugar. Clique em um card para editar nome, data e lista, ou use "+ Novo card" em qualquer coluna.</p></div>
-    <button class="btn btn-outline btn-sm" id="trelloRefreshBtn" onclick="loadTrello(true)">Atualizar</button>
-  </div>
-  <div id="trelloStatus"></div>
-  <div class="trello-people" id="trelloPeople" style="display:none;"></div>
-  <div class="panel" id="trelloPanel" style="display:none;">
-    <div class="panel-h">
-      <span class="t">Cards do Trello</span>
-      <input class="search-input" placeholder="Buscar card, quadro, lista…" id="searchTrello" oninput="renderTrelloView()">
-      <select class="filter-sel" id="respTrello" onchange="renderTrelloView()"><option value="">Todos os responsáveis</option></select>
-      <select class="filter-sel" id="boardTrello" onchange="renderTrelloView()"><option value="">Todos os quadros</option></select>
-      <select class="filter-sel" id="statusTrello" onchange="renderTrelloView()">
-        <option value="">Todos os status</option>
-        <option value="concluido">Concluídos</option>
-        <option value="pendente">Pendentes</option>
-      </select>
-      <div class="view-toggle" id="trelloViewToggle">
-        <button class="view-toggle-btn active" data-trello-view="lista" onclick="toggleTrelloView('lista')" title="Ver em lista">Lista</button>
-        <button class="view-toggle-btn" data-trello-view="funil" onclick="toggleTrelloView('funil')" title="Ver em formato de funil">Funil</button>
-      </div>
-      <button class="btn btn-primary btn-sm" onclick="abrirNovoTrelloCardGenerico()">+ Novo Card</button>
-    </div>
-    <div class="table-wrap" id="trelloTableWrap"><table>
-      <thead><tr><th>Card</th><th>Quadro</th><th>Lista</th><th>Responsável</th><th>Vencimento</th><th>Concluído</th><th></th></tr></thead>
-      <tbody id="tbodyTrello"></tbody>
-    </table></div>
-    <div class="cowork-tabs" id="trelloTabs" style="display:none;margin:0 20px 14px;"></div>
-    <div class="board" id="trelloBoard" style="display:none;padding:0 20px 20px;"></div>
-  </div>
-</div>
 
   </div><!-- /content -->
 </div><!-- /main -->
@@ -1584,6 +1631,24 @@ button.agenda-stat{text-align:left;font:inherit;color:inherit;cursor:pointer;pos
     <div class="modal-actions">
       <button class="btn btn-outline" onclick="closeModeloModal()">Cancelar</button>
       <button class="btn btn-primary" onclick="saveModelo()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL MEMÓRIA -->
+<div class="modal-overlay" id="memoriaModalOverlay">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title" id="memoriaModalTitle">Nova Memória</span>
+      <button class="modal-close" onclick="closeMemoriaModal()">&#10005;</button>
+    </div>
+    <div class="form-grid">
+      <div class="field span2"><label>Nome da Memória</label><input id="memName" placeholder="Ex: Jurisprudência TJMA sobre ISSQN"></div>
+      <div class="field span2"><label>URL <span style="font-weight:400;color:var(--text-3)">(link público)</span></label><input id="memUrl" placeholder="https://..."></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-outline" onclick="closeMemoriaModal()">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveMemoria()">Salvar</button>
     </div>
   </div>
 </div>
@@ -1753,7 +1818,7 @@ button.agenda-stat{text-align:left;font:inherit;color:inherit;cursor:pointer;pos
 // URL do Apps Script, pode deixar como está: essa URL não é usada nesse
 // caso. Veja a função call(), logo abaixo, pra entender como isso é usado.
 // ═══════════════════════════════════════════
-var API_URL = 'https://script.google.com/macros/s/AKfycbweQyYa_XT6quvafxVi35yXxUFCksPR4uIq-6Hs-OmD17xgk2DRZhC32qcshZEi8WrSqQ/exec';
+var API_URL = 'https://script.google.com/macros/s/AKfycby3UIrd4Y2gE6JvMuAI395POT7S4O8MmubAUMSrdESTO5AuExN1tw9HePdv_UJ_YPn7qA/exec';
 
 // ═══════════════════════════════════════════
 // CONSTANTES
@@ -1769,13 +1834,14 @@ var state = { contratos:[], judicial:[], paf:[], notificacoes:[] };
 var editingId=null, editingTipo=null, charts={};
 var judicialRelacionadosAtual=[];
 var eventoAtividadesAtual=[];
-var cwPrompts=[], cwModelos=[], editingPromptIdx=null, editingModeloIdx=null;
+var cwPrompts=[], cwModelos=[], cwMemorias=[], editingPromptIdx=null, editingModeloIdx=null;
 var iaHistory=[];
 var notifVisiveis=[];
 var notas=[];
 var editingNotaId=null;
 var notaDraft=false;
 var notaAutosaveTimer=null;
+var notaEspacoFiltro='';
 var notasSemDono=[];
 var currentUser=null;
 
@@ -2256,6 +2322,26 @@ function atualizarAvatarPainel(){
     var nome=currentUser?(currentUser.nome_exibicao||currentUser.usuario||''):'';
     ola.textContent=nome?('Olá, '+String(nome).split(' ')[0]+'!'):'Olá!';
   }
+  var wsAv=document.getElementById('workspaceAvatar');
+  if(wsAv) wsAv.innerHTML=currentUser?renderAvatarSvg(parseAvatarConfig(currentUser.avatar),60):'';
+  atualizarContadoresWorkspace();
+}
+
+// Atualiza os contadores ao lado do avatar no Work Space: quantas atividades
+// em aberto no Trello (do responsável logado) e quantas anotações no
+// Work Space. Busca o Trello em segundo plano se ainda não tiver sido
+// carregado, sem travar a exibição do contador de notas.
+function atualizarContadoresWorkspace(){
+  var elNotas=document.getElementById('workspaceCountNotas');
+  if(elNotas) elNotas.textContent=(notas||[]).length;
+  var elTrello=document.getElementById('workspaceCountTrello');
+  if(!elTrello) return;
+  if(!currentUser || !currentUser.trello_membro){ elTrello.textContent='0'; return; }
+  if(trelloLoaded){ elTrello.textContent=cardsTrelloDoMembro(currentUser.trello_membro).length; return; }
+  fetchTrelloData(false).then(function(){
+    var el=document.getElementById('workspaceCountTrello');
+    if(el && currentUser && currentUser.trello_membro) el.textContent=cardsTrelloDoMembro(currentUser.trello_membro).length;
+  }).catch(function(){});
 }
 function togglePainelLista(qual){
   painelListaAtiva=(painelListaAtiva===qual)?null:qual;
@@ -2391,12 +2477,12 @@ var editingOficioId=null;
 // Cowork agora vem do backend (planilha). localStorage não funciona no iframe do Apps Script.
 function loadCowork(){
   return call('getCowork').then(function(res){
-    if(res && res.ok && res.data){ cwPrompts=Array.isArray(res.data.prompts)?res.data.prompts:[]; cwModelos=Array.isArray(res.data.modelos)?res.data.modelos:[]; }
-    else { cwPrompts=[]; cwModelos=[]; }
-    renderPrompts(); renderModelos();
+    if(res && res.ok && res.data){ cwPrompts=Array.isArray(res.data.prompts)?res.data.prompts:[]; cwModelos=Array.isArray(res.data.modelos)?res.data.modelos:[]; cwMemorias=Array.isArray(res.data.memorias)?res.data.memorias:[]; }
+    else { cwPrompts=[]; cwModelos=[]; cwMemorias=[]; }
+    renderPrompts(); renderModelos(); renderMemorias();
   }).catch(function(e){
-    cwPrompts=[]; cwModelos=[];
-    renderPrompts(); renderModelos();
+    cwPrompts=[]; cwModelos=[]; cwMemorias=[];
+    renderPrompts(); renderModelos(); renderMemorias();
     console.error('loadCowork falhou:', e);
   });
 }
@@ -2512,8 +2598,7 @@ var pageMeta={
   perfis:      {t:'Perfis',e:'Organização'},
   processos:   {t:'Processos',e:'Gestão'},
   cowork:      {t:'Cowork',e:'Ferramentas'},
-  notas:       {t:'Bloco de Anotações',e:'Ferramentas',newLabel:'+ Nova Anotação'},
-  trello:      {t:'Trello',e:'Ferramentas'}
+  work:        {t:'Work',e:'Ferramentas'}
 };
 
 // Troca de página com uma transição suave (a página atual esmaece e sobe
@@ -2539,16 +2624,14 @@ function showPage(id,btn){
     document.getElementById('topbarEyebrow').textContent=m.e;
     var topBtn=document.getElementById('btnNovoTopbar');
     if(m.newTipo){topBtn.style.display='';topBtn.textContent=m.newLabel;topBtn.onclick=function(){openModal(m.newTipo);};}
-    else if(['notificacoes','agenda','perfis','cowork','processos','notas','trello'].indexOf(id)>=0){topBtn.style.display='none';}
-    else if(id==='notas'){topBtn.style.display='';topBtn.textContent='+ Nova Anotação';topBtn.onclick=function(){openNotaModal();};}
+    else if(['notificacoes','agenda','perfis','cowork','processos','work'].indexOf(id)>=0){topBtn.style.display='none';}
     else{topBtn.style.display='';topBtn.textContent='+ Novo Registro';topBtn.onclick=function(){openModal();};}
     if(id==='processos'){ showProcTab(currentProcTab); }
     if(id==='notificacoes'){ if(currentNotifTab==='prazos'){ renderPrazos(); } else { renderNotifications(); } }
     if(id==='agenda') renderAgenda();
     if(id==='perfis') loadPerfis();
-    if(id==='cowork'){ renderPrompts(); renderModelos(); loadCowork(); }
-    if(id==='notas'){ renderNotas(); }
-    if(id==='trello'){ loadTrello(); }
+    if(id==='cowork'){ renderPrompts(); renderModelos(); renderMemorias(); loadCowork(); }
+    if(id==='work'){ showWorkTab(currentWorkTab); }
     var csvBtn=document.getElementById('btnExportarCSV');
     if(csvBtn) csvBtn.style.display=(id==='processos')?'':'none';
     setTimeout(initScrollAnimations,60);
@@ -2614,6 +2697,23 @@ function showCwTab(tab,btn){
   trocarSubAba(painelAtual,function(){
     document.querySelectorAll('#page-cowork .cw-pane').forEach(function(p){p.classList.remove('active','leaving','tab-enter-down');});
     if(painelNovo) painelNovo.classList.add('active','tab-enter-down');
+  });
+}
+
+var currentWorkTab='workspace';
+function showWorkTab(tab,btn){
+  var painelAtual=document.querySelector('#page-work .cw-pane.active');
+  var painelNovo=document.getElementById('workpane-'+tab);
+  if(painelAtual===painelNovo) painelAtual=null;
+  document.querySelectorAll('#page-work .cw-tab').forEach(function(b){b.classList.remove('active');});
+  if(btn) btn.classList.add('active');
+  else { document.querySelectorAll('#page-work .cw-tab').forEach(function(b){ if((b.getAttribute('onclick')||'').indexOf("showWorkTab('"+tab+"'")>=0)b.classList.add('active'); }); }
+  trocarSubAba(painelAtual,function(){
+    document.querySelectorAll('#page-work .cw-pane').forEach(function(p){p.classList.remove('active','leaving','tab-enter-down');});
+    if(painelNovo) painelNovo.classList.add('active','tab-enter-down');
+    currentWorkTab=tab;
+    if(tab==='workspace'){ renderNotas(); }
+    else if(tab==='trello'){ loadTrello(); }
   });
 }
 
@@ -3273,6 +3373,55 @@ function deleteModelo(idx){
   var m=cwModelos[idx]; if(!m)return;
   if(!confirm('Excluir este modelo?'))return;
   excluirOtimista({ id:m.id, action:'deleteCowork', payload:{kind:'modelo',id:m.id}, msg:'Modelo excluído.', get:function(){return cwModelos;}, set:function(v){cwModelos=v;}, render:renderModelos });
+}
+
+// ═══════════════════════════════════════════
+// COWORK — MEMÓRIAS
+// ═══════════════════════════════════════════
+function renderMemorias(){
+  var grid=document.getElementById('memoriaGrid'); if(!grid)return;
+  if(!cwMemorias.length){
+    grid.innerHTML='<div style="background:var(--surface);border:1px dashed var(--line-2);border-radius:var(--r-lg);padding:48px;text-align:center;color:var(--text-3);font-size:13px;grid-column:1/-1">Nenhuma memória salva ainda.<br>Clique em <strong>+ Nova Memória</strong> para criar a primeira.</div>';
+    return;
+  }
+  grid.innerHTML=cwMemorias.map(function(m,i){
+    var hasUrl=m.url&&m.url.trim();
+    var openBtn=hasUrl?'<a href="'+escHtml(m.url)+'" target="_blank" class="btn btn-teal btn-sm" rel="noopener" title="Abrir na web">Abrir</a>':'<span style="font-size:12px;color:var(--text-3)">Sem link</span>';
+    return'<div class="modelo-card">'+
+      '<div class="mc-name">'+escHtml(m.name)+'</div>'+
+      '<div style="display:flex;flex-direction:column;gap:6px;margin-top:2px;">'+
+        '<div class="mc-url-row"><span style="font-size:9.5px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:.1em;width:34px;flex-shrink:0;">URL</span><input value="'+escHtml(m.url||'')+'" placeholder="https://…" onchange="updateMemoriaField('+i+',\'url\',this.value)" title="URL da memória"></div>'+
+      '</div>'+
+      '<div class="mc-footer">'+openBtn+'<button class="btn btn-ghost btn-sm" onclick="openMemoriaModal('+i+')">Editar</button><button class="btn btn-danger btn-sm" onclick="deleteMemoria('+i+')" style="margin-left:auto">Excluir</button></div>'+
+    '</div>';
+  }).join('');
+}
+function updateMemoriaField(idx,field,val){
+  var m=cwMemorias[idx]; if(!m)return;
+  m[field]=val.trim();
+  call('saveCowork',{kind:'memoria',id:m.id,name:m.name,url:m.url||''}).then(function(res){ if(res.ok){loadCowork();} });
+}
+var editingMemoriaIdx2=null;
+function openMemoriaModal(idx){
+  editingMemoriaIdx2=(idx!=null)?idx:null;
+  document.getElementById('memoriaModalTitle').textContent=(idx!=null)?'Editar Memória':'Nova Memória';
+  if(idx!=null&&cwMemorias[idx]){document.getElementById('memName').value=cwMemorias[idx].name;document.getElementById('memUrl').value=cwMemorias[idx].url||'';}
+  else{document.getElementById('memName').value='';document.getElementById('memUrl').value='';}
+  document.getElementById('memoriaModalOverlay').classList.add('open');
+}
+function closeMemoriaModal(){document.getElementById('memoriaModalOverlay').classList.remove('open');}
+function saveMemoria(){
+  var name=document.getElementById('memName').value.trim();
+  if(!name){showToast('Informe o nome da memória.');return;}
+  var payload={kind:'memoria',name:name,url:document.getElementById('memUrl').value.trim()};
+  if(editingMemoriaIdx2!=null && cwMemorias[editingMemoriaIdx2]) payload.id=cwMemorias[editingMemoriaIdx2].id;
+  closeMemoriaModal();
+  call('saveCowork',payload).then(function(res){ if(res.ok){showToast('Memória salva.');loadCowork();} else showToast('Erro: '+(res.error||'')); }).catch(function(e){showToast('Erro: '+e.message);});
+}
+function deleteMemoria(idx){
+  var m=cwMemorias[idx]; if(!m)return;
+  if(!confirm('Excluir esta memória?'))return;
+  excluirOtimista({ id:m.id, action:'deleteCowork', payload:{kind:'memoria',id:m.id}, msg:'Memória excluída.', get:function(){return cwMemorias;}, set:function(v){cwMemorias=v;}, render:function(){renderMemorias();renderNotas();} });
 }
 
 // ═══════════════════════════════════════════
@@ -4021,6 +4170,7 @@ function fetchTrelloData(forcar){
 function applyTrelloPageResult(res){
   var statusEl=document.getElementById('trelloStatus');
   var panel=document.getElementById('trelloPanel');
+  atualizarContadoresWorkspace();
   if(!res || !res.ok){
     statusEl.innerHTML='<div class="trello-status trello-status-erro">'+escHtml((res&&res.error)||'Não foi possível carregar o Trello.')+'</div>';
     panel.style.display='none';
@@ -4538,8 +4688,8 @@ function sincronizarTudo(){
     var trelloRes=resultados[resultados.length-1];
     rebuildTrelloFilters();
     renderCompromissosTrello();
-    var trelloPage=document.getElementById('page-trello');
-    if(trelloPage && trelloPage.classList.contains('active')) applyTrelloPageResult(trelloRes);
+    var trelloPane=document.getElementById('workpane-trello');
+    if(trelloPane && trelloPane.classList.contains('active')) applyTrelloPageResult(trelloRes);
     if(btn){ btn.disabled=false; btn.classList.remove('is-syncing'); }
     showToast('Dados sincronizados.');
   }).catch(function(){
@@ -4642,9 +4792,10 @@ function notaDueLabel(s){return s?'Entrega '+formatNotaDate(s):'Sem data de entr
 function renderNotas(){
   var editor=document.getElementById('notesEditor');
   var keepEditorFocus=editor && editor.contains(document.activeElement);
+  atualizarContadoresWorkspace();
   renderNotasList();
   if(keepEditorFocus)return;
-  if(notaDraft){renderNotaEditor({id:'',titulo:'',conteudo:'',categoria:'Geral',favorita:false,data_entrega:''},true);return;}
+  if(notaDraft){renderNotaEditor({id:'',titulo:'',conteudo:'',categoria:'Geral',favorita:false,data_entrega:'',tipo_espaco:'Interno',prompt_id:'',modelo_ids:'',link_trabalho:'',memoria_id:''},true);return;}
   var active=notas.find(function(n){return n.id===editingNotaId;});
   if(active)renderNotaEditor(active,false);
   else if(editor)editor.innerHTML='<div class="note-empty">Selecione uma nota para visualizar e editar ao lado.<br><span style="font-size:12px">Uma nova nota só será criada depois que você clicar em Salvar.</span></div>';
@@ -4657,7 +4808,7 @@ function renderNotasList(){
   var categories={};notas.forEach(function(n){categories[n.categoria||'Geral']=true;});
   var sel=document.getElementById('notesCategory');
   if(sel){var old=sel.value;sel.innerHTML='<option value="">Todas as categorias</option>'+Object.keys(categories).sort().map(function(c){return '<option value="'+escHtml(c)+'">'+escHtml(c)+'</option>';}).join('');sel.value=cat||old||'';}
-  var filtered=notas.filter(function(n){var hay=(n.titulo+' '+n.conteudo+' '+n.categoria+' '+n.data_entrega).toLowerCase();return (!q||hay.indexOf(q.toLowerCase())>=0)&&(!cat||n.categoria===cat);});
+  var filtered=notas.filter(function(n){var hay=(n.titulo+' '+n.conteudo+' '+n.categoria+' '+n.data_entrega).toLowerCase();return (!q||hay.indexOf(q.toLowerCase())>=0)&&(!cat||n.categoria===cat)&&(!notaEspacoFiltro||(n.tipo_espaco||'Interno')===notaEspacoFiltro);});
   if(!filtered.length){list.innerHTML='<div class="note-empty">Nenhuma nota encontrada.<br><span style="font-size:12px">Crie uma anotação usando o botão acima.</span></div>';return;}
   list.innerHTML=filtered.map(function(n){
     var title=n.titulo||'Sem título',preview=String(n.conteudo||'').replace(/\s+/g,' ').trim()||'Sem conteúdo';
@@ -4670,12 +4821,76 @@ function selectNota(id){
   notaDraft=false;editingNotaId=id;renderNotas();
 }
 
+// Filtro Todos/Internos/Externo do Work Space (chips acima da lista de notas).
+function filtrarNotaEspaco(v){
+  notaEspacoFiltro=v||'';
+  document.querySelectorAll('#workEspacoToggle .view-toggle-btn').forEach(function(b){b.classList.toggle('active', b.getAttribute('data-work-espaco')===notaEspacoFiltro);});
+  renderNotasList();
+}
+
+// Extrai até 2 ids de modelo do campo modelo_ids (string separada por vírgula) —
+// hoje só o primeiro slot (Modelo 1) é usado no editor.
+function notaModeloIds(n){
+  return String((n&&n.modelo_ids)||'').split(',').map(function(s){return s.trim();}).filter(function(s){return s;});
+}
+
 function renderNotaEditor(n,isDraft){
   var editor=document.getElementById('notesEditor');if(!editor)return;
   var due=n.data_entrega||'';
+  var tipoEsp=n.tipo_espaco||'Interno';
+  var modIds=notaModeloIds(n);
+  var promptOptions='<option value="">Nenhum</option>'+cwPrompts.map(function(p){return '<option value="'+escHtml(p.id)+'"'+(n.prompt_id===p.id?' selected':'')+'>'+escHtml(p.title)+'</option>';}).join('');
+  var modeloOptions='<option value="">Nenhum</option>'+cwModelos.map(function(m){return '<option value="'+escHtml(m.id)+'"'+((modIds[0]||'')===m.id?' selected':'')+'>'+escHtml(m.name)+'</option>';}).join('');
+  var memoriaOptions='<option value="">Nenhuma</option>'+cwMemorias.map(function(m){return '<option value="'+escHtml(m.id)+'"'+(n.memoria_id===m.id?' selected':'')+'>'+escHtml(m.name)+'</option>';}).join('');
   editor.innerHTML='<div class="notes-editor-head"><input id="inlineNotaTitulo" value="'+escHtml(n.titulo||'')+'" placeholder="Título da anotação" oninput="scheduleNotaAutosave()"><label class="note-star" title="Favorita"><input id="inlineNotaFavorita" type="checkbox" '+(notaIsFavorite(n)?'checked':'')+' onchange="scheduleNotaAutosave()"> &#9733;</label></div>'+
-    '<div class="notes-editor-body"><div class="notes-inline-meta"><label>Categoria <input id="inlineNotaCategoria" list="notaCategorias" value="'+escHtml(n.categoria||'Geral')+'" oninput="scheduleNotaAutosave()"></label><label>Data de entrega <input id="inlineNotaEntrega" type="date" value="'+escHtml(due)+'" onchange="scheduleNotaAutosave()"></label></div><textarea id="inlineNotaConteudo" placeholder="Escreva o conteúdo da anotação..." oninput="scheduleNotaAutosave()">'+escHtml(n.conteudo||'')+'</textarea></div>'+
+    '<div class="notes-editor-body"><div class="notes-inline-meta"><label>Categoria <input id="inlineNotaCategoria" list="notaCategorias" value="'+escHtml(n.categoria||'Geral')+'" oninput="scheduleNotaAutosave()"></label><label>Data de entrega <input id="inlineNotaEntrega" type="date" value="'+escHtml(due)+'" onchange="scheduleNotaAutosave()"></label><label>Tipo <select id="inlineNotaTipoEspaco" onchange="scheduleNotaAutosave()"><option value="Interno"'+(tipoEsp==='Interno'?' selected':'')+'>Interno</option><option value="Externo"'+(tipoEsp==='Externo'?' selected':'')+'>Externo</option></select></label></div>'+
+    '<textarea id="inlineNotaConteudo" placeholder="Escreva o conteúdo da anotação..." oninput="scheduleNotaAutosave()">'+escHtml(n.conteudo||'')+'</textarea>'+
+    '<div class="nota-addons"><div class="nota-addon-title">Adicionadores</div>'+
+      '<div class="nota-addon-row"><label>Prompt</label><select id="inlineNotaPrompt" onchange="scheduleNotaAutosave()">'+promptOptions+'</select><button type="button" class="btn btn-outline btn-sm" onclick="copiarNotaPrompt()">Copiar Prompt</button></div>'+
+      '<div class="nota-addon-row"><label>Modelo</label><select id="inlineNotaModelo1" onchange="scheduleNotaAutosave()">'+modeloOptions+'</select><button type="button" class="btn btn-outline btn-sm" onclick="abrirNotaModelo()">Abrir</button></div>'+
+      '<div class="nota-addon-row"><label>Memória</label><select id="inlineNotaMemoria" onchange="scheduleNotaAutosave()">'+memoriaOptions+'</select><button type="button" class="btn btn-outline btn-sm" onclick="abrirNotaMemoria()">Abrir</button></div>'+
+      '<div class="nota-addon-row"><label>Link de trabalho</label><input id="inlineNotaLink" type="url" placeholder="URL da pasta onde está o documento" value="'+escHtml(n.link_trabalho||'')+'" oninput="scheduleNotaAutosave()"><button type="button" class="btn btn-outline btn-sm" onclick="abrirLinkTrabalho()">Abrir</button></div>'+
+    '</div></div>'+
     '<div class="notes-editor-foot"><span id="inlineNotaState" class="notes-save-state '+(isDraft?'':'saved')+'">'+(isDraft?'Rascunho não salvo':'Salva')+'</span><span class="spacer"></span><span id="inlineNotaDueLabel">'+escHtml(notaDueLabel(n.data_entrega))+'</span>'+(isDraft?'':'<button class="btn btn-danger btn-sm" onclick="deleteNota()">Excluir</button>')+'<button class="btn btn-primary btn-sm" onclick="saveNota()">Salvar</button></div>';
+}
+
+// Copia o corpo do prompt selecionado no adicionador da nota atual.
+function copiarNotaPrompt(){
+  var sel=document.getElementById('inlineNotaPrompt');
+  var id=sel&&sel.value;
+  if(!id){showToast('Selecione um prompt para copiar.');return;}
+  var p=cwPrompts.find(function(x){return x.id===id;});
+  if(!p){showToast('Prompt não encontrado.');return;}
+  navigator.clipboard.writeText(p.body).then(function(){showToast('Prompt copiado.');}).catch(function(){showToast('Falha ao copiar, tente pelo teclado.');});
+}
+
+// Abre em nova aba o link do modelo selecionado no adicionador.
+function abrirNotaModelo(){
+  var sel=document.getElementById('inlineNotaModelo1');
+  var id=sel&&sel.value;
+  if(!id){showToast('Selecione um modelo para abrir.');return;}
+  var m=cwModelos.find(function(x){return x.id===id;});
+  if(!m||!m.url||!m.url.trim()){showToast('Este modelo não tem link cadastrado.');return;}
+  window.open(m.url,'_blank','noopener');
+}
+
+// Abre em nova aba o link da memória selecionada no adicionador.
+function abrirNotaMemoria(){
+  var sel=document.getElementById('inlineNotaMemoria');
+  var id=sel&&sel.value;
+  if(!id){showToast('Selecione uma memória para abrir.');return;}
+  var m=cwMemorias.find(function(x){return x.id===id;});
+  if(!m||!m.url||!m.url.trim()){showToast('Esta memória não tem link cadastrado.');return;}
+  window.open(m.url,'_blank','noopener');
+}
+
+// Abre em nova aba o link de trabalho (pasta do documento) da nota atual.
+function abrirLinkTrabalho(){
+  var inp=document.getElementById('inlineNotaLink');
+  var url=(inp&&inp.value||'').trim();
+  if(!url){showToast('Informe o link da pasta de trabalho.');return;}
+  if(!/^https?:\/\//i.test(url)) url='https://'+url;
+  window.open(url,'_blank','noopener');
 }
 
 function openNotaModal(id){
@@ -4688,7 +4903,9 @@ function openNotaModal(id){
 function closeNotaModal(){notaDraft=false;editingNotaId=null;renderNotas();}
 function setNotaSaveState(text,cls){var el=document.getElementById('inlineNotaState');if(el){el.textContent=text;el.className='notes-save-state '+(cls||'');}}
 function buildNotaPayload(){
-  return {id:notaDraft?'':editingNotaId||'',titulo:(document.getElementById('inlineNotaTitulo')||{}).value||'',conteudo:(document.getElementById('inlineNotaConteudo')||{}).value||'',categoria:(document.getElementById('inlineNotaCategoria')||{}).value||'Geral',favorita:!!((document.getElementById('inlineNotaFavorita')||{}).checked),data_entrega:(document.getElementById('inlineNotaEntrega')||{}).value||''};
+  var m1=(document.getElementById('inlineNotaModelo1')||{}).value||'';
+  var modeloIds=[m1].filter(function(x){return x;});
+  return {id:notaDraft?'':editingNotaId||'',titulo:(document.getElementById('inlineNotaTitulo')||{}).value||'',conteudo:(document.getElementById('inlineNotaConteudo')||{}).value||'',categoria:(document.getElementById('inlineNotaCategoria')||{}).value||'Geral',favorita:!!((document.getElementById('inlineNotaFavorita')||{}).checked),data_entrega:(document.getElementById('inlineNotaEntrega')||{}).value||'',tipo_espaco:(document.getElementById('inlineNotaTipoEspaco')||{}).value||'Interno',prompt_id:(document.getElementById('inlineNotaPrompt')||{}).value||'',modelo_ids:modeloIds.join(','),link_trabalho:(document.getElementById('inlineNotaLink')||{}).value||'',memoria_id:(document.getElementById('inlineNotaMemoria')||{}).value||''};
 }
 
 function scheduleNotaAutosave(){
@@ -4725,7 +4942,7 @@ function saveNota(silent){
 
 function toggleNotaFavorite(id){
   var n=notas.find(function(x){return x.id===id;});if(!n)return;
-  call('saveNota',{id:n.id,titulo:n.titulo,conteudo:n.conteudo,categoria:n.categoria,favorita:!notaIsFavorite(n),data_entrega:n.data_entrega||''}).then(function(res){
+  call('saveNota',{id:n.id,titulo:n.titulo,conteudo:n.conteudo,categoria:n.categoria,favorita:!notaIsFavorite(n),data_entrega:n.data_entrega||'',tipo_espaco:n.tipo_espaco||'Interno',prompt_id:n.prompt_id||'',modelo_ids:n.modelo_ids||'',link_trabalho:n.link_trabalho||'',memoria_id:n.memoria_id||''}).then(function(res){
     if(res&&res.ok&&res.nota){var i=notas.findIndex(function(x){return x.id===id;});notas[i]=res.nota;renderNotasList();if(editingNotaId===id)renderNotaEditor(res.nota,false);}
   }).catch(function(e){showToast(e.message||'Erro ao atualizar favorito.');});
 }
