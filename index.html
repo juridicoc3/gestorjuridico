@@ -860,6 +860,120 @@ button.agenda-stat{text-align:left;font:inherit;color:inherit;cursor:pointer;pos
 .evento-footer{display:flex;gap:8px;align-items:center;padding:14px 17px 17px;margin-top:auto;}
 .evento-img-preview{width:100%;aspect-ratio:16/7;border-radius:12px;background-size:cover;background-position:center;background-color:var(--surface-2);border:1px solid var(--line);margin-top:6px;}
 
+/* ── PAINEL · NO MODELO DO SITE DO JM ─────────────────────
+   Preto absoluto, textos de lei correndo ao fundo, tipografia Geist,
+   tudo em branco e cinza, vidro escuro na "lente" do radar. */
+#page-agenda{--jm-font:'Geist',-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',sans-serif;--jm-ease:cubic-bezier(.22,.8,.2,1);font-family:var(--jm-font);letter-spacing:-.011em;}
+#page-agenda button,#page-agenda input,#page-agenda select,#page-agenda textarea{font-family:inherit;}
+.jm-glass{position:relative;isolation:isolate;
+  background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,.04));
+  -webkit-backdrop-filter:blur(14px) saturate(160%);backdrop-filter:blur(14px) saturate(160%);
+  box-shadow:inset 0 1px 1px rgba(255,255,255,.25),inset 0 20px 30px -24px rgba(255,255,255,.35),0 30px 60px -30px rgba(0,0,0,.8);}
+.jm-glass::after{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;pointer-events:none;
+  background:linear-gradient(135deg,rgba(255,255,255,.55),rgba(255,255,255,.05) 35%,rgba(255,255,255,.04) 65%,rgba(255,255,255,.4));
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;}
+
+.jm-hero{position:relative;overflow:hidden;min-height:520px;display:flex;align-items:center;padding:clamp(40px,5vw,72px) clamp(26px,4vw,56px);
+  border-radius:30px;background:#000;color:#f5f5f7;border:1px solid rgba(255,255,255,.08);}
+.jm-lex{position:absolute;inset:-10% -4%;display:grid;grid-template-columns:repeat(6,1fr);gap:40px;pointer-events:none;user-select:none;transform:rotate(-4deg);}
+.jm-lex .col{overflow:hidden;}
+.jm-lex .track{display:flex;flex-direction:column;gap:34px;animation:jmLexSobe 90s linear infinite;}
+.jm-lex .col:nth-child(even) .track{animation-name:jmLexDesce;animation-duration:110s;}
+.jm-lex .col:nth-child(3n) .track{animation-duration:130s;}
+@keyframes jmLexSobe{from{transform:translateY(0);}to{transform:translateY(-50%);}}
+@keyframes jmLexDesce{from{transform:translateY(-50%);}to{transform:translateY(0);}}
+.jm-lex p{margin:0;font-size:15px;line-height:1.75;color:rgba(255,255,255,.16);letter-spacing:-.005em;}
+.jm-lex b{display:block;font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.32);margin-bottom:8px;}
+.jm-veil{position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(90deg,#000 0%,rgba(0,0,0,.96) 38%,rgba(0,0,0,.45) 64%,rgba(0,0,0,.22) 100%),
+             linear-gradient(180deg,#000 0%,rgba(0,0,0,0) 22%,rgba(0,0,0,0) 72%,#000 100%);}
+.jm-glow{position:absolute;width:900px;height:900px;right:-220px;top:50%;transform:translateY(-50%);pointer-events:none;background:radial-gradient(closest-side,rgba(255,255,255,.07),transparent);}
+.jm-grid{position:relative;width:100%;display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(36px,5vw,80px);align-items:center;}
+
+.jm-chip{display:inline-flex;align-items:center;gap:10px;font-size:13px;font-weight:500;color:rgba(255,255,255,.85);padding:9px 16px;border-radius:999px;}
+.jm-chip i{width:6px;height:6px;border-radius:50%;background:#fff;display:block;animation:jmPisca 2.4s ease-in-out infinite;}
+@keyframes jmPisca{50%{opacity:.3;}}
+#page-agenda .painel-hora{margin:26px 0 18px;font-size:clamp(64px,8.6vw,124px);font-weight:600;line-height:.95;letter-spacing:-.06em;color:#fff;
+  background:none;-webkit-text-fill-color:currentColor;filter:none;font-variant-numeric:tabular-nums;}
+#page-agenda .painel-hora span{display:inline;margin-left:2px;padding:0;font-size:1em;vertical-align:baseline;letter-spacing:-.06em;color:rgba(255,255,255,.45);
+  -webkit-text-fill-color:rgba(255,255,255,.45);background:none;box-shadow:none;animation:none;}
+#page-agenda .painel-data{margin:0;max-width:540px;font-size:clamp(17px,1.5vw,20px);line-height:1.55;color:rgba(255,255,255,.66);}
+.jm-acoes{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px;}
+.jm-pill{display:inline-flex;align-items:center;gap:8px;border:0;cursor:pointer;font:inherit;font-size:15px;font-weight:500;padding:13px 22px;border-radius:999px;color:#fff;
+  transition:transform .4s var(--jm-ease),background .3s,color .3s;}
+.jm-pill svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;transition:transform .4s var(--jm-ease);}
+.jm-pill:hover svg{transform:translateX(3px);}
+.jm-pill.jm-glass:hover{transform:translateY(-1px);}
+.jm-pill-branca{background:#fff;color:#000;}
+.jm-pill-branca:hover{background:#e8e8ed;}
+
+.jm-lente{border-radius:32px;padding:clamp(26px,3vw,38px);display:flex;flex-direction:column;gap:24px;}
+.jm-src{display:flex;justify-content:space-between;align-items:center;font-size:12px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.55);}
+.jm-quem{display:inline-flex;align-items:center;gap:12px;cursor:pointer;}
+#page-agenda .jm-quem .painel-avatar{width:38px;height:38px;border-radius:50%;overflow:hidden;flex:none;background:#1c1c1e;box-shadow:0 0 0 1px rgba(255,255,255,.18);transition:transform .4s var(--jm-ease);}
+#page-agenda .jm-quem:hover .painel-avatar{transform:scale(1.06);}
+.jm-par{font-size:30px;font-weight:700;letter-spacing:-.04em;text-transform:none;color:rgba(255,255,255,.25);line-height:1;}
+#page-agenda .painel-resumo{margin:0;max-width:none;min-height:0;font-size:clamp(20px,1.9vw,26px);line-height:1.32;font-weight:500;letter-spacing:-.025em;color:#fff;}
+#page-agenda .painel-resumo b{font-weight:600;color:#fff;}
+#page-agenda .painel-resumo span{color:rgba(255,255,255,.45);}
+
+/* números dentro da lente, como as "áreas" do site */
+#page-agenda .jm-areas{display:grid;grid-template-columns:repeat(2,1fr) !important;gap:10px;margin:0;padding:24px 0 0;border-top:1px solid rgba(255,255,255,.14);position:static;}
+#page-agenda .jm-areas .agenda-stat{all:unset;box-sizing:border-box;cursor:pointer;position:relative;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:6px 12px;
+  padding:14px 16px;border-radius:16px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);
+  transition:background .35s var(--jm-ease),transform .35s var(--jm-ease),border-color .35s;}
+#page-agenda .jm-areas .agenda-stat:hover{background:rgba(255,255,255,.13);transform:translateY(-2px);}
+#page-agenda .jm-areas .agenda-stat:focus-visible{outline:2px solid #fff;outline-offset:2px;}
+#page-agenda .jm-areas .agenda-stat.is-active{background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.4);}
+#page-agenda .jm-areas .n{font-size:30px;font-weight:600;line-height:1;letter-spacing:-.05em;color:#fff;font-variant-numeric:tabular-nums;text-shadow:none;margin:0;}
+#page-agenda .jm-areas .l{font-size:13px;line-height:1.3;font-weight:500;color:rgba(255,255,255,.7);margin:0;}
+#page-agenda .jm-areas svg{width:14px;height:14px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;opacity:.5;transition:opacity .3s,transform .4s var(--jm-ease);}
+#page-agenda .jm-areas .agenda-stat:hover svg{opacity:.9;transform:translate(2px,-2px);}
+#page-agenda .jm-areas .agenda-stat.is-active svg{opacity:1;transform:rotate(90deg);}
+
+/* entrada: o mesmo "desfoque que assenta" do site */
+#page-agenda .jm-intro{opacity:0;transform:translateY(22px);filter:blur(6px);}
+#page-agenda.active .jm-intro{animation:jmIntro 1.1s var(--jm-ease) forwards;animation-delay:var(--d,0s);}
+@keyframes jmIntro{to{opacity:1;transform:none;filter:none;}}
+
+/* seções abaixo */
+#page-agenda .agenda-content{padding:clamp(44px,6vw,72px) 4px 22px;gap:clamp(44px,6vw,64px);}
+.jm-head{align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:22px;}
+.jm-label{display:block;margin-bottom:10px;font-size:13px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.6);}
+#page-agenda .jm-head h3{font-size:clamp(28px,3.4vw,42px);line-height:1.05;font-weight:600;letter-spacing:-.035em;color:#fff;}
+#page-agenda .jm-head h3 span{color:rgba(255,255,255,.42);}
+#page-agenda .panel,#page-agenda .evento-card{background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.025));border:1px solid rgba(255,255,255,.09);border-radius:26px;
+  box-shadow:inset 0 1px 1px rgba(255,255,255,.12),0 30px 60px -30px rgba(0,0,0,.8);}
+#page-agenda .evento-card:hover{transform:translateY(-5px);border-color:rgba(255,255,255,.18);}
+
+@media(max-width:1100px){
+  .jm-grid{grid-template-columns:1fr;}
+  .jm-lente{max-width:620px;}
+  .jm-lex{grid-template-columns:repeat(4,1fr);}
+  .jm-lex .col:nth-child(n+5){display:none;}
+  .jm-veil{background:linear-gradient(180deg,#000 0%,rgba(0,0,0,.88) 20%,rgba(0,0,0,.82) 50%,rgba(0,0,0,.5) 75%,#000 100%);}
+}
+@media(max-width:620px){
+  .jm-hero{min-height:0;padding:30px 18px 22px;border-radius:24px;}
+  .jm-lex{grid-template-columns:repeat(3,1fr);gap:24px;}
+  .jm-lex .col:nth-child(n+4){display:none;}
+  .jm-lex p{font-size:13px;}
+  #page-agenda .painel-hora{font-size:68px;margin:22px 0 12px;}
+  .jm-acoes{margin-top:24px;}
+  .jm-pill{font-size:14px;padding:11px 18px;}
+  .jm-lente{padding:22px 18px;border-radius:26px;gap:20px;}
+  #page-agenda .painel-resumo{font-size:19px;}
+  #page-agenda .jm-areas{grid-template-columns:1fr 1fr !important;}
+  #page-agenda .jm-areas .agenda-stat{grid-template-columns:1fr auto;padding:12px 13px;}
+  #page-agenda .jm-areas .n{font-size:26px;}
+  #page-agenda .jm-areas .l{grid-column:1/-1;font-size:12px;}
+  #page-agenda .jm-areas svg{grid-row:1;grid-column:2;}
+}
+@media(prefers-reduced-motion:reduce){
+  .jm-lex .track,.jm-chip i{animation:none !important;}
+  #page-agenda .jm-intro{opacity:1;transform:none;filter:none;animation:none !important;}
+}
+
 /* ── NOTAS SEM DONO (aguardando alguém assumir) ─────────────── */
 .notes-unclaimed{background:var(--surface);border:1px dashed var(--line-2);border-radius:var(--r-lg);padding:14px 16px;}
 .nu-head{font-size:12px;font-weight:600;color:var(--text-2);margin-bottom:10px;display:flex;align-items:center;gap:8px;}
@@ -1269,6 +1383,31 @@ button.agenda-stat{text-align:left;font:inherit;color:inherit;cursor:pointer;pos
 
 .hd-corpo{display:flex;flex-direction:column;gap:22px;}
 
+/* modos do rodapé do chamado: responder, escalar, devolver */
+.hd-modos{display:flex;gap:18px;border-bottom:1px solid var(--line);margin:-4px 0 2px;}
+.hd-modos button{position:relative;padding:4px 0 10px;border:none;background:none;color:var(--text-3);font-size:12.5px;font-weight:600;cursor:pointer;transition:color .2s;}
+.hd-modos button:hover{color:var(--text);}
+.hd-modos button.on{color:var(--text);}
+.hd-modos button.on::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;border-radius:2px;background:var(--accent);}
+.hd-composer.modo-escalar .hd-modos button.on::after,.hd-composer.modo-devolver .hd-modos button.on::after{background:var(--amber);}
+.hd-esc{display:flex;flex-direction:column;gap:10px;}
+.hd-esc-linha{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:10px;}
+.hd-esc-campo{display:flex;flex-direction:column;gap:6px;min-width:0;}
+.hd-esc-campo>span{font-size:11.5px;color:var(--text-3);}
+.hd-esc-campo>span em{font-style:normal;opacity:.75;}
+.hd-esc-campo>select,.hd-esc-campo>input{width:100%;font-size:13px;}
+.hd-esc-campo>input{border:1px solid var(--line);border-radius:999px;padding:9px 15px;background:rgba(255,255,255,.045);color:var(--text);outline:none;}
+.hd-esc-campo>input:focus{border-color:var(--amber);box-shadow:0 0 0 3px var(--amber-soft);}
+.hd-esc .hd-resp-lista{min-height:30px;}
+.hd-composer.modo-escalar textarea,.hd-composer.modo-devolver textarea{border-color:rgba(255,159,10,.45);background:rgba(255,159,10,.05);}
+.hd-composer.modo-escalar #hdRespVis,.hd-composer.modo-devolver #hdRespVis{display:none;}
+.hd-escalas{display:flex;flex-direction:column;gap:8px;}
+.hd-escala{display:flex;flex-direction:column;gap:4px;padding:11px 14px;border-radius:12px;background:rgba(255,159,10,.06);border:1px solid rgba(255,159,10,.22);font-size:12.5px;}
+.hd-escala b{font-weight:600;}
+.hd-escala small{color:var(--text-3);}
+.hd-escala.devolvido{background:var(--surface-2);border-color:var(--line);}
+@media(max-width:760px){.hd-esc-linha{grid-template-columns:1fr;}}
+
 /* card do Painel */
 .painel-summary.com-hd{grid-template-columns:repeat(4,minmax(0,1fr)) !important;}
 .agenda-stat.stat-helpdesk .n{color:var(--teal);}
@@ -1328,9 +1467,26 @@ button.agenda-stat{text-align:left;font:inherit;color:inherit;cursor:pointer;pos
   .board{grid-template-columns:repeat(2,minmax(210px,1fr)) !important;}
 }
 @media(max-width:560px){
-  .sidebar{width:0;border:none;overflow:hidden;}
-  .sidebar *{opacity:0;pointer-events:none;}
-  .sidebar-toggle{display:none;}
+  /* celular: o menu vira uma gaveta aberta pelo botão ☰ do topo */
+  .sidebar,.shell.sb-collapsed .sidebar{
+    position:fixed;left:0;top:0;bottom:0;height:100vh;height:100dvh;width:min(280px,84vw);z-index:95;
+    border-right:1px solid var(--line-2);overflow-y:auto;
+    background:rgba(12,12,16,.97);transform:translateX(-105%);transition:transform .32s var(--ease),box-shadow .32s;
+  }
+  .sidebar *,.shell.sb-collapsed .sidebar *{opacity:1;pointer-events:auto;}
+  .shell.menu-aberto .sidebar{transform:none;box-shadow:24px 0 70px rgba(0,0,0,.6);}
+  .menu-fundo{display:none;position:fixed;inset:0;z-index:90;background:rgba(0,0,0,.55);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);}
+  .shell.menu-aberto .menu-fundo{display:block;animation:fadeIn .2s ease both;}
+  .sidebar-logo{justify-content:flex-start;gap:12px;padding:0 20px;height:72px;}
+  .sidebar-logo .org{display:block;font-size:14px;font-weight:600;color:var(--text);}
+  .sidebar nav{padding:14px 12px;}
+  .sidebar .nav-item{justify-content:flex-start;gap:14px;padding:0 14px;height:48px;}
+  .sidebar .nav-item.active::before{left:-12px;}
+  .sidebar .nav-item>span:not(.ic):not(.nav-badge){position:static;transform:none;opacity:1;background:none;border:none;box-shadow:none;padding:0;font-size:14.5px;font-weight:500;color:inherit;pointer-events:none;}
+  .sidebar .nav-badge{position:static;margin-left:auto;}
+  .sidebar-footer{justify-content:flex-start;padding:0 20px;gap:10px;}
+  .sf-logout{opacity:1;}
+  .sidebar-toggle{display:grid;}
   .kpi-row{grid-template-columns:1fr !important;}
   .agenda-summary{grid-template-columns:1fr;}
   .form-grid{grid-template-columns:1fr;}
@@ -1351,6 +1507,7 @@ button.agenda-stat{text-align:left;font:inherit;color:inherit;cursor:pointer;pos
   .lg-title{background-position:0 0;}
 }
 </style>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -1435,11 +1592,12 @@ button.agenda-stat{text-align:left;font:inherit;color:inherit;cursor:pointer;pos
 
 <!-- ══════════ APP ══════════ -->
 <div class="shell">
+<div class="menu-fundo" onclick="fecharMenuMobile()"></div>
 
 <aside class="sidebar">
   <div class="sidebar-logo">
     <div class="crest">Gestor Jurídico</div>
-    <div class="org">Controle de Processos</div>
+    <div class="org">Gestor Jurídico</div>
   </div>
   <nav>
     <button class="nav-item" onclick="showPage('agenda',this)"><span class="ic"><svg class="nav-svg" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="17" rx="3"/><path d="M8 2v4M16 2v4M3 10h18M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></svg></span><span>Painel</span></button>
@@ -1480,23 +1638,36 @@ button.agenda-stat{text-align:left;font:inherit;color:inherit;cursor:pointer;pos
 
 <!-- ══ AGENDA ══ -->
 <div class="page active" id="page-agenda">
-  <div class="agenda-head painel-head">
-    <div class="painel-clock">
-      <div class="painel-eyebrow">Painel &middot; Horário de Brasília</div>
-      <div class="painel-hora" id="painelHora">--:--<span id="painelSeg">:--</span></div>
-      <div class="painel-data" id="painelData">&nbsp;</div>
+  <section class="jm-hero" id="painelHero">
+    <div class="jm-lex" id="painelLex" aria-hidden="true"></div>
+    <div class="jm-veil" aria-hidden="true"></div>
+    <div class="jm-glow" aria-hidden="true"></div>
+    <div class="jm-grid">
+      <div class="jm-esq">
+        <span class="jm-chip jm-glass jm-intro" style="--d:.05s"><i></i><span><span id="painelOla">Olá</span> &middot; Horário de Brasília</span></span>
+        <h1 class="painel-hora jm-intro" id="painelHora" style="--d:.16s">--:--<span id="painelSeg">:--</span></h1>
+        <p class="painel-data jm-intro" id="painelData" style="--d:.28s">&nbsp;</p>
+        <div class="jm-acoes jm-intro" style="--d:.4s">
+          <button type="button" class="jm-pill jm-pill-branca" onclick="togglePainelLista('prazos')">Prazos em aberto<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+          <button type="button" class="jm-pill jm-glass" onclick="openEventoModal()">Cadastrar evento</button>
+        </div>
+      </div>
+
+      <aside class="jm-lente jm-glass jm-intro" style="--d:.52s" aria-label="Seu radar">
+        <div class="jm-src">
+          <span class="jm-quem" onclick="abrirPerfil()" title="Editar avatar"><span class="painel-avatar" id="painelAvatar"></span>Seu radar</span>
+          <span class="jm-par">&sect;</span>
+        </div>
+        <blockquote class="painel-resumo" id="painelResumo">Carregando o seu dia&hellip;</blockquote>
+        <nav class="jm-areas agenda-summary painel-summary" id="painelSummary" aria-label="Indicadores">
+          <button type="button" class="agenda-stat stat-prazospje" data-painel="prazos" onclick="togglePainelLista('prazos')"><span class="n" id="agendaPrazosPJE">0</span><span class="l">prazos PJE em aberto</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9"/></svg></button>
+          <button type="button" class="agenda-stat stat-contract" data-painel="contratos" onclick="togglePainelLista('contratos')"><span class="n" id="agendaContratosVencer90">0</span><span class="l">contratos a vencer em 90 dias</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9"/></svg></button>
+          <button type="button" class="agenda-stat stat-trello" data-painel="trello" onclick="togglePainelLista('trello')"><span class="n" id="agendaTrello14">0</span><span class="l">compromissos do Trello em 14 dias</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9"/></svg></button>
+          <button type="button" class="agenda-stat stat-helpdesk" id="painelHelpdeskStat" style="display:none;" onclick="dockGo('helpdesk')"><span class="n" id="agendaHelpdesk">0</span><span class="l">chamados do Helpdesk em aberto</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9"/></svg></button>
+        </nav>
+      </aside>
     </div>
-    <div class="painel-user" onclick="abrirPerfil()" title="Editar avatar">
-      <div class="painel-avatar" id="painelAvatar"></div>
-      <div class="painel-ola" id="painelOla">Olá!</div>
-    </div>
-  </div>
-  <div class="agenda-summary painel-summary" id="painelSummary">
-    <button type="button" class="agenda-stat stat-prazospje" data-painel="prazos" onclick="togglePainelLista('prazos')"><div class="n" id="agendaPrazosPJE">0</div><div class="l">prazos PJE em aberto</div><span class="painel-ver">ver lista</span></button>
-    <button type="button" class="agenda-stat stat-contract" data-painel="contratos" onclick="togglePainelLista('contratos')"><div class="n" id="agendaContratosVencer90">0</div><div class="l">contratos a vencer em 90 dias</div><span class="painel-ver">ver lista</span></button>
-    <button type="button" class="agenda-stat stat-trello" data-painel="trello" onclick="togglePainelLista('trello')"><div class="n" id="agendaTrello14">0</div><div class="l">compromissos do Trello em 14 dias</div><span class="painel-ver">ver lista</span></button>
-    <button type="button" class="agenda-stat stat-helpdesk" id="painelHelpdeskStat" style="display:none;" onclick="dockGo('helpdesk')"><div class="n" id="agendaHelpdesk">0</div><div class="l">chamados do Helpdesk em aberto</div><span class="painel-ver">abrir</span></button>
-  </div>
+  </section>
 
   <div class="agenda-content">
     <div class="agenda-section painel-det" id="painelDet-prazos">
@@ -1515,12 +1686,12 @@ button.agenda-stat{text-align:left;font:inherit;color:inherit;cursor:pointer;pos
     </div>
 
     <div class="agenda-section">
-      <div class="agenda-section-head"><h3>Eventos</h3><button class="btn btn-primary btn-sm" onclick="openEventoModal()">+ Cadastrar Evento</button></div>
+      <div class="agenda-section-head jm-head"><div><span class="jm-label">Eventos</span><h3>Agenda da equipe, <span>o que vem por aí.</span></h3></div><button class="jm-pill jm-pill-branca" onclick="openEventoModal()">Cadastrar evento<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button></div>
       <div class="evento-grid" id="eventoGrid"></div>
     </div>
 
     <div class="agenda-section">
-      <div class="agenda-section-head"><h3>Suas Anotações</h3></div>
+      <div class="agenda-section-head jm-head"><div><span class="jm-label">Work Space</span><h3>Suas anotações, <span>por data de entrega.</span></h3></div></div>
       <div class="panel"><div class="agenda-list" id="agendaTarefasList"></div></div>
     </div>
 
@@ -1956,6 +2127,18 @@ button.agenda-stat{text-align:left;font:inherit;color:inherit;cursor:pointer;pos
     </div>
     <div class="hd-det-body" id="hdDetBody"></div>
     <div class="hd-det-foot hd-composer" id="hdComposer">
+      <div class="hd-modos" id="hdModos" role="tablist" aria-label="O que fazer no chamado">
+        <button type="button" data-m="responder" class="on" onclick="hdModo('responder')">Responder</button>
+        <button type="button" data-m="escalar" onclick="hdModo('escalar')">Escalar chamado</button>
+        <button type="button" data-m="devolver" onclick="hdModo('devolver')" style="display:none;">Devolver escalonamento</button>
+      </div>
+      <div class="hd-esc" id="hdEscCampos" style="display:none;">
+        <div class="hd-esc-linha">
+          <label class="hd-esc-campo"><span>Escalar para o grupo</span><select class="filter-sel" id="hdEscGrupo" onchange="hdEscGrupoMudou()"><option value="">Carregando&hellip;</option></select></label>
+          <label class="hd-esc-campo hd-esc-motivo"><span>Motivo</span><input id="hdEscMotivo" maxlength="500" oninput="hdMsg('hdRespErro','')" placeholder="Por que o chamado vai para este grupo"></label>
+        </div>
+        <div class="hd-esc-campo"><span>Responsáveis no grupo de destino <em>(opcional)</em></span><div class="hd-resp-lista" id="hdEscResp"><span class="hd-dica">Escolha o grupo.</span></div></div>
+      </div>
       <textarea id="hdRespTexto" rows="3" placeholder="Escreva uma resposta para o chamado&hellip;" onkeydown="if((event.ctrlKey||event.metaKey)&&event.key==='Enter'){enviarRespostaHelpdesk();}"></textarea>
       <div class="hd-arq-lista" id="hdRespArqLista"></div>
       <div class="hd-composer-bar">
@@ -2294,7 +2477,7 @@ button.agenda-stat{text-align:left;font:inherit;color:inherit;cursor:pointer;pos
 // URL do Apps Script, pode deixar como está: essa URL não é usada nesse
 // caso. Veja a função call(), logo abaixo, pra entender como isso é usado.
 // ═══════════════════════════════════════════
-var API_URL = 'https://script.google.com/macros/s/AKfycbz5oe0XYC13ieMxh0wc1xem0VjsuTC_Tsb2pvXIu8qn55e6OmkfaVYRZyW8iAKmhvJojQ/exec';
+var API_URL = 'https://script.google.com/macros/s/AKfycbygCZqBlbsbjlJRJ8wNxlXKTdpcBXSCcdcSz-W7EyPGPeUMqBLxWYqf1GRLLJJKZugr/exec';
 
 // ═══════════════════════════════════════════
 // CONSTANTES
@@ -2793,10 +2976,12 @@ setInterval(atualizarRelogioPainel,1000);
 
 function atualizarAvatarPainel(){
   var el=document.getElementById('painelAvatar'), ola=document.getElementById('painelOla');
-  if(el) el.innerHTML=currentUser?renderAvatarSvg(parseAvatarConfig(currentUser.avatar),112):'';
+  if(el) el.innerHTML=currentUser?renderAvatarSvg(parseAvatarConfig(currentUser.avatar),38):'';
   if(ola){
     var nome=currentUser?(currentUser.nome_exibicao||currentUser.usuario||''):'';
-    ola.textContent=nome?('Olá, '+String(nome).split(' ')[0]+'!'):'Olá!';
+    var hBr=parseInt(new Intl.DateTimeFormat('pt-BR',{timeZone:'America/Sao_Paulo',hour:'2-digit',hour12:false}).format(new Date()),10);
+    var saud=hBr<5?'Boa madrugada':hBr<12?'Bom dia':hBr<18?'Boa tarde':'Boa noite';
+    ola.textContent=nome?(saud+', '+String(nome).split(' ')[0]):saud;
   }
   var wsAv=document.getElementById('workspaceAvatar');
   if(wsAv) wsAv.innerHTML=currentUser?renderAvatarSvg(parseAvatarConfig(currentUser.avatar),60):'';
@@ -3203,6 +3388,7 @@ var pageMeta={
 // O realce do menu lateral responde na hora, pra dar feedback imediato do
 // clique mesmo enquanto o conteúdo ainda está trocando.
 function showPage(id,btn){
+  fecharMenuMobile();
   var current=document.querySelector('.page.active');
   var targetPage=document.getElementById('page-'+id);
   if(!targetPage) return;
@@ -3590,7 +3776,70 @@ function applyFilters(tipo){
   renderTable(tipo,document.getElementById(ids[0]).value,document.getElementById(ids[1]).value,ids[2]?document.getElementById(ids[2]).value:'',document.getElementById(ids[3]).value);
 }
 
-function setTxt(id,v){ var el=document.getElementById(id); if(el) el.textContent=v; }
+function setTxt(id,v){
+  if(typeof PAINEL_NUMEROS!=='undefined'&&PAINEL_NUMEROS[id]){ painelNumero(id,v); return; }
+  var el=document.getElementById(id); if(el) el.textContent=v;
+}
+// Números do Painel sobem contando até o valor novo e alimentam o resumo do dia.
+var PAINEL_NUMEROS={agendaPrazosPJE:1,agendaContratosVencer90:1,agendaTrello14:1,agendaHelpdesk:1};
+function painelNumero(id,v){
+  var el=document.getElementById(id); if(!el) return;
+  var alvo=parseInt(v,10)||0, de=parseInt(el.getAttribute('data-alvo')||el.textContent,10)||0;
+  el.setAttribute('data-alvo',alvo);
+  atualizarResumoPainel();
+  var reduzir=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduzir||de===alvo){ el.textContent=alvo; return; }
+  var ini=null, dur=Math.min(900,350+Math.abs(alvo-de)*60);
+  if(el._anim) cancelAnimationFrame(el._anim);
+  function passo(t){
+    if(ini===null) ini=t;
+    var k=Math.min(1,(t-ini)/dur), e=1-Math.pow(1-k,3);
+    el.textContent=Math.round(de+(alvo-de)*e);
+    if(k<1) el._anim=requestAnimationFrame(passo); else el._anim=null;
+  }
+  el._anim=requestAnimationFrame(passo);
+}
+function painelValor(id){ var el=document.getElementById(id); return el?(parseInt(el.getAttribute('data-alvo')||el.textContent,10)||0):0; }
+function atualizarResumoPainel(){
+  var box=document.getElementById('painelResumo'); if(!box) return;
+  var p=painelValor('agendaPrazosPJE'), c=painelValor('agendaContratosVencer90'), t=painelValor('agendaTrello14');
+  var hdVis=document.getElementById('painelHelpdeskStat')&&document.getElementById('painelHelpdeskStat').style.display!=='none';
+  var hd=hdVis?painelValor('agendaHelpdesk'):0;
+  var partes=[];
+  if(p) partes.push('<b>'+p+'</b> '+(p===1?'prazo PJE em aberto':'prazos PJE em aberto'));
+  if(t) partes.push('<b>'+t+'</b> '+(t===1?'compromisso no Trello':'compromissos no Trello'));
+  if(hd) partes.push('<b>'+hd+'</b> '+(hd===1?'chamado no Helpdesk':'chamados no Helpdesk'));
+  if(c) partes.push('<b>'+c+'</b> '+(c===1?'contrato vencendo em 90 dias':'contratos vencendo em 90 dias'));
+  if(!partes.length){ box.innerHTML='Nada pendente por enquanto. <span>Bom momento para adiantar o que vem.</span>'; return; }
+  var txt=partes.length===1?partes[0]:partes.slice(0,-1).join(', ')+' e '+partes[partes.length-1];
+  box.innerHTML='Hoje há '+txt+'. <span>Clique em um número para ver a lista.</span>';
+}
+// Textos de lei que correm ao fundo do Painel (domínio público), como no site do JM
+(function(){
+  var LEX=[
+    ['CF · Art. 156, III','Compete aos Municípios instituir impostos sobre serviços de qualquer natureza, não compreendidos no art. 155, II, definidos em lei complementar.'],
+    ['CTN · Art. 3º','Tributo é toda prestação pecuniária compulsória, em moeda ou cujo valor nela se possa exprimir, que não constitua sanção de ato ilícito, instituída em lei e cobrada mediante atividade administrativa plenamente vinculada.'],
+    ['LC 116/2003 · Art. 1º','O Imposto Sobre Serviços de Qualquer Natureza, de competência dos Municípios e do Distrito Federal, tem como fato gerador a prestação de serviços constantes da lista anexa, ainda que esses não se constituam como atividade preponderante do prestador.'],
+    ['CF · Art. 150, I','É vedado exigir ou aumentar tributo sem lei que o estabeleça.'],
+    ['CTN · Art. 142','Compete privativamente à autoridade administrativa constituir o crédito tributário pelo lançamento.'],
+    ['CF · Art. 5º, LV','Aos litigantes, em processo judicial ou administrativo, e aos acusados em geral são assegurados o contraditório e a ampla defesa, com os meios e recursos a ela inerentes.'],
+    ['CTN · Art. 201','Constitui dívida ativa tributária a proveniente de crédito dessa natureza, regularmente inscrita na repartição administrativa competente, depois de esgotado o prazo fixado, para pagamento, pela lei ou por decisão final proferida em processo regular.'],
+    ['Lei 6.830/1980 · Art. 1º','A execução judicial para cobrança da Dívida Ativa da União, dos Estados, do Distrito Federal, dos Municípios e respectivas autarquias será regida por esta Lei e, subsidiariamente, pelo Código de Processo Civil.'],
+    ['CF · Art. 37','A administração pública direta e indireta de qualquer dos Poderes da União, dos Estados, do Distrito Federal e dos Municípios obedecerá aos princípios de legalidade, impessoalidade, moralidade, publicidade e eficiência.'],
+    ['CF · Art. 5º, XXXV','A lei não excluirá da apreciação do Poder Judiciário lesão ou ameaça a direito.'],
+    ['CTN · Art. 113','A obrigação tributária é principal ou acessória.'],
+    ['CF · Art. 133','O advogado é indispensável à administração da justiça, sendo inviolável por seus atos e manifestações no exercício da profissão, nos limites da lei.']
+  ];
+  var lex=document.getElementById('painelLex'); if(!lex) return;
+  for(var c=0;c<6;c++){
+    var col=document.createElement('div'); col.className='col';
+    var track=document.createElement('div'); track.className='track';
+    var html='';
+    for(var k=0;k<LEX.length;k++){ var it=LEX[(k+c*5)%LEX.length]; html+='<p><b>'+it[0]+'</b>'+it[1]+'</p>'; }
+    track.innerHTML=html+html;
+    col.appendChild(track); lex.appendChild(col);
+  }
+})();
 
 // ═══════════════════════════════════════════
 // KPIs
@@ -5236,7 +5485,10 @@ function toggleDock(){
 }
 
 var sidebarCollapsed=false;
+function menuEhGaveta(){ return window.matchMedia('(max-width:560px)').matches; }
+function fecharMenuMobile(){ var s=document.querySelector('.shell'); if(s) s.classList.remove('menu-aberto'); }
 function toggleSidebar(){
+  if(menuEhGaveta()){ var s=document.querySelector('.shell'); if(s) s.classList.toggle('menu-aberto'); return; }
   sidebarCollapsed=!sidebarCollapsed;
   var shell=document.querySelector('.shell');
   if(shell) shell.classList.toggle('sb-collapsed',sidebarCollapsed);
@@ -5818,6 +6070,7 @@ function renderDetalheHelpdesk(c){
   var html=
     '<dl class="hd-det-meta">'+meta.map(function(m){ return '<div><dt>'+escHtml(m[0])+'</dt><dd>'+m[1]+'</dd></div>'; }).join('')+editor+'</dl>'+
     '<section class="hd-det-sec"><h3>Descrição</h3><div class="hd-desc hd-rich">'+(c.descricao?hdTextoOuHtml(c.descricao):'<span style="color:var(--text-3)">Sem descrição.</span>')+'</div>'+hdAnexosHtml(c.anexos)+'</section>'+
+    hdEscalasHtml(c)+
     '<section class="hd-det-sec"><h3>Histórico <span>'+msgs.length+(msgs.length===1?' mensagem':' mensagens')+', mais recentes primeiro</span></h3>'+
       (msgs.length?'<div class="hd-msgs">'+msgs.map(function(m){
         var cls=m.automatica?'auto':(m.interna?'interna':'');
@@ -5832,6 +6085,7 @@ function renderDetalheHelpdesk(c){
   body.innerHTML=html;
   body.scrollTop=hdEditando?rolagem:0;
   if(hdEditando==='resp') carregarEditorResponsaveis(c);
+  hdAtualizarModos(c);
 }
 
 function renderAcoesDetalhe(c){
@@ -5912,9 +6166,81 @@ function salvarPrazoHelpdesk(remover){
     .catch(function(e){ showToast('Erro de conexão: '+e.message); });
 }
 
+// ---------- Escalar / devolver ----------
+var hdModoAtual='responder';
+function hdEscalaAtiva(c){ return (c&&c.escalonamentos||[]).some(function(e){ return !e.devolvido; }); }
+function hdAtualizarModos(c){
+  var st=String(c&&c.status||'').toUpperCase();
+  var podeEscalar=['FECHADO','CANCELADO'].indexOf(st)<0;
+  var ativa=hdEscalaAtiva(c);
+  document.querySelector('#hdModos [data-m="escalar"]').style.display=podeEscalar?'':'none';
+  document.querySelector('#hdModos [data-m="devolver"]').style.display=ativa?'':'none';
+  if((hdModoAtual==='escalar'&&!podeEscalar)||(hdModoAtual==='devolver'&&!ativa)) hdModo('responder');
+}
+function hdModo(m){
+  hdModoAtual=m;
+  document.querySelectorAll('#hdModos button').forEach(function(b){ b.classList.toggle('on',b.getAttribute('data-m')===m); });
+  var comp=document.getElementById('hdComposer');
+  comp.classList.toggle('modo-escalar',m==='escalar');
+  comp.classList.toggle('modo-devolver',m==='devolver');
+  document.getElementById('hdEscCampos').style.display=m==='escalar'?'':'none';
+  var txt=document.getElementById('hdRespTexto'), btn=document.getElementById('hdRespEnviar'), dica=document.getElementById('hdRespDica');
+  if(m==='escalar'){
+    txt.placeholder='Comentário interno do escalonamento: o que o outro grupo precisa saber…';
+    btn.textContent='Escalar chamado'; dica.textContent='Só a equipe vê o comentário.';
+    hdEscCarregarGrupos();
+  } else if(m==='devolver'){
+    txt.placeholder='Comentário interno da devolução: o que foi feito e o que falta…';
+    btn.textContent='Devolver ao grupo de origem'; dica.textContent='Só a equipe vê o comentário.';
+  } else {
+    txt.placeholder='Escreva uma resposta para o chamado…';
+    btn.textContent='Enviar resposta'; hdRespVisibilidade(hdRespInterna);
+  }
+  hdMsg('hdRespErro','');
+}
+function hdEscCarregarGrupos(){
+  var sel=document.getElementById('hdEscGrupo');
+  if(sel.getAttribute('data-ok')==='1') return;
+  hdOpcoes('grupos').then(function(itens){
+    var atuais={}; (hdDetalhe&&hdDetalhe.grupos||[]).forEach(function(g){ atuais[String(g.id)]=1; });
+    var lista=itens.filter(function(g){ return !atuais[String(g.id)]; });
+    sel.innerHTML='<option value="">'+(lista.length?'Selecione o grupo':'Nenhum outro grupo disponível')+'</option>'+lista.map(function(g){
+      return '<option value="'+escHtml(String(g.id))+'">'+escHtml(g.nome)+'</option>';
+    }).join('');
+    sel.setAttribute('data-ok','1');
+  }).catch(function(e){ sel.innerHTML='<option value="">Não carregou</option>'; hdMsg('hdRespErro',e.message); });
+}
+function hdEscGrupoMudou(){
+  var g=document.getElementById('hdEscGrupo').value, box=document.getElementById('hdEscResp');
+  hdMsg('hdRespErro','');
+  if(!g){ box.innerHTML='<span class="hd-dica">Escolha o grupo.</span>'; return; }
+  box.innerHTML='<span class="hd-dica">Carregando&hellip;</span>';
+  hdOpcoes('responsaveis',g).then(function(itens){
+    if(document.getElementById('hdEscGrupo').value!==g) return;
+    box.innerHTML=itens.length?itens.map(function(x){ return '<label><input type="checkbox" value="'+escHtml(String(x.id))+'">'+escHtml(x.nome)+'</label>'; }).join('')
+      :'<span class="hd-dica">Este grupo não tem responsáveis cadastrados.</span>';
+  }).catch(function(e){ box.innerHTML='<span class="hd-dica">'+escHtml(e.message)+'</span>'; });
+}
+function hdEscLimpar(){
+  var sel=document.getElementById('hdEscGrupo'); sel.removeAttribute('data-ok'); sel.innerHTML='<option value="">Carregando…</option>';
+  document.getElementById('hdEscMotivo').value='';
+  document.getElementById('hdEscResp').innerHTML='<span class="hd-dica">Escolha o grupo.</span>';
+}
+function hdEscalasHtml(c){
+  var es=c.escalonamentos||[];
+  if(!es.length) return '';
+  return '<section class="hd-det-sec"><h3>Escalonamentos <span>'+es.length+(es.length===1?' registro':' registros')+'</span></h3><div class="hd-escalas">'+
+    es.slice().sort(function(a,b){ return String(b.criado_em).localeCompare(String(a.criado_em)); }).map(function(e){
+      return '<div class="hd-escala'+(e.devolvido?' devolvido':'')+'"><b>'+escHtml(e.origem||'Origem')+' para '+escHtml(e.destino||'destino')+'</b>'+
+        (e.motivo?'<span>Motivo: '+escHtml(e.motivo)+'</span>':'')+
+        '<small>'+escHtml(hdDataHora(e.criado_em))+(e.devolvido?', devolvido'+(e.devolvido_em?' em '+escHtml(hdDataHora(e.devolvido_em)):''):', em andamento')+'</small></div>';
+    }).join('')+'</div></section>';
+}
+
 // ---------- Responder ----------
 var hdRespArquivos=[], hdRespInterna=false, hdRespEnviando=false;
 function hdRespLimpar(){
+  hdEscLimpar(); hdModo('responder');
   hdRespArquivos=[]; document.getElementById('hdRespTexto').value='';
   hdRespRenderArquivos(); hdRespVisibilidade(false); hdMsg('hdRespErro','');
 }
@@ -5922,7 +6248,7 @@ function hdRespVisibilidade(interna){
   hdRespInterna=!!interna;
   document.querySelectorAll('#hdRespVis button').forEach(function(b){ b.classList.toggle('on',(b.getAttribute('data-v')==='int')===hdRespInterna); });
   document.getElementById('hdComposer').classList.toggle('interna',hdRespInterna);
-  document.getElementById('hdRespDica').textContent=hdRespInterna?'Só a equipe vê esta resposta.':'O cliente vê esta resposta.';
+  if(hdModoAtual==='responder') document.getElementById('hdRespDica').textContent=hdRespInterna?'Só a equipe vê esta resposta.':'O cliente vê esta resposta.';
 }
 function hdRespAddArquivos(lista){
   hdMsg('hdRespErro','');
@@ -5942,26 +6268,44 @@ function hdRespRenderArquivos(){
 }
 function enviarRespostaHelpdesk(){
   if(hdRespEnviando||!hdDetalhe) return;
+  var modo=hdModoAtual;
   var texto=(document.getElementById('hdRespTexto').value||'').trim();
-  if(!texto){ hdMsg('hdRespErro','Escreva a resposta.'); return; }
+  var acao='helpdeskComentar', dados, rotulo={responder:'Enviar resposta',escalar:'Escalar chamado',devolver:'Devolver ao grupo de origem'}[modo];
+  if(modo==='escalar'){
+    var g=document.getElementById('hdEscGrupo').value, motivo=(document.getElementById('hdEscMotivo').value||'').trim();
+    if(!g){ hdMsg('hdRespErro','Escolha o grupo para onde o chamado vai.'); return; }
+    if(!motivo){ hdMsg('hdRespErro','Informe o motivo do escalonamento.'); return; }
+    if(!texto){ hdMsg('hdRespErro','Escreva o comentário interno do escalonamento.'); return; }
+    acao='helpdeskEscalar';
+    dados={id:hdDetalhe.id,grupo_destino_id:Number(g),motivo:motivo,comentario:texto,
+      responsaveis_destino_ids:Array.prototype.map.call(document.querySelectorAll('#hdEscResp input:checked'),function(x){ return Number(x.value); })};
+  } else if(modo==='devolver'){
+    if(!texto){ hdMsg('hdRespErro','Escreva o comentário interno da devolução.'); return; }
+    acao='helpdeskDevolver'; dados={id:hdDetalhe.id,comentario:texto};
+  } else {
+    if(!texto){ hdMsg('hdRespErro','Escreva a resposta.'); return; }
+    dados={id:hdDetalhe.id,mensagem:texto,interna:hdRespInterna};
+  }
+  if(modo==='escalar'&&!confirm('Escalar este chamado para "'+document.getElementById('hdEscGrupo').selectedOptions[0].text+'"?')) return;
   hdMsg('hdRespErro','');
-  var btn=document.getElementById('hdRespEnviar'), id=hdDetalhe.id;
+  var btn=document.getElementById('hdRespEnviar');
   hdRespEnviando=true; btn.disabled=true; btn.textContent=hdRespArquivos.length?'Enviando anexos…':'Enviando…';
   Promise.all(hdRespArquivos.map(hdnLerBase64)).then(function(arqs){
-    return call('helpdeskComentar',{id:id,mensagem:texto,interna:hdRespInterna,arquivos:arqs});
+    dados.arquivos=arqs;
+    return call(acao,dados);
   }).then(function(res){
-    hdRespEnviando=false; btn.disabled=false; btn.textContent='Enviar resposta';
+    hdRespEnviando=false; btn.disabled=false; btn.textContent=rotulo;
     if(res&&res.ok&&res.chamado){
       hdRespLimpar();
-      hdAposEdicao(res,'Resposta enviada.');
+      hdAposEdicao(res,{responder:'Resposta enviada.',escalar:'Chamado escalado.',devolver:'Chamado devolvido ao grupo de origem.'}[modo]);
       document.getElementById('hdDetBody').scrollTop=0;
     } else if(res&&res.ok&&res.conectado===false){
       hdAposEdicao(res);
     } else {
-      hdMsg('hdRespErro',(res&&res.error)||'Não foi possível enviar a resposta.');
+      hdMsg('hdRespErro',(res&&res.error)||'Não foi possível concluir. Tente de novo.');
     }
   }).catch(function(e){
-    hdRespEnviando=false; btn.disabled=false; btn.textContent='Enviar resposta';
+    hdRespEnviando=false; btn.disabled=false; btn.textContent=rotulo;
     hdMsg('hdRespErro','Erro de conexão: '+e.message+'. Confira o histórico antes de enviar de novo.');
   });
 }
@@ -5975,6 +6319,7 @@ function fecharDetalheHelpdesk(){
 }
 document.addEventListener('keydown',function(e){
   if(e.key!=='Escape') return;
+  fecharMenuMobile();
   var novo=document.getElementById('hdNovoOverlay'), det=document.getElementById('hdDetOverlay');
   if(novo&&novo.classList.contains('open')){ fecharNovoChamado(); return; }
   if(det&&det.classList.contains('open')) fecharDetalheHelpdesk();
@@ -6282,7 +6627,8 @@ function atualizarCardHelpdeskPainel(){
   var conectado=!!(meus&&meus.conectado);
   card.style.display=conectado?'':'none';
   sum.classList.toggle('com-hd',conectado);
-  if(conectado) document.getElementById('agendaHelpdesk').textContent=(meus.chamados||[]).filter(hdAtivo).length;
+  if(conectado) painelNumero('agendaHelpdesk',(meus.chamados||[]).filter(hdAtivo).length);
+  else atualizarResumoPainel();
 }
 function logout(){
   if(!confirm('Sair do sistema?')) return;
