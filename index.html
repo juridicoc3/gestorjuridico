@@ -1037,6 +1037,254 @@ button.agenda-stat{text-align:left;font:inherit;color:inherit;cursor:pointer;pos
 .brand-loading-bar::after{content:"";position:absolute;top:0;left:-40%;height:100%;width:40%;border-radius:2px;background:linear-gradient(90deg,transparent,#0071e3,#7cc4ff,transparent);animation:brandBar 1.3s ease-in-out infinite;}
 @keyframes brandBar{0%{left:-40%;}100%{left:100%;}}
 
+/* ── HELPDESK (chamados via Code.gs + Helpdesk completo embutido) ── */
+#page-helpdesk.active{gap:20px;}
+.hd-top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;min-height:38px;}
+.hd-top .hd-actions{margin-left:auto;}
+.hd-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.hd-conta{display:inline-flex;align-items:center;gap:9px;margin-right:6px;font-size:12.5px;color:var(--text-2);}
+.hd-conta strong{color:var(--text);font-weight:600;}
+.hd-dot{width:8px;height:8px;border-radius:50%;background:var(--text-3);flex-shrink:0;transition:background .3s;}
+.hd-dot.ok{background:var(--green);box-shadow:0 0 0 4px rgba(48,209,88,.14);}
+
+/* conectar conta */
+.hd-connect{display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,380px);gap:40px;align-items:center;padding:36px;}
+.hd-connect-ic{width:52px;height:52px;margin-bottom:18px;display:grid;place-items:center;border-radius:16px;background:var(--accent-soft);color:var(--accent);}
+.hd-connect-ic svg{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;}
+.hd-connect h3{margin-bottom:10px;font-size:22px;font-weight:600;letter-spacing:-.03em;}
+.hd-connect p{max-width:470px;font-size:13.5px;line-height:1.65;color:var(--text-2);}
+.hd-beneficios{margin-top:18px;display:flex;flex-direction:column;gap:9px;font-size:13px;color:var(--text-2);list-style:none;}
+.hd-beneficios li{display:flex;align-items:center;gap:10px;}
+.hd-beneficios li::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--accent);flex-shrink:0;}
+.hd-form{display:flex;flex-direction:column;gap:14px;padding:24px;border-radius:var(--r-lg);background:var(--surface-2);border:1px solid var(--line);}
+.hd-form .btn{justify-content:center;padding:12px 18px;font-size:13.5px;}
+.hd-msg{display:none;padding:10px 13px;border-radius:11px;font-size:12.5px;line-height:1.5;}
+.hd-msg.erro{color:#ff8a80;background:var(--red-soft);border:1px solid rgba(255,69,58,.28);}
+.hd-msg.aviso{color:var(--amber);background:var(--amber-soft);border:1px solid rgba(255,159,10,.28);}
+.hd-msg.show{display:block;}
+.hd-nota{display:flex;align-items:flex-start;gap:8px;font-size:11.5px;line-height:1.5;color:var(--text-3);}
+.hd-nota svg{width:14px;height:14px;flex-shrink:0;margin-top:1px;fill:none;stroke:currentColor;stroke-width:1.8;}
+
+/* estados */
+.hd-state{display:none;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:64px 20px;text-align:center;font-size:13.5px;color:var(--text-2);}
+.hd-state.show{display:flex;}
+.hd-state .spinner-lg{width:28px;height:28px;}
+.hd-state strong{font-size:16px;color:var(--text);font-weight:600;}
+.hd-state-acoes{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;}
+
+/* resumo e lista */
+.hd-kpis .kpi{min-height:120px;cursor:pointer;text-align:left;font:inherit;color:inherit;}
+.hd-kpis .kpi.is-on{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent),var(--sh-1);}
+.hd-kpis .kpi-sub{min-height:18px;}
+.hd-filtros{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+.hd-tbl{min-width:860px;}
+.hd-tbl tbody tr{cursor:pointer;}
+.hd-tbl td.hd-prot{font-family:var(--mono);font-size:11.5px;color:var(--text-2);white-space:nowrap;}
+.hd-tit{max-width:440px;}
+.hd-tit strong{display:block;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-size:13px;font-weight:600;color:var(--text);}
+.hd-tit span{display:block;margin-top:3px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-size:11.5px;color:var(--text-3);}
+.hd-st{display:inline-flex;align-items:center;gap:7px;padding:4px 11px 4px 9px;border-radius:999px;font-size:11px;font-weight:600;white-space:nowrap;border:1px solid transparent;}
+.hd-st i{width:6px;height:6px;border-radius:50%;background:currentColor;}
+.hd-st.s-aberto{background:var(--slate-soft);color:var(--slate);border-color:rgba(142,142,245,.26);}
+.hd-st.s-atend{background:var(--accent-soft);color:var(--accent);border-color:var(--accent-line);}
+.hd-st.s-aguard{background:var(--amber-soft);color:var(--amber);border-color:rgba(255,159,10,.26);}
+.hd-st.s-fim{background:var(--green-soft);color:var(--green);border-color:rgba(48,209,88,.26);}
+.hd-st.s-cancel{background:rgba(255,255,255,.05);color:var(--text-3);border-color:var(--line);}
+.hd-quando{white-space:nowrap;font-size:12px;color:var(--text-2);}
+.hd-vazio{padding:46px 20px;text-align:center;font-size:13px;color:var(--text-3);}
+
+/* detalhe do chamado (painel lateral) */
+.hd-det-overlay{position:fixed;inset:0;z-index:150;display:none;background:rgba(0,0,0,.55);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);}
+.hd-det-overlay.open{display:block;animation:fadeIn .2s ease both;}
+.hd-det{position:absolute;top:0;right:0;bottom:0;width:min(760px,100%);display:flex;flex-direction:column;
+  background:var(--surface);border-left:1px solid var(--line-2);box-shadow:-30px 0 80px rgba(0,0,0,.55);
+  animation:hdDetIn .38s var(--ease) both;}
+@keyframes hdDetIn{from{transform:translateX(40px);opacity:0;}to{transform:none;opacity:1;}}
+.hd-det-head{padding:22px 26px 18px;border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:12px;}
+.hd-det-top{display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.hd-det-prot{font-family:var(--mono);font-size:12px;color:var(--text-3);}
+.hd-det-x{width:34px;height:34px;display:grid;place-items:center;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--text-2);cursor:pointer;font-size:16px;}
+.hd-det-x:hover{background:rgba(255,255,255,.1);color:var(--text);}
+.hd-det-head h2{font-size:21px;font-weight:600;letter-spacing:-.03em;line-height:1.25;}
+.hd-det-tags{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+.hd-det-body{flex:1;overflow-y:auto;padding:22px 26px 30px;display:flex;flex-direction:column;gap:24px;}
+.hd-det-body>*{flex-shrink:0;}
+.hd-det-meta{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px 20px;margin:0;padding:16px 18px;border-radius:14px;background:var(--surface-2);border:1px solid var(--line);}
+.hd-det-meta div{min-width:0;}
+.hd-det-meta dt{font-size:11px;color:var(--text-3);margin-bottom:4px;}
+.hd-det-meta dd{font-size:13px;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.hd-det-sec h3{margin-bottom:10px;font-size:14px;font-weight:600;letter-spacing:-.01em;display:flex;align-items:center;gap:8px;}
+.hd-det-sec h3 span{font-size:12px;font-weight:400;color:var(--text-3);}
+.hd-rich{font-size:13.5px;line-height:1.65;color:var(--text-2);overflow-wrap:anywhere;}
+.hd-rich p{margin:0 0 8px;}.hd-rich p:last-child{margin-bottom:0;}
+.hd-rich ul,.hd-rich ol{margin:6px 0 8px 20px;}
+.hd-rich a[href]{color:var(--accent);}
+.hd-rich a:not([href]){color:inherit;text-decoration:none;}
+.hd-rich img{max-width:100%;height:auto;border-radius:8px;}
+.hd-rich blockquote{margin:6px 0;padding-left:12px;border-left:2px solid var(--line-2);color:var(--text-3);}
+.hd-rich table{min-width:0;width:auto;border-collapse:collapse;font-size:12.5px;}
+.hd-rich td,.hd-rich th{border:1px solid var(--line);padding:5px 8px;position:static;box-shadow:none;background:none;text-align:left;}
+.hd-desc{padding:16px 18px;border-radius:14px;background:var(--surface-2);border:1px solid var(--line);}
+.hd-msgs{display:flex;flex-direction:column;gap:12px;}
+.hd-msg-item{padding:14px 16px;border-radius:14px;background:var(--surface-2);border:1px solid var(--line);}
+.hd-msg-item.interna{background:rgba(255,159,10,.06);border-color:rgba(255,159,10,.24);}
+.hd-msg-item.auto{background:rgba(142,142,245,.06);border-color:rgba(142,142,245,.22);}
+.hd-msg-h{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px;flex-wrap:wrap;}
+.hd-msg-autor{font-size:13px;font-weight:600;}
+.hd-msg-autor small{margin-left:6px;font-size:11.5px;font-weight:400;color:var(--text-3);}
+.hd-msg-tag{font-size:10.5px;font-weight:600;padding:3px 9px;border-radius:999px;background:var(--accent-soft);color:var(--accent);}
+.hd-msg-item.interna .hd-msg-tag{background:var(--amber-soft);color:var(--amber);}
+.hd-msg-item.auto .hd-msg-tag{background:var(--slate-soft);color:var(--slate);}
+.hd-anexos{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
+.hd-anexo{display:inline-flex;align-items:center;gap:7px;max-width:100%;padding:6px 11px;border-radius:999px;border:1px solid var(--line-2);background:rgba(255,255,255,.04);color:var(--text);font-size:12px;cursor:pointer;}
+.hd-anexo:hover{background:rgba(255,255,255,.09);}
+.hd-anexo span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.hd-anexo small{color:var(--text-3);}
+.hd-anexo svg{width:13px;height:13px;flex-shrink:0;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+.hd-det-foot{padding:14px 26px;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;background:rgba(255,255,255,.02);}
+.hd-det-foot p{font-size:12px;color:var(--text-3);}
+@media(max-width:760px){
+  .hd-det-head,.hd-det-body,.hd-det-foot{padding-left:18px;padding-right:18px;}
+  .hd-det-meta{grid-template-columns:1fr 1fr;}
+}
+
+/* alternância Lista / Funil */
+.hd-vis{display:inline-flex;gap:2px;padding:3px;border-radius:999px;background:rgba(255,255,255,.05);border:1px solid var(--line);}
+.hd-vis button{display:inline-flex;align-items:center;gap:6px;padding:6px 13px;border:none;border-radius:999px;background:none;color:var(--text-2);font-size:12px;font-weight:500;cursor:pointer;transition:background .2s,color .2s;}
+.hd-vis button svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;}
+.hd-vis button:hover{color:var(--text);}
+.hd-vis button.on{background:rgba(255,255,255,.12);color:var(--text);}
+
+/* funil (kanban) */
+.hd-funil{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(190px,1fr);gap:14px;padding:18px;overflow-x:auto;}
+.hd-col{display:flex;flex-direction:column;gap:10px;min-width:0;}
+.hd-col-h{display:flex;align-items:center;gap:8px;padding:2px 4px 6px;border-bottom:2px solid var(--col,var(--line-2));}
+.hd-col-h b{flex:1;font-size:12.5px;font-weight:600;}
+.hd-col-h span{min-width:22px;padding:1px 8px;border-radius:999px;background:rgba(255,255,255,.07);font-size:11.5px;font-weight:600;color:var(--text-2);text-align:center;}
+.hd-col-list{display:flex;flex-direction:column;gap:10px;}
+.hd-col-vazio{padding:18px 10px;border:1px dashed var(--line-2);border-radius:14px;text-align:center;font-size:12px;color:var(--text-3);}
+.hd-col-mais{font-size:11.5px;color:var(--text-3);text-align:center;padding:4px;}
+.hd-card{position:relative;display:flex;flex-direction:column;gap:8px;padding:13px 14px 12px;border-radius:14px;cursor:pointer;text-align:left;font:inherit;color:inherit;
+  background:var(--surface-2);border:1px solid var(--line);transition:transform .2s var(--ease),border-color .2s,box-shadow .2s;}
+.hd-card:hover{transform:translateY(-2px);border-color:var(--line-2);box-shadow:0 12px 28px rgba(0,0,0,.35);}
+.hd-card.p-crit{box-shadow:inset 3px 0 0 var(--red);}
+.hd-card.p-alta{box-shadow:inset 3px 0 0 var(--amber);}
+.hd-card-top{display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.hd-card-prot{font-family:var(--mono);font-size:10.5px;color:var(--text-3);}
+.hd-card-tit{font-size:13px;font-weight:600;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.hd-card-org{font-size:11.5px;color:var(--text-3);overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
+.hd-card-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:2px;font-size:11.5px;color:var(--text-2);}
+.hd-card-resp{display:inline-flex;align-items:center;gap:7px;min-width:0;}
+.hd-card-foot>span:last-child{white-space:nowrap;flex-shrink:0;}
+.hd-card-resp i{width:22px;height:22px;flex-shrink:0;border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:9.5px;font-weight:700;background:var(--accent-soft);color:var(--accent);}
+.hd-card-resp i.vazio{background:rgba(255,255,255,.06);color:var(--text-3);}
+.hd-card-resp span{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
+
+/* novo chamado */
+.hd-novo .modal{width:740px;}
+.hd-seg{display:inline-flex;flex-wrap:wrap;gap:3px;padding:4px;border-radius:999px;background:rgba(255,255,255,.05);border:1px solid var(--line);width:fit-content;max-width:100%;}
+.hd-seg button{white-space:nowrap;padding:8px 16px;border:none;border-radius:999px;background:none;color:var(--text-2);font-size:12.5px;font-weight:500;cursor:pointer;transition:background .2s,color .2s;}
+.hd-seg button:hover{color:var(--text);}
+.hd-seg button.on{background:rgba(255,255,255,.13);color:var(--text);}
+.hd-seg.prior button.on[data-v="CRITICA"]{background:var(--red-soft);color:var(--red);}
+.hd-seg.prior button.on[data-v="ALTA"]{background:var(--amber-soft);color:var(--amber);}
+.hd-dica{font-size:11.5px;line-height:1.5;color:var(--text-3);}
+.hd-resp-lista{display:flex;flex-wrap:wrap;gap:7px;min-height:38px;align-items:center;}
+.hd-resp-lista label{display:inline-flex;align-items:center;gap:7px;padding:6px 12px;border-radius:999px;border:1px solid var(--line-2);font-size:12.5px;color:var(--text-2);cursor:pointer;letter-spacing:0;font-weight:500;}
+.hd-resp-lista input{accent-color:var(--accent);margin:0;}
+.hd-resp-lista label:has(input:checked){border-color:var(--accent);color:var(--text);background:var(--accent-soft);}
+.hd-arq-drop{display:flex;align-items:center;justify-content:center;gap:10px;padding:14px;border:1px dashed var(--line-2);border-radius:14px;font-size:12.5px;color:var(--text-2);cursor:pointer;transition:border-color .2s,background .2s;}
+.hd-arq-drop:hover,.hd-arq-drop.over{border-color:var(--accent);background:var(--accent-soft);}
+.hd-arq-drop svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+.hd-arq-lista{display:flex;flex-wrap:wrap;gap:7px;}
+.hd-arq-lista span{display:inline-flex;align-items:center;gap:7px;max-width:100%;padding:5px 6px 5px 11px;border-radius:999px;background:rgba(255,255,255,.06);font-size:12px;}
+.hd-arq-lista span b{font-weight:500;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;max-width:240px;}
+.hd-arq-lista span small{color:var(--text-3);}
+.hd-arq-lista button{width:20px;height:20px;border:none;border-radius:50%;background:rgba(255,255,255,.08);color:var(--text-2);cursor:pointer;font-size:11px;line-height:1;}
+.hd-arq-lista button:hover{background:var(--red-soft);color:var(--red);}
+@media(max-width:760px){
+  .hd-funil{grid-auto-columns:minmax(240px,82vw);padding:14px;}
+  .hd-seg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;width:100%;border-radius:16px;}
+  .hd-seg button{padding:8px 6px;font-size:12px;}
+}
+
+/* escopo, pessoas, ações de edição */
+.hd-escopo-bar{display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+.hd-escopo-info{font-size:12.5px;color:var(--text-3);}
+.hd-pessoas{margin-bottom:-6px;}
+.hd-pessoas .tp-badge{background:var(--teal);}
+.hd-check{display:flex;align-items:center;gap:9px;font-size:12.5px;color:var(--text-2);cursor:pointer;}
+.hd-check input{accent-color:var(--accent);width:15px;height:15px;margin:0;}
+.hd-av{display:inline-grid;place-items:center;flex-shrink:0;border-radius:50%;overflow:hidden;background:var(--accent-soft);color:var(--accent);font-style:normal;font-weight:700;box-shadow:0 0 0 2px var(--surface);}
+.hd-av svg{display:block;width:100%;height:100%;}
+.hd-av.vazio{background:rgba(255,255,255,.06);color:var(--text-3);}
+.hd-avs{display:inline-flex;align-items:center;}
+.hd-avs .hd-av+.hd-av{margin-left:-7px;}
+.hd-resp-cel{display:flex;align-items:center;gap:9px;min-width:0;}
+.hd-resp-cel span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:190px;}
+.hd-funil-nota{padding:0 18px 16px;font-size:11.5px;color:var(--text-3);}
+.hd-col.drop-ok .hd-col-list{outline:2px dashed var(--accent);outline-offset:4px;border-radius:14px;background:var(--accent-soft);}
+.hd-col.drop-no{opacity:.45;}
+.hd-col.drop-hover .hd-col-list{background:rgba(41,151,255,.18);}
+.hd-card[draggable="true"]{cursor:grab;}
+.hd-card.arrastando{opacity:.4;}
+.hd-card.movendo{opacity:.6;pointer-events:none;}
+.hd-det-top-acoes{display:flex;align-items:center;gap:6px;}
+.hd-det-acoes{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.hd-det-acoes:empty{display:none;}
+.hd-det-acoes .lbl{font-size:12px;color:var(--text-3);margin-right:2px;}
+.hd-mover{display:inline-flex;align-items:center;gap:7px;padding:6px 12px;border-radius:999px;border:1px solid var(--line-2);background:rgba(255,255,255,.04);color:var(--text);font-size:12px;font-weight:500;cursor:pointer;transition:background .2s,border-color .2s;}
+.hd-mover:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.28);}
+.hd-mover i{width:7px;height:7px;border-radius:50%;}
+.hd-mover:disabled{opacity:.5;cursor:default;}
+.hd-det-meta dd .hd-editar{margin-left:8px;padding:0;border:none;background:none;color:var(--accent);font-size:11.5px;cursor:pointer;}
+.hd-det-meta dd .hd-editar:hover{text-decoration:underline;}
+.hd-det-meta dd{white-space:normal;}
+.hd-inline{grid-column:1/-1;display:flex;flex-direction:column;gap:10px;padding:12px 14px;border-radius:12px;background:var(--surface);border:1px solid var(--line-2);}
+.hd-inline-acoes{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;}
+.hd-inline input[type="datetime-local"]{font-size:13px;border:1px solid var(--line);border-radius:10px;padding:9px 12px;background:rgba(255,255,255,.045);color:var(--text);color-scheme:dark;}
+.hd-composer{flex-direction:column;align-items:stretch;gap:10px;}
+.hd-composer textarea{width:100%;resize:vertical;min-height:70px;max-height:240px;font:inherit;font-size:13px;line-height:1.55;color:var(--text);padding:11px 14px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.045);outline:none;transition:border-color .2s,box-shadow .2s;}
+.hd-composer textarea:focus{border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-soft);}
+.hd-composer.interna textarea{border-color:rgba(255,159,10,.45);background:rgba(255,159,10,.05);}
+.hd-composer-bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.hd-composer-bar .hd-seg{padding:3px;}
+.hd-composer-bar .hd-seg button{padding:6px 12px;font-size:12px;}
+.hd-composer-bar .hd-seg button.on[data-v="int"]{background:var(--amber-soft);color:var(--amber);}
+.hd-composer-dica{flex:1;min-width:120px;font-size:11.5px;color:var(--text-3);}
+.hd-anexar{display:inline-flex;align-items:center;gap:6px;cursor:pointer;}
+.hd-anexar svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+.hd-composer .hd-arq-lista:empty{display:none;}
+.perfil-hd{display:flex;flex-direction:column;gap:9px;max-width:340px;padding:14px;border-radius:14px;background:var(--surface-2);border:1px solid var(--line);}
+.perfil-mini-hd{display:flex;flex-direction:column;gap:5px;margin-top:10px;text-align:left;}
+.perfil-mini-hd span{font-size:10.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text-3);}
+.perfil-mini-hd select{width:100%;font-size:12px;padding:7px 12px;}
+.perfil-edit .hd-check{display:flex;margin:0;text-transform:none;letter-spacing:0;font-size:12px;font-weight:400;color:var(--text-2);}
+.perfil-hd-st{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--text-2);}
+.perfil-hd-st strong{color:var(--text);font-weight:600;}
+.perfil-hd input[type="email"],.perfil-hd input[type="password"]{font-size:13px;border:1px solid var(--line);border-radius:10px;padding:9px 12px;background:rgba(255,255,255,.045);color:var(--text);outline:none;width:100%;}
+.perfil-hd input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft);}
+.perfil-hd-acoes{display:flex;gap:8px;flex-wrap:wrap;}
+@media(max-width:760px){.hd-composer-bar .hd-seg{width:auto;}.hd-composer-dica{display:none;}.hd-composer textarea{min-height:56px;}}
+
+.hd-corpo{display:flex;flex-direction:column;gap:22px;}
+
+/* card do Painel */
+.painel-summary.com-hd{grid-template-columns:repeat(4,minmax(0,1fr)) !important;}
+.agenda-stat.stat-helpdesk .n{color:var(--teal);}
+.agenda-stat.stat-helpdesk .painel-ver::after{content:"";}
+@media(max-width:1180px){.painel-summary.com-hd{grid-template-columns:repeat(2,minmax(0,1fr)) !important;}}
+@media(max-width:760px){
+  .painel-summary.com-hd{grid-template-columns:1fr !important;}
+  .hd-connect{grid-template-columns:1fr;gap:24px;padding:24px 20px;}
+  .kpi-row.hd-kpis{grid-template-columns:1fr 1fr !important;gap:10px;}
+  .hd-kpis .kpi{min-height:96px;padding:16px 18px;}
+  .hd-kpis .kpi-num{font-size:28px;}
+  .hd-kpis .kpi-sub{font-size:11px;}
+  .hd-filtros{width:100%;}
+  .hd-filtros .search-input{flex:1;width:auto;}
+}
+
 /* dock aposentado — a navegação vive no rail lateral */
 .dock-wrap{display:none !important;}
 
@@ -1202,6 +1450,8 @@ button.agenda-stat{text-align:left;font:inherit;color:inherit;cursor:pointer;pos
     <div class="nav-section">Ferramentas</div>
     <button class="nav-item" onclick="showPage('cowork',this)"><span class="ic"><svg class="nav-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3-1.7 5.3L5 10l5.3 1.7L12 17l1.7-5.3L19 10l-5.3-1.7zM19 16l-.7 2.3L16 19l2.3.7L19 22l.7-2.3L22 19l-2.3-.7z"/></svg></span><span>Cowork</span></button>
     <button class="nav-item" onclick="showPage('work',this)"><span class="ic"><svg class="nav-svg" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7.5" width="18" height="12.5" rx="2.3"/><path d="M8.5 7.5V6a2.5 2.5 0 0 1 2.5-2.5h2A2.5 2.5 0 0 1 15.5 6v1.5"/><path d="M3 12.5h18"/><path d="M10.5 12.5h3v1.8h-3z"/></svg></span><span>Work</span><span class="nav-badge zero" id="navNotasBadge">0</span></button>
+    <button class="nav-item" onclick="showPage('trello',this)"><span class="ic"><svg class="nav-svg" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3.2"/><rect x="6.5" y="6.5" width="4.2" height="10" rx="1"/><rect x="13.3" y="6.5" width="4.2" height="6" rx="1"/></svg></span><span>Trello</span></button>
+    <button class="nav-item" onclick="showPage('helpdesk',this)"><span class="ic"><svg class="nav-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 13v-1a8 8 0 0 1 16 0v1"/><rect x="3" y="13" width="4" height="6" rx="1.6"/><rect x="17" y="13" width="4" height="6" rx="1.6"/><path d="M19 19c0 1.7-1.6 2.5-4 2.5h-2"/></svg></span><span>Helpdesk</span></button>
   </nav>
   <div class="sidebar-footer">
     <span class="sf-dot"></span>
@@ -1241,10 +1491,11 @@ button.agenda-stat{text-align:left;font:inherit;color:inherit;cursor:pointer;pos
       <div class="painel-ola" id="painelOla">Olá!</div>
     </div>
   </div>
-  <div class="agenda-summary painel-summary">
+  <div class="agenda-summary painel-summary" id="painelSummary">
     <button type="button" class="agenda-stat stat-prazospje" data-painel="prazos" onclick="togglePainelLista('prazos')"><div class="n" id="agendaPrazosPJE">0</div><div class="l">prazos PJE em aberto</div><span class="painel-ver">ver lista</span></button>
     <button type="button" class="agenda-stat stat-contract" data-painel="contratos" onclick="togglePainelLista('contratos')"><div class="n" id="agendaContratosVencer90">0</div><div class="l">contratos a vencer em 90 dias</div><span class="painel-ver">ver lista</span></button>
     <button type="button" class="agenda-stat stat-trello" data-painel="trello" onclick="togglePainelLista('trello')"><div class="n" id="agendaTrello14">0</div><div class="l">compromissos do Trello em 14 dias</div><span class="painel-ver">ver lista</span></button>
+    <button type="button" class="agenda-stat stat-helpdesk" id="painelHelpdeskStat" style="display:none;" onclick="dockGo('helpdesk')"><div class="n" id="agendaHelpdesk">0</div><div class="l">chamados do Helpdesk em aberto</div><span class="painel-ver">abrir</span></button>
   </div>
 
   <div class="agenda-content">
@@ -1286,12 +1537,8 @@ button.agenda-stat{text-align:left;font:inherit;color:inherit;cursor:pointer;pos
   <div class="perfis-grid" id="perfisGrid"></div>
 </div>
 
-<!-- ══ WORK (Work Space + Trello) ══ -->
+<!-- ══ WORK (Work Space) ══ -->
 <div class="page" id="page-work">
-  <div class="cowork-tabs">
-    <button class="cw-tab active" onclick="showWorkTab('workspace',this)">Work Space</button>
-    <button class="cw-tab" onclick="showWorkTab('trello',this)">Trello</button>
-  </div>
 
   <div class="cw-pane active" id="workpane-workspace">
     <div class="notes-head">
@@ -1330,38 +1577,41 @@ button.agenda-stat{text-align:left;font:inherit;color:inherit;cursor:pointer;pos
     </div>
   </div>
 
-  <div class="cw-pane" id="workpane-trello">
-    <div class="notes-head">
-      <div><div class="notes-title">Trello</div><p class="notes-sub">Todos os quadros do Trello num só lugar. Clique em um card para editar nome, data e lista, ou use "+ Novo card" em qualquer coluna.</p></div>
-      <button class="btn btn-outline btn-sm" id="trelloRefreshBtn" onclick="loadTrello(true)">Atualizar</button>
-    </div>
-    <div id="trelloStatus"></div>
-    <div class="trello-people" id="trelloPeople" style="display:none;"></div>
-    <div class="panel" id="trelloPanel" style="display:none;">
-      <div class="panel-h">
-        <span class="t">Cards do Trello</span>
-        <input class="search-input" placeholder="Buscar card, quadro, lista…" id="searchTrello" oninput="renderTrelloView()">
-        <select class="filter-sel" id="respTrello" onchange="renderTrelloView()"><option value="">Todos os responsáveis</option></select>
-        <select class="filter-sel" id="boardTrello" onchange="renderTrelloView()"><option value="">Todos os quadros</option></select>
-        <select class="filter-sel" id="statusTrello" onchange="renderTrelloView()">
-          <option value="">Todos os status</option>
-          <option value="concluido">Concluídos</option>
-          <option value="pendente">Pendentes</option>
-        </select>
-        <div class="view-toggle" id="trelloViewToggle">
-          <button class="view-toggle-btn active" data-trello-view="lista" onclick="toggleTrelloView('lista')" title="Ver em lista">Lista</button>
-          <button class="view-toggle-btn" data-trello-view="funil" onclick="toggleTrelloView('funil')" title="Ver em formato de funil">Funil</button>
-        </div>
-        <button class="btn btn-primary btn-sm" onclick="abrirNovoTrelloCardGenerico()">+ Novo Card</button>
-      </div>
-      <div class="table-wrap" id="trelloTableWrap"><table>
-        <thead><tr><th>Card</th><th>Quadro</th><th>Lista</th><th>Responsável</th><th>Vencimento</th><th>Concluído</th><th></th></tr></thead>
-        <tbody id="tbodyTrello"></tbody>
-      </table></div>
-      <div class="cowork-tabs" id="trelloTabs" style="display:none;margin:0 20px 14px;"></div>
-      <div class="board" id="trelloBoard" style="display:none;padding:0 20px 20px;"></div>
-    </div>
+</div>
+
+<!-- ══ TRELLO ══ -->
+<div class="page" id="page-trello">
+  <div class="notes-head">
+    <div><div class="notes-title">Trello</div><p class="notes-sub">Todos os quadros do Trello num só lugar. Clique em um card para editar nome, data e lista, ou use "+ Novo card" em qualquer coluna.</p></div>
+    <button class="btn btn-outline btn-sm" id="trelloRefreshBtn" onclick="loadTrello(true)">Atualizar</button>
   </div>
+  <div id="trelloStatus"></div>
+  <div class="trello-people" id="trelloPeople" style="display:none;"></div>
+  <div class="panel" id="trelloPanel" style="display:none;">
+    <div class="panel-h">
+      <span class="t">Cards do Trello</span>
+      <input class="search-input" placeholder="Buscar card, quadro, lista…" id="searchTrello" oninput="renderTrelloView()">
+      <select class="filter-sel" id="respTrello" onchange="renderTrelloView()"><option value="">Todos os responsáveis</option></select>
+      <select class="filter-sel" id="boardTrello" onchange="renderTrelloView()"><option value="">Todos os quadros</option></select>
+      <select class="filter-sel" id="statusTrello" onchange="renderTrelloView()">
+        <option value="">Todos os status</option>
+        <option value="concluido">Concluídos</option>
+        <option value="pendente">Pendentes</option>
+      </select>
+      <div class="view-toggle" id="trelloViewToggle">
+        <button class="view-toggle-btn active" data-trello-view="lista" onclick="toggleTrelloView('lista')" title="Ver em lista">Lista</button>
+        <button class="view-toggle-btn" data-trello-view="funil" onclick="toggleTrelloView('funil')" title="Ver em formato de funil">Funil</button>
+      </div>
+      <button class="btn btn-primary btn-sm" onclick="abrirNovoTrelloCardGenerico()">+ Novo Card</button>
+    </div>
+    <div class="table-wrap" id="trelloTableWrap"><table>
+      <thead><tr><th>Card</th><th>Quadro</th><th>Lista</th><th>Responsável</th><th>Vencimento</th><th>Concluído</th><th></th></tr></thead>
+      <tbody id="tbodyTrello"></tbody>
+    </table></div>
+    <div class="cowork-tabs" id="trelloTabs" style="display:none;margin:0 20px 14px;"></div>
+    <div class="board" id="trelloBoard" style="display:none;padding:0 20px 20px;"></div>
+</div>
+
 </div>
 
 <!-- ══ NOTIFICAÇÕES ══ -->
@@ -1489,6 +1739,101 @@ button.agenda-stat{text-align:left;font:inherit;color:inherit;cursor:pointer;pos
   </div>
 </div>
 
+<!-- ══ HELPDESK ══ -->
+<div class="page" id="page-helpdesk">
+  <div class="hd-top">
+    <div class="hd-escopo-bar" id="hdEscopoBar" style="display:none;">
+      <div class="view-toggle" id="hdEscopo">
+        <button class="view-toggle-btn active" data-esc="meus" onclick="mudarEscopoHelpdesk('meus')">Meus chamados</button>
+        <button class="view-toggle-btn" data-esc="todos" onclick="mudarEscopoHelpdesk('todos')">Todos do setor</button>
+      </div>
+      <span class="hd-escopo-info" id="hdEscopoInfo"></span>
+    </div>
+    <div class="hd-actions">
+      <span class="hd-conta" id="hdConta" style="display:none;"><span class="hd-dot ok"></span><span>Conectado como <strong id="hdContaNome"></strong></span></span>
+      <button class="btn btn-primary btn-sm" id="hdBtnNovo" style="display:none;" onclick="abrirNovoChamado()">+ Novo chamado</button>
+      <button class="btn btn-outline btn-sm" id="hdBtnAtualizar" style="display:none;" onclick="atualizarHelpdesk()">&#8635; Atualizar</button>
+      <a class="btn btn-outline btn-sm" href="https://grupoc3.c3consultoria.net.br/helpdesk" target="_blank" rel="noopener">Abrir em nova aba &#8599;</a>
+      <button class="btn btn-ghost btn-sm" id="hdBtnDesconectar" style="display:none;" onclick="desconectarHelpdesk()">Desconectar</button>
+    </div>
+  </div>
+
+  <div class="hd-corpo" id="hdpane-chamados">
+    <div class="hd-state" id="hdCarregando"><div class="spinner-lg"></div><span>Buscando seus chamados no Helpdesk&hellip;</span></div>
+
+    <div class="hd-state" id="hdErro">
+      <strong>Não foi possível falar com o Helpdesk</strong>
+      <span id="hdErroMsg"></span>
+      <div class="hd-state-acoes">
+        <button class="btn btn-primary btn-sm" onclick="carregarHelpdesk(true)">Tentar de novo</button>
+        <a class="btn btn-outline btn-sm" href="https://grupoc3.c3consultoria.net.br/helpdesk" target="_blank" rel="noopener">Abrir o Helpdesk &#8599;</a>
+      </div>
+    </div>
+
+    <div class="panel hd-connect" id="hdConectar" style="display:none;">
+      <div>
+        <div class="hd-connect-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 13v-1a8 8 0 0 1 16 0v1"/><rect x="3" y="13" width="4" height="6" rx="1.6"/><rect x="17" y="13" width="4" height="6" rx="1.6"/><path d="M19 19c0 1.7-1.6 2.5-4 2.5h-2"/></svg></div>
+        <h3>Conecte sua conta do Helpdesk</h3>
+        <p>Entre com o e-mail e a senha que você usa no Helpdesk do Grupo C3. A partir daí, os chamados aparecem e podem ser respondidos aqui no Gestor.</p>
+        <ul class="hd-beneficios">
+          <li>Seus chamados e os de todo o setor, em lista ou funil</li>
+          <li>Responder, mudar status, prazo e responsáveis sem sair do Gestor</li>
+          <li>Quantos estão em aberto, direto no Painel</li>
+        </ul>
+      </div>
+      <div class="hd-form">
+        <div class="hd-msg aviso" id="hdAviso"></div>
+        <div class="field"><label for="hdEmail">E-mail do Helpdesk</label><input id="hdEmail" type="email" autocomplete="off" placeholder="voce@c3consultoria.com.br"></div>
+        <div class="field"><label for="hdSenha">Senha do Helpdesk</label><input id="hdSenha" type="password" autocomplete="off" placeholder="Sua senha do Helpdesk" onkeydown="if(event.key==='Enter'){conectarHelpdesk();}"></div>
+        <label class="hd-check"><input type="checkbox" id="hdLembrar" checked> Conectar sozinho nas próximas vezes</label>
+        <div class="hd-msg erro" id="hdFormErro" role="alert"></div>
+        <button class="btn btn-primary" id="hdBtnConectar" onclick="conectarHelpdesk()">Conectar</button>
+        <div class="hd-nota"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="10.5" width="16" height="10" rx="2.5"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></svg><span>Com "Conectar sozinho" marcado, o e-mail e a senha ficam guardados cifrados e ligados ao seu perfil, e o Gestor entra de novo sozinho quando o acesso vence. Desmarcado, a senha não é guardada.</span></div>
+      </div>
+    </div>
+
+    <div id="hdConteudo" style="display:none;flex-direction:column;gap:20px;">
+      <div class="kpi-row hd-kpis">
+        <button type="button" class="kpi k-slate" data-hdf="abertos" onclick="filtrarHelpdesk('abertos',true)"><span class="kpi-label">Em aberto</span><span class="kpi-num" id="hdKAbertos">0</span><span class="kpi-sub" id="hdSAbertos"></span></button>
+        <button type="button" class="kpi k-wine" data-hdf="atendimento" onclick="filtrarHelpdesk('atendimento',true)"><span class="kpi-label">Em atendimento</span><span class="kpi-num" id="hdKAtend">0</span><span class="kpi-sub" id="hdSAtend"></span></button>
+        <button type="button" class="kpi k-amber" data-hdf="aguardando" onclick="filtrarHelpdesk('aguardando',true)"><span class="kpi-label">Aguardando</span><span class="kpi-num" id="hdKAguard">0</span><span class="kpi-sub" id="hdSAguard"></span></button>
+        <button type="button" class="kpi k-green" data-hdf="encerrados" onclick="filtrarHelpdesk('encerrados',true)"><span class="kpi-label">Encerrados</span><span class="kpi-num" id="hdKFim">0</span><span class="kpi-sub" id="hdSFim"></span></button>
+      </div>
+      <div class="trello-people hd-pessoas" id="hdPessoas" style="display:none;"></div>
+      <div class="panel">
+        <div class="panel-h">
+          <span class="t" id="hdPainelTitulo">Meus chamados</span>
+          <span class="sub" id="hdAtualizado"></span>
+          <div class="hd-filtros">
+            <div class="hd-vis" role="group" aria-label="Forma de visualização">
+              <button type="button" data-vis="lista" class="on" onclick="mudarVisHelpdesk('lista')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></svg>Lista</button>
+              <button type="button" data-vis="funil" onclick="mudarVisHelpdesk('funil')"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="5" height="16" rx="1.5"/><rect x="9.5" y="4" width="5" height="11" rx="1.5"/><rect x="16" y="4" width="5" height="7" rx="1.5"/></svg>Funil</button>
+            </div>
+            <select class="filter-sel" id="hdFiltro" onchange="filtrarHelpdesk(this.value)">
+              <option value="ativos">Ativos</option>
+              <option value="abertos">Em aberto</option>
+              <option value="atendimento">Em atendimento</option>
+              <option value="aguardando">Aguardando</option>
+              <option value="encerrados">Encerrados</option>
+              <option value="todos">Todos</option>
+            </select>
+            <input class="search-input" id="hdBusca" placeholder="Buscar chamado" oninput="renderHelpdeskLista()">
+          </div>
+        </div>
+        <div class="hd-funil" id="hdFunil" style="display:none;"></div>
+        <div class="hd-funil-nota" id="hdFunilNota" style="display:none;">Arraste um cartão para outra coluna para mudar o status. Só as colunas permitidas pelo Helpdesk aceitam o cartão. Fechados e cancelados aparecem na Lista.</div>
+        <div class="table-wrap" id="hdListaWrap">
+          <table class="hd-tbl">
+            <thead><tr><th>Protocolo</th><th>Chamado</th><th>Status</th><th>Prioridade</th><th>Responsável</th><th>Atualizado</th><th></th></tr></thead>
+            <tbody id="hdTbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
 <!-- ══ COWORK ══ -->
 <div class="page" id="page-cowork">
   <div class="cowork-tabs">
@@ -1556,6 +1901,78 @@ button.agenda-stat{text-align:left;font:inherit;color:inherit;cursor:pointer;pos
 </div>
 
 <!-- MODAL PERFIL -->
+<!-- Novo chamado do Helpdesk -->
+<div class="modal-overlay hd-novo" id="hdNovoOverlay">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="hdNovoTitulo">
+    <div class="modal-header">
+      <span class="modal-title" id="hdNovoTitulo">Novo chamado</span>
+      <button class="modal-close" onclick="fecharNovoChamado()" aria-label="Fechar">&#10005;</button>
+    </div>
+    <div class="hd-seg" id="hdnTipo">
+      <button type="button" data-v="EXTERNO" class="on" onclick="hdnMudarTipo('EXTERNO')">Cliente (externo)</button>
+      <button type="button" data-v="INTERNO" onclick="hdnMudarTipo('INTERNO')">Entre setores (interno)</button>
+    </div>
+    <div class="form-grid">
+      <div class="field hdn-ext"><label for="hdnOrg">Organização</label><select id="hdnOrg" onchange="hdnOrgMudou()"><option value="">Carregando&hellip;</option></select></div>
+      <div class="field hdn-ext"><label for="hdnProd">Produto</label><select id="hdnProd" onchange="hdnProdMudou()" disabled><option value="">Escolha a organização</option></select></div>
+      <div class="field hdn-ext"><label for="hdnSol">Tipo de solicitação</label><select id="hdnSol" onchange="hdnSolMudou()"><option value="">Selecione</option><option value="DUVIDA">Dúvida</option><option value="IMPLEMENTACAO">Implementação</option><option value="ERRO">Erro</option></select></div>
+      <div class="field hdn-ext" id="hdnErroCampo" style="display:none;"><label for="hdnErro">Tipo de erro</label><select id="hdnErro"><option value="">Selecione</option><option value="ERRO_TELA">Erro de tela</option><option value="ERRO_PAGAMENTO">Erro de pagamento</option><option value="ERRO_RELATORIO">Erro de relatório</option></select></div>
+      <div class="field span2"><label for="hdnGrupo">Grupo responsável</label><select id="hdnGrupo" onchange="hdnGrupoMudou()" disabled><option value="">Escolha o produto</option></select></div>
+      <div class="field span2 hdn-int" style="display:none;"><label>Responsáveis <span style="font-weight:400;color:var(--text-3)">(opcional)</span></label><div class="hd-resp-lista" id="hdnResp"><span class="hd-dica">Escolha o grupo.</span></div></div>
+      <div class="field span2"><label for="hdnTit">Título</label><input id="hdnTit" maxlength="200" placeholder="Resumo do que precisa ser feito"></div>
+      <div class="field span2"><label for="hdnDesc">Descrição</label><textarea id="hdnDesc" rows="6" placeholder="Explique a demanda com o máximo de detalhes: o que aconteceu, onde, desde quando, o que se espera."></textarea></div>
+      <div class="field span2"><label>Prioridade</label>
+        <div class="hd-seg prior" id="hdnPrior">
+          <button type="button" data-v="BAIXA" onclick="hdnPrioridade('BAIXA')">Baixa</button>
+          <button type="button" data-v="NORMAL" class="on" onclick="hdnPrioridade('NORMAL')">Normal</button>
+          <button type="button" data-v="ALTA" onclick="hdnPrioridade('ALTA')">Alta</button>
+          <button type="button" data-v="CRITICA" onclick="hdnPrioridade('CRITICA')">Crítica</button>
+        </div>
+      </div>
+      <div class="field hdn-ext"><label for="hdnVis">Quem vê a descrição</label><select id="hdnVis"><option value="PUBLICA">Cliente e equipe (pública)</option><option value="INTERNA">Só a equipe (interna)</option></select></div>
+      <div class="field"><label for="hdnPrazo">Prazo da demanda <span style="font-weight:400;color:var(--text-3)">(opcional)</span></label><input id="hdnPrazo" type="datetime-local"><span class="hd-dica">Horário de Brasília.</span></div>
+      <div class="field span2"><label>Anexos <span style="font-weight:400;color:var(--text-3)">(até 5 arquivos, 10 MB cada)</span></label>
+        <label class="hd-arq-drop" id="hdnDrop" for="hdnArq"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.5l-8.5 8.5a5 5 0 0 1-7-7L14 5.5a3.3 3.3 0 0 1 4.7 4.7l-8.6 8.6a1.7 1.7 0 0 1-2.4-2.4L15.5 8.6"/></svg>Clique ou arraste arquivos aqui</label>
+        <input id="hdnArq" type="file" multiple style="display:none;" onchange="hdnAddArquivos(this.files);this.value='';">
+        <div class="hd-arq-lista" id="hdnArqLista"></div>
+      </div>
+    </div>
+    <div class="hd-msg erro" id="hdnErroMsg" role="alert"></div>
+    <div class="modal-actions">
+      <button class="btn btn-outline" onclick="fecharNovoChamado()">Cancelar</button>
+      <button class="btn btn-primary" id="hdnCriarBtn" onclick="criarChamadoHelpdesk()">Criar chamado</button>
+    </div>
+  </div>
+</div>
+
+<!-- Detalhe de chamado do Helpdesk -->
+<div class="hd-det-overlay" id="hdDetOverlay" onclick="if(event.target===this)fecharDetalheHelpdesk()">
+  <aside class="hd-det" role="dialog" aria-modal="true" aria-labelledby="hdDetTitulo">
+    <div class="hd-det-head">
+      <div class="hd-det-top"><span class="hd-det-prot" id="hdDetProt"></span><span class="hd-det-top-acoes"><a class="btn btn-ghost btn-sm" id="hdDetLink" href="#" target="_blank" rel="noopener">Abrir no Helpdesk &#8599;</a><button class="hd-det-x" onclick="fecharDetalheHelpdesk()" aria-label="Fechar">&times;</button></span></div>
+      <h2 id="hdDetTitulo"></h2>
+      <div class="hd-det-tags" id="hdDetTags"></div>
+      <div class="hd-det-acoes" id="hdDetAcoes"></div>
+    </div>
+    <div class="hd-det-body" id="hdDetBody"></div>
+    <div class="hd-det-foot hd-composer" id="hdComposer">
+      <textarea id="hdRespTexto" rows="3" placeholder="Escreva uma resposta para o chamado&hellip;" onkeydown="if((event.ctrlKey||event.metaKey)&&event.key==='Enter'){enviarRespostaHelpdesk();}"></textarea>
+      <div class="hd-arq-lista" id="hdRespArqLista"></div>
+      <div class="hd-composer-bar">
+        <div class="hd-seg" id="hdRespVis">
+          <button type="button" data-v="pub" class="on" onclick="hdRespVisibilidade(false)">Pública</button>
+          <button type="button" data-v="int" onclick="hdRespVisibilidade(true)">Interna</button>
+        </div>
+        <span class="hd-composer-dica" id="hdRespDica">O cliente vê esta resposta.</span>
+        <label class="btn btn-outline btn-sm hd-anexar" for="hdRespArq" title="Anexar arquivos"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.5l-8.5 8.5a5 5 0 0 1-7-7L14 5.5a3.3 3.3 0 0 1 4.7 4.7l-8.6 8.6a1.7 1.7 0 0 1-2.4-2.4L15.5 8.6"/></svg>Anexar</label>
+        <input type="file" id="hdRespArq" multiple style="display:none;" onchange="hdRespAddArquivos(this.files);this.value='';">
+        <button class="btn btn-primary btn-sm" id="hdRespEnviar" onclick="enviarRespostaHelpdesk()">Enviar resposta</button>
+      </div>
+      <div class="hd-msg erro" id="hdRespErro" role="alert"></div>
+    </div>
+  </aside>
+</div>
+
 <div class="modal-overlay" id="profileModalOverlay">
   <div class="modal" style="width:600px;">
     <div class="modal-header">
@@ -1877,7 +2294,7 @@ button.agenda-stat{text-align:left;font:inherit;color:inherit;cursor:pointer;pos
 // URL do Apps Script, pode deixar como está: essa URL não é usada nesse
 // caso. Veja a função call(), logo abaixo, pra entender como isso é usado.
 // ═══════════════════════════════════════════
-var API_URL = 'https://script.google.com/macros/s/AKfycbx0O5ysTTIvZl7N_LFh5nEWVIkkVog3kNTxLYicvpDyRDXewF70ryekjyerfgy4D5TeUA/exec';
+var API_URL = 'https://script.google.com/macros/s/AKfycbz5oe0XYC13ieMxh0wc1xem0VjsuTC_Tsb2pvXIu8qn55e6OmkfaVYRZyW8iAKmhvJojQ/exec';
 
 // ═══════════════════════════════════════════
 // CONSTANTES
@@ -2443,6 +2860,10 @@ function loadPerfis(){
   renderPerfis();
   if(!trelloLoaded){ fetchTrelloData(false).then(renderPerfis).catch(function(){}); }
   if(!currentUser) return Promise.resolve();
+  if(hdConta===null) call('helpdeskConta',{}).then(function(r){
+    if(r&&r.ok){ hdConta={conectado:r.conectado,nome:r.nome,email:r.email,usuario_id:r.usuario_id,lembrado:r.lembrado}; renderPerfis(); carregarOpcoesHelpdeskPerfil(); }
+  }).catch(function(){});
+  else carregarOpcoesHelpdeskPerfil();
   return call('getPerfis',{}).then(function(res){
     if(res&&res.ok){ perfis=res.data||[]; perfisCarregados=true; }
     else { perfisCarregados=true; perfis=[]; showToast('Perfis: '+((res&&res.error)||'erro ao carregar')+(String(res&&res.error).indexOf('desconhecida')>=0?' (atualize o Code.gs)':'')); }
@@ -2453,6 +2874,10 @@ function perfilNome(p){ return p.nome_exibicao||p.usuario||'Sem nome'; }
 function renderPerfis(){
   var meuEl=document.getElementById('perfilMeu'), grid=document.getElementById('perfisGrid');
   if(!meuEl||!grid) return;
+  // o cartão é redesenhado inteiro: guarda o que estava sendo digitado
+  var digitado={};
+  ['perfHdEmail','perfHdSenha'].forEach(function(id){ var el=document.getElementById(id); if(el) digitado[id]=el.value; });
+  var lembrarEl=document.getElementById('perfHdLembrar'); if(lembrarEl) digitado.lembrar=lembrarEl.checked;
   if(!currentUser){ meuEl.innerHTML='<div class="perfis-vazio">Faça login para ver os perfis.</div>'; grid.innerHTML=''; return; }
   var eu=perfis.find(function(p){return p.id===currentUser.id;})||currentUser;
   eu=Object.assign({},eu,{avatar:currentUser.avatar,nome_exibicao:currentUser.nome_exibicao,trello_membro:currentUser.trello_membro!==undefined?currentUser.trello_membro:eu.trello_membro,banner:currentUser.banner!==undefined?currentUser.banner:eu.banner});
@@ -2478,10 +2903,15 @@ function renderPerfis(){
       +'</div>'
       +'<div class="perfil-edit">'
         +'<div><label>Responsável no Trello</label><select class="filter-sel" onchange="salvarPerfilExtra({trello_membro:this.value})">'+opts+'</select></div>'
+        +perfilHelpdeskHtml(eu)
         +'<div><label>Cor do banner</label><div class="banner-swatches">'+sw+'</div></div>'
         +'<div><button class="btn btn-outline btn-sm" onclick="abrirPerfil()">Editar avatar e nome</button></div>'
       +'</div>'
     +'</div></div>';
+  Object.keys(digitado).forEach(function(id){
+    if(id==='lembrar'){ var l=document.getElementById('perfHdLembrar'); if(l) l.checked=digitado.lembrar; return; }
+    var el=document.getElementById(id); if(el&&digitado[id]) el.value=digitado[id];
+  });
 
   var outros=perfis.filter(function(p){return p.id!==currentUser.id;});
   setTxt('perfisCount', perfisCarregados?(outros.length+(outros.length===1?' pessoa':' pessoas')):'');
@@ -2495,6 +2925,7 @@ function renderPerfis(){
       +'<div class="perfil-mini-body">'
         +'<div class="perfil-mini-nome">'+escHtml(perfilNome(p))+'</div>'
         +'<div class="perfil-mini-trello">'+(p.trello_membro?'Trello: '+escHtml(nomeMembroTrello(p.trello_membro)||'membro vinculado'):'Sem vínculo com o Trello')+'</div>'
+        +perfilMiniHelpdeskHtml(p)
         +'<div class="perfil-mini-kpi"><b>'+(p.trello_membro?n:'–')+'</b> atividades no Trello</div>'
       +'</div></div>';
   }).join('');
@@ -2503,7 +2934,7 @@ function renderPerfis(){
 // e o servidor é avisado em segundo plano; se falhar, volta ao que era.
 function salvarPerfilExtra(campos){
   if(!currentUser) return;
-  var antes={trello_membro:currentUser.trello_membro,banner:currentUser.banner};
+  var antes={}; Object.keys(campos).forEach(function(k){ antes[k]=currentUser[k]; });
   Object.assign(currentUser,campos);
   var p=perfis.find(function(x){return x.id===currentUser.id;}); if(p) Object.assign(p,campos);
   renderPerfis();
@@ -2514,6 +2945,97 @@ function salvarPerfilExtra(campos){
     Object.assign(currentUser,antes); if(p) Object.assign(p,antes); renderPerfis();
     showToast('Não foi possível salvar: '+e.message);
   });
+}
+
+// ---------- Perfis: vínculo e conta do Helpdesk ----------
+var hdUsuariosOpc=null, hdUsuariosCarregando=false, hdUsuariosErro='', perfilHdForm=false, perfilHdErro='', perfilHdEnviando=false;
+function carregarOpcoesHelpdeskPerfil(){
+  if(hdUsuariosOpc||hdUsuariosCarregando||!(hdConta&&hdConta.conectado)) return;
+  hdUsuariosCarregando=true;
+  hdOpcoes('usuarios').then(function(itens){ hdUsuariosOpc=itens; hdUsuariosErro=''; })
+    .catch(function(e){ hdUsuariosOpc=[]; hdUsuariosErro=e.message; })
+    .then(function(){ hdUsuariosCarregando=false; renderPerfis(); });
+}
+function perfilHelpdeskHtml(eu){
+  var v=hdVinculo(eu);
+  var conectado=!!(hdConta&&hdConta.conectado);
+  var itens=(hdUsuariosOpc||[]).slice();
+  if(v && !itens.some(function(x){ return String(x.id)===String(v.id); })) itens.unshift({id:v.id,nome:v.nome||('#'+v.id)});
+  var vazio=!conectado?(v?'':'Conecte a conta do Helpdesk abaixo')
+    :(hdUsuariosCarregando||!hdUsuariosOpc?'Carregando pessoas do Helpdesk…':(hdUsuariosErro?'Não carregou: '+hdUsuariosErro:'Selecione o seu nome no Helpdesk…'));
+  var sel='<select class="filter-sel" id="perfHdResp" onchange="salvarHelpdeskResponsavel(this)"'+(!conectado&&!v?' disabled':'')+'>'+
+    '<option value="">'+escHtml(vazio||'Sem vínculo')+'</option>'+
+    itens.map(function(x){ return '<option value="'+escHtml(String(x.id))+'"'+(v&&String(v.id)===String(x.id)?' selected':'')+'>'+escHtml(x.nome)+'</option>'; }).join('')+
+    '</select>';
+  var conta;
+  if(hdConta===null){
+    conta='<div class="perfil-hd"><span class="perfil-hd-st">Verificando a conta do Helpdesk…</span></div>';
+  } else {
+    var st=conectado
+      ? '<span class="perfil-hd-st"><span class="hd-dot ok"></span><span>Conectado como <strong>'+escHtml(hdConta.nome||hdConta.email||'')+'</strong>'+(hdConta.lembrado?', entra sozinho quando o acesso vence':', sem senha salva')+'</span></span>'
+      : '<span class="perfil-hd-st"><span class="hd-dot"></span><span>Não conectado</span></span>';
+    var form=(!conectado||perfilHdForm)
+      ? '<input type="email" id="perfHdEmail" placeholder="E-mail do Helpdesk" autocomplete="off" value="'+escHtml((hdConta&&hdConta.email)||'')+'">'+
+        '<input type="password" id="perfHdSenha" placeholder="Senha do Helpdesk" autocomplete="new-password" onkeydown="if(event.key===\'Enter\')perfilSalvarHelpdesk()">'+
+        '<label class="hd-check"><input type="checkbox" id="perfHdLembrar" checked> Conectar sozinho (guarda a senha cifrada no seu perfil)</label>'+
+        (perfilHdErro?'<div class="hd-msg erro show">'+escHtml(perfilHdErro)+'</div>':'')+
+        '<div class="perfil-hd-acoes"><button class="btn btn-primary btn-sm" id="perfHdBtn" onclick="perfilSalvarHelpdesk()"'+(perfilHdEnviando?' disabled':'')+'>'+(perfilHdEnviando?'Conectando…':'Salvar e conectar')+'</button>'+
+          (conectado?'<button class="btn btn-ghost btn-sm" onclick="perfilHdForm=false;perfilHdErro=\'\';renderPerfis()">Cancelar</button>':'')+'</div>'
+      : '<div class="perfil-hd-acoes"><button class="btn btn-outline btn-sm" onclick="perfilHdForm=true;renderPerfis()">Trocar e-mail ou senha</button><button class="btn btn-ghost btn-sm" onclick="desconectarHelpdesk()">Desconectar</button></div>';
+    conta='<div class="perfil-hd">'+st+form+'</div>';
+  }
+  return '<div><label>Responsável no Helpdesk</label>'+sel+'</div>'+
+         '<div><label>Conta do Helpdesk</label>'+conta+'</div>';
+}
+// Cartões da equipe: lista para ligar o colega ao nome dele no Helpdesk.
+function perfilMiniHelpdeskHtml(p){
+  var v=hdVinculo(p);
+  var conectado=!!(hdConta&&hdConta.conectado);
+  if(!conectado) return '<div class="perfil-mini-trello">'+(v?'Helpdesk: '+escHtml(v.nome||'vinculado'):'Sem vínculo com o Helpdesk')+'</div>';
+  var itens=(hdUsuariosOpc||[]).slice();
+  if(v && !itens.some(function(x){ return String(x.id)===String(v.id); })) itens.unshift({id:v.id,nome:v.nome||('#'+v.id)});
+  var vazio=hdUsuariosCarregando||!hdUsuariosOpc?'Carregando…':'Sem vínculo com o Helpdesk';
+  return '<label class="perfil-mini-hd"><span>Helpdesk</span><select class="filter-sel" data-perfil="'+escHtml(p.id)+'" onchange="vincularHelpdeskColega(this)" aria-label="Responsável no Helpdesk de '+escHtml(perfilNome(p))+'">'+
+    '<option value="">'+escHtml(vazio)+'</option>'+
+    itens.map(function(x){ return '<option value="'+escHtml(String(x.id))+'"'+(v&&String(v.id)===String(x.id)?' selected':'')+'>'+escHtml(x.nome)+'</option>'; }).join('')+
+    '</select></label>';
+}
+function vincularHelpdeskColega(sel){
+  var pid=sel.getAttribute('data-perfil');
+  var p=perfis.find(function(x){ return x.id===pid; }); if(!p) return;
+  var id=sel.value, nome=id?sel.options[sel.selectedIndex].text:'';
+  var novo=id?JSON.stringify({id:isNaN(Number(id))?id:Number(id),nome:nome}):'';
+  var antes=p.helpdesk_usuario;
+  p.helpdesk_usuario=novo;
+  if(hdDados) renderHelpdesk();
+  call('vincularHelpdeskPerfil',{perfil_id:pid,helpdesk_usuario:novo}).then(function(res){
+    if(!res||!res.ok) throw new Error((res&&res.error)||'falha ao salvar');
+    showToast(id?perfilNome(p)+' ligado a "'+nome+'" no Helpdesk.':'Vínculo de '+perfilNome(p)+' com o Helpdesk removido.');
+  }).catch(function(e){
+    p.helpdesk_usuario=antes; renderPerfis(); if(hdDados) renderHelpdesk();
+    showToast('Não foi possível salvar: '+e.message);
+  });
+}
+function salvarHelpdeskResponsavel(sel){
+  var id=sel.value;
+  var nome=id?sel.options[sel.selectedIndex].text:'';
+  salvarPerfilExtra({helpdesk_usuario:id?JSON.stringify({id:isNaN(Number(id))?id:Number(id),nome:nome}):''});
+}
+function perfilSalvarHelpdesk(){
+  var email=(document.getElementById('perfHdEmail').value||'').trim();
+  var senha=document.getElementById('perfHdSenha').value||'';
+  var lembrar=document.getElementById('perfHdLembrar').checked;
+  if(!email||!senha){ perfilHdErro='Preencha o e-mail e a senha do Helpdesk.'; renderPerfis(); return; }
+  perfilHdErro=''; perfilHdEnviando=true; renderPerfis();
+  helpdeskConectarConta(email,senha,lembrar).then(function(res){
+    perfilHdEnviando=false;
+    if(res&&res.ok){
+      perfilHdForm=false; hdUsuariosOpc=null;
+      var s=document.getElementById('perfHdSenha'); if(s) s.value='';
+      showToast('Conta do Helpdesk conectada.');
+      renderPerfis(); carregarOpcoesHelpdeskPerfil();
+    } else { perfilHdErro=(res&&res.error)||'Não foi possível conectar.'; renderPerfis(); }
+  }).catch(function(e){ perfilHdEnviando=false; perfilHdErro='Erro de conexão: '+e.message; renderPerfis(); });
 }
 
 var chaveItems=[];
@@ -2559,14 +3081,28 @@ function loadCowork(){
 var GAS_DISPONIVEL = (typeof google !== 'undefined' && google.script && google.script.run);
 var API_URL_CONFIGURADA = API_URL.indexOf('COLE_AQUI') === -1;
 
+// Sessão: o código gerado pelo servidor no login vai em todo pedido. O
+// servidor descobre quem é o usuário por ele (o _user abaixo é ignorado
+// pelo Code.gs novo e só existe por compatibilidade).
+var sessaoToken=null, sessaoAvisada=false;
+function tratarSessao(res){
+  if(res && res.sessaoExpirada && currentUser && !sessaoAvisada){
+    sessaoAvisada=true;
+    showToast('Sua sessão expirou. Entre novamente.');
+    setTimeout(function(){ window.location.reload(); },1800);
+  }
+  return res;
+}
+
 function call(action, payload){
   var p=Object.assign({},payload||{});
   if(currentUser && currentUser.id) p._user=currentUser.id;
+  if(sessaoToken) p._sessao=sessaoToken;
 
   if(GAS_DISPONIVEL){
     return new Promise(function(resolve,reject){
       google.script.run.withSuccessHandler(resolve).withFailureHandler(reject).handleRequest(action,p);
-    });
+    }).then(tratarSessao);
   }
 
   if(!API_URL_CONFIGURADA){
@@ -2582,7 +3118,7 @@ function call(action, payload){
   }).then(function(resp){
     if(!resp.ok) throw new Error('O servidor respondeu com erro (HTTP '+resp.status+').');
     return resp.json();
-  });
+  }).then(tratarSessao);
 }
 
 // O carregamento dos dados só acontece depois do login (ver entrarApp()),
@@ -2657,7 +3193,9 @@ var pageMeta={
   perfis:      {t:'Perfis',e:'Organização'},
   processos:   {t:'Processos',e:'Gestão'},
   cowork:      {t:'Cowork',e:'Ferramentas'},
-  work:        {t:'Work',e:'Ferramentas'}
+  work:        {t:'Work',e:'Ferramentas'},
+  trello:      {t:'Trello',e:'Ferramentas'},
+  helpdesk:    {t:'Helpdesk',e:'Ferramentas'}
 };
 
 // Troca de página com uma transição suave (a página atual esmaece e sobe
@@ -2683,14 +3221,16 @@ function showPage(id,btn){
     document.getElementById('topbarEyebrow').textContent=m.e;
     var topBtn=document.getElementById('btnNovoTopbar');
     if(m.newTipo){topBtn.style.display='';topBtn.textContent=m.newLabel;topBtn.onclick=function(){openModal(m.newTipo);};}
-    else if(['notificacoes','agenda','perfis','cowork','processos','work'].indexOf(id)>=0){topBtn.style.display='none';}
+    else if(['notificacoes','agenda','perfis','cowork','processos','work','trello','helpdesk'].indexOf(id)>=0){topBtn.style.display='none';}
     else{topBtn.style.display='';topBtn.textContent='+ Novo Registro';topBtn.onclick=function(){openModal();};}
     if(id==='processos'){ showProcTab(currentProcTab); }
     if(id==='notificacoes'){ if(currentNotifTab==='prazos'){ renderPrazos(); } else { renderNotifications(); } }
     if(id==='agenda') renderAgenda();
     if(id==='perfis') loadPerfis();
     if(id==='cowork'){ renderPrompts(); renderModelos(); renderMemorias(); loadCowork(); }
-    if(id==='work'){ showWorkTab(currentWorkTab); }
+    if(id==='work'){ renderNotas(); }
+    if(id==='trello'){ loadTrello(); }
+    if(id==='helpdesk') entrarAbaHelpdesk();
     var csvBtn=document.getElementById('btnExportarCSV');
     if(csvBtn) csvBtn.style.display=(id==='processos')?'':'none';
     setTimeout(initScrollAnimations,60);
@@ -2759,21 +3299,11 @@ function showCwTab(tab,btn){
   });
 }
 
+// Compatibilidade: o Trello saiu de dentro de Work e virou página própria.
 var currentWorkTab='workspace';
-function showWorkTab(tab,btn){
-  var painelAtual=document.querySelector('#page-work .cw-pane.active');
-  var painelNovo=document.getElementById('workpane-'+tab);
-  if(painelAtual===painelNovo) painelAtual=null;
-  document.querySelectorAll('#page-work .cw-tab').forEach(function(b){b.classList.remove('active');});
-  if(btn) btn.classList.add('active');
-  else { document.querySelectorAll('#page-work .cw-tab').forEach(function(b){ if((b.getAttribute('onclick')||'').indexOf("showWorkTab('"+tab+"'")>=0)b.classList.add('active'); }); }
-  trocarSubAba(painelAtual,function(){
-    document.querySelectorAll('#page-work .cw-pane').forEach(function(p){p.classList.remove('active','leaving','tab-enter-down');});
-    if(painelNovo) painelNovo.classList.add('active','tab-enter-down');
-    currentWorkTab=tab;
-    if(tab==='workspace'){ renderNotas(); }
-    else if(tab==='trello'){ loadTrello(); }
-  });
+function showWorkTab(tab){
+  if(tab==='trello'){ dockGo('trello'); return; }
+  renderNotas();
 }
 
 var currentNotifTab='push';
@@ -4295,7 +4825,7 @@ function carregarPerfisSilencioso(){
   if(perfisCarregados||_perfisTrelloPedido||!currentUser) return;
   _perfisTrelloPedido=true;
   call('getPerfis',{}).then(function(res){
-    if(res&&res.ok){ perfis=res.data||[]; perfisCarregados=true; renderTrelloPeople(); }
+    if(res&&res.ok){ perfis=res.data||[]; perfisCarregados=true; renderTrelloPeople(); if(hdDados) renderHelpdesk(); }
   }).catch(function(){}).then(function(){ _perfisTrelloPedido=false; });
 }
 function iniciaisNome(n){ var p=String(n||'?').replace(/\s*-\s*C3$/i,'').trim().split(/\s+/); return ((p[0]||'?')[0]+(p.length>1?p[p.length-1][0]:'')).toUpperCase(); }
@@ -4721,6 +5251,7 @@ function entrarApp(){
   var tempoMinimo=2400;
   var tarefas=[loadAll(), loadCowork(), loadNotas(), loadOficios(), loadChaves(), loadSites(),
     loadPrazos(), loadEventos(), loadChavesPublicas()];
+  carregarHelpdesk(false,true,'meus'); // não segura a entrada: o card do Painel aparece quando chegar
   Promise.all(tarefas).then(function(){
     var restante=Math.max(0, tempoMinimo-(Date.now()-inicio));
     setTimeout(revelarApp, restante);
@@ -4747,8 +5278,11 @@ function sincronizarTudo(){
     var trelloRes=resultados[resultados.length-1];
     rebuildTrelloFilters();
     renderCompromissosTrello();
-    var trelloPane=document.getElementById('workpane-trello');
-    if(trelloPane && trelloPane.classList.contains('active')) applyTrelloPageResult(trelloRes);
+    var trelloPage=document.getElementById('page-trello');
+    if(trelloPage && trelloPage.classList.contains('active')) applyTrelloPageResult(trelloRes);
+    if(sessaoAvisada) return; // sessão expirou: o aviso já está na tela e a página vai recarregar
+    if(hdCache.meus && hdCache.meus.conectado) carregarHelpdesk(true,true,'meus');
+    if(hdEscopo==='todos' && hdCache.todos) carregarHelpdesk(true,true,'todos');
     if(btn){ btn.disabled=false; btn.classList.remove('is-syncing'); }
     showToast('Dados sincronizados.');
   }).catch(function(){
@@ -4833,6 +5367,7 @@ function submitAuth(mode){
   call(action,{usuario:usuario,senha:senha}).then(function(res){
     if(res && res.ok){
       currentUser=res.user;
+      sessaoToken=res.sessao||null;
       entrarApp();
       setAuthBusy(false);
     } else {
@@ -4845,9 +5380,914 @@ function submitAuth(mode){
   });
 }
 
+// ============================================================
+// HELPDESK DO GRUPO C3
+// "Meus chamados": dados buscados pelo Code.gs na API do Helpdesk (o
+// navegador não fala direto com o Helpdesk). Cada usuário conecta a
+// própria conta uma vez; a senha não fica guardada.
+// "Helpdesk completo": o site inteiro num iframe, carregado só quando
+// essa sub-aba é aberta.
+// ============================================================
+var HELPDESK_URL='https://grupoc3.c3consultoria.net.br/helpdesk';
+var hdDados=null, hdFiltro='ativos', hdCarregando=false;
+// hdCache guarda as duas visões; hdDados é sempre a visão escolhida (Meus ou Todos)
+var hdCache={meus:null,todos:null}, hdEscopo='meus', hdConta=null, hdPessoa='', hdPromessas={};
+try{ if(localStorage.getItem('gj_hd_escopo')==='todos') hdEscopo='todos'; }catch(e){}
+// Transições de status permitidas pelo Helpdesk (mesmo mapa da tela dele)
+var HD_TRANSICOES={ABERTO:['EM_TRIAGEM','CANCELADO'],EM_TRIAGEM:['EM_ATENDIMENTO'],EM_ATENDIMENTO:['AGUARDANDO_CLIENTE','AGUARDANDO_INTERNO','RESOLVIDO'],
+  AGUARDANDO_CLIENTE:['EM_ATENDIMENTO'],AGUARDANDO_INTERNO:['EM_ATENDIMENTO'],RESOLVIDO:['FECHADO'],FECHADO:[],CANCELADO:[]};
+var HD_COR_STATUS={ABERTO:'var(--slate)',EM_TRIAGEM:'var(--purple)',EM_ATENDIMENTO:'var(--accent)',AGUARDANDO_CLIENTE:'#ffcc66',AGUARDANDO_INTERNO:'var(--amber)',RESOLVIDO:'var(--green)',FECHADO:'var(--text-3)',CANCELADO:'var(--text-3)'};
+var HD_FIM=['RESOLVIDO','FECHADO','CANCELADO','CONCLUIDO','FINALIZADO','ENCERRADO'];
+var HD_STATUS_NOME={ABERTO:'Aberto',NOVO:'Novo',EM_TRIAGEM:'Em triagem',EM_ATENDIMENTO:'Em atendimento',EM_ANDAMENTO:'Em andamento',
+  AGUARDANDO_INTERNO:'Aguardando interno',AGUARDANDO_CLIENTE:'Aguardando cliente',PENDENTE:'Pendente',
+  RESOLVIDO:'Resolvido',FECHADO:'Fechado',CONCLUIDO:'Concluído',CANCELADO:'Cancelado'};
+var HD_PRIOR_NOME={BAIXA:'Baixa',NORMAL:'Normal',MEDIA:'Média',ALTA:'Alta',URGENTE:'Urgente',CRITICA:'Crítica'};
+
+function hdGrupo(st){
+  st=String(st||'').toUpperCase();
+  if(st==='CANCELADO') return 'cancelado';
+  if(HD_FIM.indexOf(st)>=0) return 'encerrados';
+  if(st.indexOf('AGUARDANDO')===0||st==='PENDENTE') return 'aguardando';
+  if(st==='EM_ATENDIMENTO'||st==='EM_ANDAMENTO') return 'atendimento';
+  return 'abertos';
+}
+function hdAtivo(c){ var g=hdGrupo(c.status); return g!=='encerrados'&&g!=='cancelado'; }
+function hdNomeStatus(st){ st=String(st||'').toUpperCase(); return HD_STATUS_NOME[st]||(st?st.charAt(0)+st.slice(1).toLowerCase().replace(/_/g,' '):'Sem status'); }
+function hdLinkChamado(c){ return (hdDados&&hdDados.base?hdDados.base:'https://grupoc3.c3consultoria.net.br')+'/helpdesk/chamados/'+encodeURIComponent(c.id); }
+function hdQuando(iso){
+  if(!iso) return '';
+  var d=new Date(iso); if(isNaN(d)) return '';
+  var min=Math.round((Date.now()-d.getTime())/60000);
+  if(min<1) return 'agora';
+  if(min<60) return 'há '+min+' min';
+  var hr=Math.round(min/60);
+  if(hr<24) return 'há '+hr+' h';
+  var dias=Math.round(hr/24);
+  if(dias===1) return 'ontem';
+  if(dias<7) return 'há '+dias+' dias';
+  return d.toLocaleDateString('pt-BR');
+}
+
+function entrarAbaHelpdesk(){ carregarHelpdesk(false); }
+
+function hdMostrar(estado){
+  // estado: carregando | erro | conectar | conteudo
+  document.getElementById('hdCarregando').classList.toggle('show',estado==='carregando');
+  document.getElementById('hdErro').classList.toggle('show',estado==='erro');
+  document.getElementById('hdConectar').style.display=estado==='conectar'?'':'none';
+  document.getElementById('hdConteudo').style.display=estado==='conteudo'?'flex':'none';
+  document.getElementById('hdEscopoBar').style.display=estado==='conteudo'?'':'none';
+  var conectado=!!(hdDados&&hdDados.conectado);
+  document.getElementById('hdConta').style.display=conectado?'':'none';
+  document.getElementById('hdBtnAtualizar').style.display=conectado?'':'none';
+  document.getElementById('hdBtnNovo').style.display=conectado?'':'none';
+  document.getElementById('hdBtnDesconectar').style.display=conectado?'':'none';
+}
+
+function hdMsg(id,texto){
+  var el=document.getElementById(id); if(!el) return;
+  el.textContent=texto||''; el.classList.toggle('show',!!texto);
+}
+
+// Busca os chamados. "silencioso" é usado pelo Painel e pelo Sincronizar:
+// não mexe na tela do Helpdesk se ela não estiver aberta.
+function carregarHelpdesk(forcar,silencioso,escopo){
+  escopo=escopo||hdEscopo;
+  var visivel=escopo===hdEscopo;
+  if(hdPromessas[escopo]){
+    // já há uma busca em andamento (ex.: a do Painel, logo após o login)
+    if(silencioso||!visivel) return hdPromessas[escopo];
+    if(!(hdDados&&hdDados.conectado)) hdMostrar('carregando');
+    return hdPromessas[escopo].then(function(){ return carregarHelpdesk(false,false,escopo); });
+  }
+  if(!silencioso && visivel && !(hdCache[escopo]&&hdCache[escopo].conectado)) hdMostrar('carregando');
+  hdCarregando=true;
+  var pr=call('helpdeskDados',{forcar:!!forcar,escopo:escopo}).then(function(res){
+    delete hdPromessas[escopo]; hdCarregando=false;
+    if(res && res.ok && res.conectado){
+      hdCache[escopo]=res;
+      hdConta={conectado:true,nome:res.nome,email:res.email,usuario_id:res.usuario_id,lembrado:res.lembrado};
+      if(escopo===hdEscopo){ hdDados=res; renderHelpdesk(); hdMostrar('conteudo'); }
+    } else if(res && res.ok){
+      hdCache={meus:null,todos:null}; hdDados=null; hdConta={conectado:false};
+      hdMsg('hdAviso',res.mensagem||'');
+      if(!silencioso) hdMostrar('conectar');
+      if(document.getElementById('page-perfis')&&document.getElementById('page-perfis').classList.contains('active')) renderPerfis();
+    } else if(!silencioso && visivel){
+      if(hdDados&&hdDados.conectado&&hdDados.escopo===escopo){ showToast((res&&res.error)||'Não foi possível atualizar o Helpdesk.'); }
+      else { document.getElementById('hdErroMsg').textContent=(res&&res.error)||'Tente novamente em instantes.'; hdMostrar('erro'); }
+    }
+    atualizarCardHelpdeskPainel();
+  }).catch(function(e){
+    delete hdPromessas[escopo]; hdCarregando=false;
+    if(!silencioso && visivel){ document.getElementById('hdErroMsg').textContent='Erro de conexão: '+e.message; hdMostrar('erro'); }
+  });
+  hdPromessas[escopo]=pr;
+  return pr;
+}
+function mudarEscopoHelpdesk(e){
+  hdEscopo=e==='todos'?'todos':'meus';
+  try{ localStorage.setItem('gj_hd_escopo',hdEscopo); }catch(err){}
+  hdPessoa='';
+  document.querySelectorAll('#hdEscopo button').forEach(function(b){ b.classList.toggle('active',b.getAttribute('data-esc')===hdEscopo); });
+  hdDados=hdCache[hdEscopo];
+  if(hdDados){ renderHelpdesk(); hdMostrar('conteudo'); }
+  carregarHelpdesk(false);
+}
+function atualizarHelpdesk(){ carregarHelpdesk(true).then(function(){ if(hdDados&&hdDados.conectado) showToast('Chamados atualizados.'); }); }
+function conectarHelpdesk(){
+  var email=(document.getElementById('hdEmail').value||'').trim();
+  var senhaEl=document.getElementById('hdSenha');
+  var senha=senhaEl.value||'';
+  var lembrar=document.getElementById('hdLembrar').checked;
+  if(!email||!senha){ hdMsg('hdFormErro','Preencha o e-mail e a senha do Helpdesk.'); return; }
+  hdMsg('hdFormErro','');
+  var btn=document.getElementById('hdBtnConectar');
+  btn.disabled=true; btn.textContent='Conectando…';
+  helpdeskConectarConta(email,senha,lembrar).then(function(res){
+    btn.disabled=false; btn.textContent='Conectar';
+    if(res&&res.ok){
+      senhaEl.value=''; hdMsg('hdAviso','');
+      showToast('Helpdesk conectado.');
+      hdMostrar('carregando');
+      carregarHelpdesk(true);
+    } else {
+      hdMsg('hdFormErro',(res&&res.error)||'Não foi possível conectar.');
+    }
+  }).catch(function(e){
+    btn.disabled=false; btn.textContent='Conectar';
+    hdMsg('hdFormErro','Erro de conexão: '+e.message);
+  });
+}
+// Usado pela aba Helpdesk e por Perfis
+function helpdeskConectarConta(email,senha,lembrar){
+  return call('helpdeskConectar',{email:email,senha:senha,lembrar:!!lembrar}).then(function(res){
+    if(res&&res.ok){
+      hdConta={conectado:true,nome:res.nome,email:res.email,usuario_id:res.usuario_id,lembrado:res.lembrado};
+      hdCache={meus:null,todos:null}; hdDados=null;
+      // o servidor pode ter preenchido o "Responsável no Helpdesk" do perfil
+      if(currentUser && !currentUser.helpdesk_usuario && res.usuario_id!==undefined && res.usuario_id!==''){
+        currentUser.helpdesk_usuario=JSON.stringify({id:res.usuario_id,nome:res.nome});
+        var eu=perfis.find(function(x){return x.id===currentUser.id;}); if(eu) eu.helpdesk_usuario=currentUser.helpdesk_usuario;
+      }
+      carregarHelpdesk(true,true,'meus');
+    }
+    return res;
+  });
+}
+function desconectarHelpdesk(){
+  if(!confirm('Desconectar sua conta do Helpdesk deste Gestor? A senha salva no seu perfil também será apagada.')) return;
+  call('helpdeskDesconectar',{}).then(function(){
+    hdDados=null; hdCache={meus:null,todos:null}; hdConta={conectado:false}; hdUsuariosOpc=null; perfilHdForm=false; hdMsg('hdAviso','');
+    document.getElementById('hdEmail').value='';
+    hdMostrar('conectar');
+    atualizarCardHelpdeskPainel();
+    if(document.getElementById('page-perfis').classList.contains('active')) renderPerfis();
+    showToast('Helpdesk desconectado.');
+  });
+}
+// Clicar de novo no mesmo card do resumo volta para "Ativos".
+function filtrarHelpdesk(f,peloCard){
+  if(peloCard && hdVis==='funil'){ hdFiltro='ativos'; mudarVisHelpdesk('lista'); }
+  hdFiltro=(peloCard && hdFiltro===f)?'ativos':f;
+  document.getElementById('hdFiltro').value=hdFiltro;
+  renderHelpdeskLista();
+}
+
+// ---------- Pessoas (avatares ligados ao "Responsável no Helpdesk" dos Perfis) ----------
+function hdNorm(s){ return String(s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().replace(/\s*-\s*c3$/,'').replace(/\s+/g,' ').trim(); }
+function hdVinculo(p){ try{ var o=p&&p.helpdesk_usuario?JSON.parse(p.helpdesk_usuario):null; return o&&o.id!==undefined?o:null; }catch(e){ return null; } }
+function hdPerfilDe(r){
+  if(!r) return null;
+  var lista=(perfis||[]).slice();
+  if(currentUser && !lista.some(function(p){return p.id===currentUser.id;})) lista.push(currentUser);
+  var porId=lista.find(function(p){ var v=hdVinculo(p); return v && r.id!==undefined && r.id!=='' && String(v.id)===String(r.id); });
+  if(porId) return porId;
+  var n=hdNorm(r.nome);
+  return lista.find(function(p){ var v=hdVinculo(p); return v && hdNorm(v.nome)===n; })||null;
+}
+function hdChavePessoa(r){ return (r.id!==undefined&&r.id!=='')?'id:'+r.id:'nome:'+hdNorm(r.nome); }
+function hdAvatar(r,tam){
+  tam=tam||24;
+  var st='width:'+tam+'px;height:'+tam+'px;font-size:'+Math.max(9,Math.round(tam*.4))+'px;';
+  if(!r) return '<i class="hd-av vazio" style="'+st+'">?</i>';
+  var p=hdPerfilDe(r);
+  if(p&&p.avatar) return '<i class="hd-av" style="'+st+'" title="'+escHtml(r.nome)+'">'+renderAvatarSvg(parseAvatarConfig(p.avatar),tam)+'</i>';
+  return '<i class="hd-av" style="'+st+'" title="'+escHtml(r.nome)+'">'+escHtml(hdIniciais(r.nome))+'</i>';
+}
+function hdAvatares(c,tam){
+  var rs=c.responsaveis||[];
+  if(!rs.length) return hdAvatar(null,tam);
+  return '<span class="hd-avs">'+rs.slice(0,3).map(function(r){ return hdAvatar(r,tam); }).join('')+'</span>';
+}
+function hdNomeExibido(r){ var p=hdPerfilDe(r); return p?(p.nome_exibicao||p.usuario||r.nome):String(r.nome||'').replace(/\s*-\s*C3$/i,''); }
+function hdTemPessoa(c){
+  if(!hdPessoa) return true;
+  if(hdPessoa==='sem') return !(c.responsaveis||[]).length;
+  return (c.responsaveis||[]).some(function(r){ return hdChavePessoa(r)===hdPessoa; });
+}
+function renderHelpdeskPessoas(){
+  var wrap=document.getElementById('hdPessoas'); if(!wrap||!hdDados) return;
+  carregarPerfisSilencioso(); // avatares vêm dos Perfis
+  var mapa={}, sem=0;
+  (hdDados.chamados||[]).forEach(function(c){
+    var ativo=hdAtivo(c);
+    if(!(c.responsaveis||[]).length){ if(ativo) sem++; return; }
+    c.responsaveis.forEach(function(r){
+      var k=hdChavePessoa(r);
+      if(!mapa[k]) mapa[k]={r:r,n:0};
+      if(ativo) mapa[k].n++;
+    });
+  });
+  var lista=Object.keys(mapa).map(function(k){ return {k:k,r:mapa[k].r,n:mapa[k].n}; });
+  if(lista.length<2 && !sem){ wrap.style.display='none'; return; }
+  lista.sort(function(a,b){ return b.n-a.n || hdNomeExibido(a.r).localeCompare(hdNomeExibido(b.r),'pt-BR'); });
+  var html='<button type="button" class="tp-item tp-todos'+(hdPessoa?'':' active')+'" onclick="filtrarHelpdeskPessoa(\'\')"><span class="tp-av"><span class="tp-av-in">Todos</span></span><span class="tp-nome">Todos</span></button>';
+  html+=lista.map(function(it){
+    var p=hdPerfilDe(it.r);
+    var av=p&&p.avatar?renderAvatarSvg(parseAvatarConfig(p.avatar),58):escHtml(hdIniciais(it.r.nome));
+    return '<button type="button" class="tp-item'+(hdPessoa===it.k?' active':'')+'" data-k="'+escHtml(it.k)+'" onclick="filtrarHelpdeskPessoa(this.getAttribute(\'data-k\'))" title="'+escHtml(it.r.nome)+' ('+it.n+' em aberto)">'+
+      '<span class="tp-av"><span class="tp-av-in">'+av+'</span>'+(it.n?'<span class="tp-badge">'+it.n+'</span>':'')+'</span>'+
+      '<span class="tp-nome">'+escHtml(hdNomeExibido(it.r))+'</span></button>';
+  }).join('');
+  if(sem) html+='<button type="button" class="tp-item'+(hdPessoa==='sem'?' active':'')+'" onclick="filtrarHelpdeskPessoa(\'sem\')" title="Chamados sem responsável"><span class="tp-av"><span class="tp-av-in" style="font-size:20px;color:var(--text-3)">?</span><span class="tp-badge">'+sem+'</span></span><span class="tp-nome">Sem responsável</span></button>';
+  wrap.innerHTML=html;
+  wrap.classList.toggle('has-active',!!hdPessoa);
+  wrap.style.display='';
+}
+function filtrarHelpdeskPessoa(k){
+  hdPessoa=(k && hdPessoa===k)?'':(k||'');
+  renderHelpdeskPessoas();
+  renderHelpdeskLista();
+}
+
+function renderHelpdesk(){
+  if(!hdDados) return;
+  if(!renderHelpdesk.visAplicada){ renderHelpdesk.visAplicada=true; mudarVisHelpdesk(hdVis); }
+  var cs=hdDados.chamados||[];
+  var n={abertos:0,atendimento:0,aguardando:0,encerrados:0};
+  cs.forEach(function(c){ var g=hdGrupo(c.status); if(n[g]!==undefined) n[g]++; });
+  document.getElementById('hdKAbertos').textContent=n.abertos;
+  document.getElementById('hdKAtend').textContent=n.atendimento;
+  document.getElementById('hdKAguard').textContent=n.aguardando;
+  document.getElementById('hdKFim').textContent=n.encerrados;
+  // Números da central inteira, quando o Helpdesk os informa
+  var r=hdDados.resumo||{};
+  function central(v){ return typeof v==='number'?'na central: '+v:''; }
+  document.getElementById('hdSAbertos').textContent=central(r.total_abertos!==undefined?r.total_abertos:r.total_chamados_abertos);
+  document.getElementById('hdSAtend').textContent=central(r.total_em_atendimento!==undefined?r.total_em_atendimento:r.total_chamados_em_atendimento);
+  document.getElementById('hdSAguard').textContent=central(r.total_aguardando_cliente);
+  document.getElementById('hdSFim').textContent=central(r.total_resolvidos);
+  document.getElementById('hdContaNome').textContent=hdDados.nome||hdDados.email||'';
+  var todos=hdDados.escopo==='todos';
+  document.querySelectorAll('#hdEscopo button').forEach(function(b){ b.classList.toggle('active',b.getAttribute('data-esc')===(todos?'todos':'meus')); });
+  document.getElementById('hdPainelTitulo').textContent=todos?'Todos os chamados':'Meus chamados';
+  document.getElementById('hdEscopoInfo').textContent=(cs.length)+(cs.length===1?' chamado':' chamados')+(todos?' visíveis para a sua conta no Helpdesk':' atribuídos a você');
+  renderHelpdeskPessoas();
+  var q=hdDados.consultado_em?new Date(hdDados.consultado_em):new Date();
+  document.getElementById('hdAtualizado').textContent='atualizado às '+q.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+  renderHelpdeskLista();
+}
+
+function renderHelpdeskLista(){
+  var tb=document.getElementById('hdTbody'); if(!tb||!hdDados) return;
+  if(hdVis==='funil'){ renderHelpdeskFunil(); return; }
+  document.querySelectorAll('.hd-kpis .kpi').forEach(function(k){ k.classList.toggle('is-on',k.getAttribute('data-hdf')===hdFiltro); });
+  var busca=(document.getElementById('hdBusca').value||'').trim().toLowerCase();
+  var lista=(hdDados.chamados||[]).filter(function(c){
+    if(!hdTemPessoa(c)) return false;
+    var g=hdGrupo(c.status);
+    if(hdFiltro==='ativos'&&!hdAtivo(c)) return false;
+    if(hdFiltro==='encerrados'&&g!=='encerrados'&&g!=='cancelado') return false;
+    if(['abertos','atendimento','aguardando'].indexOf(hdFiltro)>=0&&g!==hdFiltro) return false;
+    if(busca){
+      var t=[c.protocolo,c.titulo,c.organizacao,c.produto,c.responsavel,hdNomeStatus(c.status)].join(' ').toLowerCase();
+      if(t.indexOf(busca)<0) return false;
+    }
+    return true;
+  }).sort(function(a,b){ return String(b.atualizado_em||'').localeCompare(String(a.atualizado_em||'')); });
+
+  if(!lista.length){
+    var vazio=(hdDados.chamados||[]).length
+      ? 'Nenhum chamado neste filtro.'
+      : (hdDados.escopo==='todos'?'Nenhum chamado visível no Helpdesk.':'Você não tem chamados atribuídos no Helpdesk.');
+    tb.innerHTML='<tr class="empty-row"><td colspan="7" class="hd-vazio">'+vazio+'</td></tr>';
+    return;
+  }
+  var stCls={abertos:'s-aberto',atendimento:'s-atend',aguardando:'s-aguard',encerrados:'s-fim',cancelado:'s-cancel'};
+  var prCls={CRITICA:'v',URGENTE:'v',ALTA:'u',MEDIA:'o',BAIXA:'p'};
+  tb.innerHTML=lista.map(function(c,i){
+    var sub=[c.organizacao,c.produto].filter(Boolean).join(', ');
+    var pr=String(c.prioridade||'').toUpperCase();
+    return '<tr data-i="'+i+'" onclick="abrirDetalheHelpdesk('+i+')">'+
+      '<td class="hd-prot">'+escHtml(c.protocolo||'#'+c.id)+'</td>'+
+      '<td class="hd-tit"><strong title="'+escHtml(c.titulo)+'">'+escHtml(c.titulo)+'</strong>'+(sub?'<span>'+escHtml(sub)+'</span>':'')+'</td>'+
+      '<td><span class="hd-st '+(stCls[hdGrupo(c.status)]||'s-aberto')+'"><i></i>'+escHtml(hdNomeStatus(c.status))+'</span></td>'+
+      '<td>'+(pr?'<span class="dpill '+(prCls[pr]||'o')+'">'+escHtml(HD_PRIOR_NOME[pr]||pr)+'</span>':'<span class="hd-quando">-</span>')+'</td>'+
+      '<td><span class="hd-resp-cel">'+hdAvatares(c,24)+'<span>'+escHtml((c.responsaveis||[]).map(hdNomeExibido).join(', ')||'Sem responsável')+'</span></span></td>'+
+      '<td class="hd-quando" title="'+escHtml(c.atualizado_em||'')+'">'+escHtml(hdQuando(c.atualizado_em))+'</td>'+
+      '<td><button class="btn btn-outline btn-sm" onclick="event.stopPropagation();abrirDetalheHelpdesk('+i+')">Ver</button></td>'+
+    '</tr>';
+  }).join('');
+  hdListaVisivel=lista;
+}
+var hdListaVisivel=[];
+
+// ---------- Detalhe do chamado ----------
+// O conteúdo das mensagens vem em HTML do Helpdesk. Antes de mostrar, ele
+// passa por um filtro que só deixa formatação simples (sem scripts, sem
+// estilos, sem eventos), para nada de fora rodar dentro do Gestor.
+var HD_TAGS_OK={P:1,BR:1,B:1,STRONG:1,I:1,EM:1,U:1,S:1,UL:1,OL:1,LI:1,A:1,BLOCKQUOTE:1,SPAN:1,DIV:1,H1:1,H2:1,H3:1,H4:1,CODE:1,PRE:1,TABLE:1,THEAD:1,TBODY:1,TR:1,TD:1,TH:1,IMG:1,HR:1,SUB:1,SUP:1};
+function hdSanitizar(html){
+  var doc=new DOMParser().parseFromString('<div>'+String(html||'')+'</div>','text/html');
+  var raiz=doc.body.firstChild;
+  (function limpar(no){
+    Array.prototype.slice.call(no.childNodes).forEach(function(f){
+      if(f.nodeType===3) return;
+      if(f.nodeType!==1){ f.remove(); return; }
+      if(!HD_TAGS_OK[f.tagName]){
+        if(/^(SCRIPT|STYLE|IFRAME|OBJECT|EMBED|FORM|INPUT|BUTTON|TEXTAREA|SELECT|LINK|META|SVG|MATH)$/.test(f.tagName)){ f.remove(); return; }
+        limpar(f);
+        while(f.firstChild) f.parentNode.insertBefore(f.firstChild,f);
+        f.remove(); return;
+      }
+      Array.prototype.slice.call(f.attributes).forEach(function(at){
+        var n=at.name.toLowerCase(), v=at.value;
+        var manter=(f.tagName==='A'&&n==='href'&&/^(https?:|mailto:)/i.test(v))||
+                   (f.tagName==='IMG'&&n==='src'&&/^(https:|data:image\/(png|jpe?g|gif|webp);)/i.test(v))||
+                   (f.tagName==='IMG'&&n==='alt')||((f.tagName==='TD'||f.tagName==='TH')&&(n==='colspan'||n==='rowspan'));
+        if(!manter) f.removeAttribute(at.name);
+      });
+      if(f.tagName==='A'){ f.setAttribute('target','_blank'); f.setAttribute('rel','noopener noreferrer'); }
+      if(f.tagName==='IMG'){
+        if(!f.getAttribute('src')){ f.remove(); return; }
+        f.setAttribute('loading','lazy'); f.setAttribute('referrerpolicy','no-referrer');
+      }
+      limpar(f);
+    });
+  })(raiz);
+  return raiz.innerHTML;
+}
+function hdTextoOuHtml(s){
+  s=String(s||'');
+  if(/<[a-z][\s\S]*>/i.test(s)) return hdSanitizar(s);
+  return escHtml(s).replace(/\n/g,'<br>');
+}
+function hdDataHora(iso){
+  if(!iso) return '';
+  var d=new Date(iso); if(isNaN(d)) return String(iso);
+  return d.toLocaleDateString('pt-BR')+' às '+d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+}
+function hdTamanho(b){ if(!b) return ''; if(b<1024) return b+' B'; if(b<1048576) return Math.round(b/1024)+' KB'; return (b/1048576).toFixed(1).replace('.',',')+' MB'; }
+function hdAnexosHtml(lista){
+  if(!lista||!lista.length) return '';
+  return '<div class="hd-anexos">'+lista.map(function(a){
+    return '<button type="button" class="hd-anexo" onclick="baixarAnexoHelpdesk(\''+escHtml(String(a.id))+'\',this)" title="Baixar '+escHtml(a.nome)+'">'+
+      '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.5l-8.5 8.5a5 5 0 0 1-7-7L14 5.5a3.3 3.3 0 0 1 4.7 4.7l-8.6 8.6a1.7 1.7 0 0 1-2.4-2.4L15.5 8.6"/></svg>'+
+      '<span>'+escHtml(a.nome)+'</span>'+(a.tamanho?'<small>'+hdTamanho(a.tamanho)+'</small>':'')+'</button>';
+  }).join('')+'</div>';
+}
+
+function abrirDetalheHelpdesk(i){
+  var c=hdListaVisivel[i]; if(c) abrirDetalheChamado(c);
+}
+function abrirDetalheChamado(c){
+  var ov=document.getElementById('hdDetOverlay');
+  document.getElementById('hdDetProt').textContent=c.protocolo||('#'+c.id);
+  document.getElementById('hdDetTitulo').textContent=c.titulo||'';
+  document.getElementById('hdDetTags').innerHTML=hdTagsHtml(c);
+  document.getElementById('hdDetAcoes').innerHTML='';
+  document.getElementById('hdDetLink').href=hdLinkChamado(c);
+  document.getElementById('hdDetBody').innerHTML='<div class="hd-state show"><div class="spinner-lg"></div><span>Carregando o chamado&hellip;</span></div>';
+  hdRespLimpar();
+  ov.classList.add('open');
+  document.body.style.overflow='hidden';
+  hdDetalheAberto=c.id; hdDetalhe=null;
+  call('helpdeskChamado',{id:c.id}).then(function(res){
+    if(hdDetalheAberto!==c.id) return; // o usuário já fechou ou abriu outro
+    if(res&&res.ok&&res.conectado===false){
+      fecharDetalheHelpdesk(); hdDados=null; hdCache={meus:null,todos:null}; hdMsg('hdAviso',res.mensagem||''); hdMostrar('conectar'); atualizarCardHelpdeskPainel(); return;
+    }
+    if(!res||!res.ok||!res.chamado){
+      document.getElementById('hdDetBody').innerHTML='<div class="hd-state show"><strong>Não foi possível abrir o chamado</strong><span>'+escHtml((res&&res.error)||'Tente novamente.')+'</span></div>';
+      return;
+    }
+    if(res.usuario_id!==undefined&&hdConta) hdConta.usuario_id=res.usuario_id;
+    renderDetalheHelpdesk(res.chamado);
+  }).catch(function(e){
+    if(hdDetalheAberto!==c.id) return;
+    document.getElementById('hdDetBody').innerHTML='<div class="hd-state show"><strong>Erro de conexão</strong><span>'+escHtml(e.message)+'</span></div>';
+  });
+}
+var hdDetalhe=null, hdEditando='';
+var hdDetalheAberto=null;
+
+function hdTagsHtml(c){
+  var stCls={abertos:'s-aberto',atendimento:'s-atend',aguardando:'s-aguard',encerrados:'s-fim',cancelado:'s-cancel'};
+  var prCls={CRITICA:'v',URGENTE:'v',ALTA:'u',MEDIA:'o',BAIXA:'p'};
+  var pr=String(c.prioridade||'').toUpperCase();
+  return '<span class="hd-st '+(stCls[hdGrupo(c.status)]||'s-aberto')+'"><i></i>'+escHtml(hdNomeStatus(c.status))+'</span>'+
+    (pr?'<span class="dpill '+(prCls[pr]||'o')+'">Prioridade '+escHtml((HD_PRIOR_NOME[pr]||pr).toLowerCase())+'</span>':'')+
+    (c.tipo?'<span class="dpill o">'+(String(c.tipo).toUpperCase()==='INTERNO'?'Chamado interno':'Chamado externo')+'</span>':'');
+}
+
+function renderDetalheHelpdesk(c){
+  hdDetalhe=c;
+  document.getElementById('hdDetTitulo').textContent=c.titulo||'';
+  document.getElementById('hdDetTags').innerHTML=hdTagsHtml(c);
+  renderAcoesDetalhe(c);
+  var respHtml=(c.responsaveis||[]).length
+    ? '<span class="hd-resp-cel">'+hdAvatares(c,22)+'<span>'+escHtml(c.responsaveis.map(hdNomeExibido).join(', '))+'</span></span>'
+    : 'Sem responsável';
+  var meta=[
+    ['Órgão / cliente',escHtml(c.organizacao)],['Produto',escHtml(c.produto)],['Solicitante',escHtml(c.solicitante)],
+    ['Responsáveis',respHtml+'<button class="hd-editar" onclick="hdEditar(\'resp\')">Alterar</button>',true],
+    ['Grupo',escHtml(c.grupo)],
+    ['Prazo da demanda',escHtml(c.prazo?hdDataHora(c.prazo).replace(/ às 00:00$/,''):'Sem prazo')+'<button class="hd-editar" onclick="hdEditar(\'prazo\')">Alterar</button>',true],
+    ['Aberto em',escHtml(hdDataHora(c.criado_em))],['Atualizado',escHtml(hdQuando(c.atualizado_em))]
+  ].filter(function(m){ return m[2]||m[1]; });
+  var editor='';
+  if(hdEditando==='resp') editor='<div class="hd-inline" id="hdInlineResp"><span class="hd-dica">Carregando responsáveis&hellip;</span></div>';
+  if(hdEditando==='prazo'){
+    var v='';
+    if(c.prazo){ var d=new Date(c.prazo); if(!isNaN(d)){ var br=new Date(d.getTime()-3*3600000); v=br.toISOString().slice(0,16); } }
+    editor='<div class="hd-inline"><label class="hd-dica" for="hdPrazoNovo">Novo prazo (horário de Brasília)</label><input type="datetime-local" id="hdPrazoNovo" value="'+v+'">'+
+      '<div class="hd-inline-acoes"><button class="btn btn-ghost btn-sm" onclick="hdEditar(\'\')">Cancelar</button>'+(c.prazo?'<button class="btn btn-outline btn-sm" onclick="salvarPrazoHelpdesk(true)">Remover prazo</button>':'')+'<button class="btn btn-primary btn-sm" onclick="salvarPrazoHelpdesk(false)">Salvar prazo</button></div></div>';
+  }
+  var msgs=(c.mensagens||[]).slice().sort(function(a,b){ return String(b.criado_em).localeCompare(String(a.criado_em)); });
+  var html=
+    '<dl class="hd-det-meta">'+meta.map(function(m){ return '<div><dt>'+escHtml(m[0])+'</dt><dd>'+m[1]+'</dd></div>'; }).join('')+editor+'</dl>'+
+    '<section class="hd-det-sec"><h3>Descrição</h3><div class="hd-desc hd-rich">'+(c.descricao?hdTextoOuHtml(c.descricao):'<span style="color:var(--text-3)">Sem descrição.</span>')+'</div>'+hdAnexosHtml(c.anexos)+'</section>'+
+    '<section class="hd-det-sec"><h3>Histórico <span>'+msgs.length+(msgs.length===1?' mensagem':' mensagens')+', mais recentes primeiro</span></h3>'+
+      (msgs.length?'<div class="hd-msgs">'+msgs.map(function(m){
+        var cls=m.automatica?'auto':(m.interna?'interna':'');
+        var tag=m.automatica?'Automática':(m.interna?'Interna':'Pública');
+        return '<article class="hd-msg-item '+cls+'"><div class="hd-msg-h"><span class="hd-msg-autor">'+escHtml(m.autor)+(m.perfil?'<small>'+escHtml(m.perfil)+'</small>':'')+'</span>'+
+          '<span style="display:flex;align-items:center;gap:8px;"><span class="hd-quando">'+escHtml(hdDataHora(m.criado_em))+'</span><span class="hd-msg-tag">'+tag+'</span></span></div>'+
+          '<div class="hd-rich">'+hdTextoOuHtml(m.html)+'</div>'+hdAnexosHtml(m.anexos)+'</article>';
+      }).join('')+'</div>':'<div class="hd-vazio" style="padding:20px">Nenhuma mensagem ainda.</div>')+
+    '</section>';
+  var body=document.getElementById('hdDetBody');
+  var rolagem=body.scrollTop;
+  body.innerHTML=html;
+  body.scrollTop=hdEditando?rolagem:0;
+  if(hdEditando==='resp') carregarEditorResponsaveis(c);
+}
+
+function renderAcoesDetalhe(c){
+  var box=document.getElementById('hdDetAcoes');
+  var st=String(c.status).toUpperCase();
+  var prox=HD_TRANSICOES[st]||[];
+  var meu=hdConta&&hdConta.usuario_id!==undefined&&hdConta.usuario_id!==''?String(hdConta.usuario_id):'';
+  var souResp=meu&&(c.responsaveis||[]).some(function(r){ return String(r.id)===meu; });
+  var html='';
+  if(prox.length){
+    html+='<span class="lbl">Mover para</span>'+prox.map(function(n){
+      return '<button class="hd-mover" onclick="mudarStatusDetalhe(\''+n+'\',this)"><i style="background:'+HD_COR_STATUS[n]+'"></i>'+escHtml(hdNomeStatus(n))+'</button>';
+    }).join('');
+  }
+  if(!souResp && ['FECHADO','CANCELADO','RESOLVIDO'].indexOf(st)<0){
+    html+='<button class="hd-mover" onclick="receberChamadoHelpdesk(this)" title="Assumir este chamado como responsável">Receber chamado</button>';
+  }
+  box.innerHTML=html;
+}
+function hdAposEdicao(res,msg){
+  if(res&&res.ok&&res.chamado){
+    var c=res.chamado;
+    hdAplicarNoCache(c.id,{status:c.status,atualizado_em:c.atualizado_em,responsaveis:c.responsaveis,responsavel:c.responsavel,prazo:c.prazo});
+    hdEditando='';
+    renderDetalheHelpdesk(c);
+    if(hdDados) renderHelpdesk();
+    atualizarCardHelpdeskPainel();
+    if(msg) showToast(msg);
+    // atualiza as listas em segundo plano (um chamado recebido pode entrar em "Meus")
+    setTimeout(function(){ carregarHelpdesk(true,true,'meus'); if(hdCache.todos) carregarHelpdesk(true,true,'todos'); },400);
+    return true;
+  }
+  if(res&&res.ok&&res.conectado===false){ fecharDetalheHelpdesk(); hdDados=null; hdCache={meus:null,todos:null}; hdMsg('hdAviso',res.mensagem||''); hdMostrar('conectar'); return false; }
+  showToast((res&&res.error)||'Não foi possível salvar.');
+  return false;
+}
+function mudarStatusDetalhe(novo,btn){
+  if(!hdDetalhe) return;
+  document.querySelectorAll('#hdDetAcoes button').forEach(function(b){ b.disabled=true; });
+  var alvo=(hdDados&&(hdDados.chamados||[]).find(function(x){return String(x.id)===String(hdDetalhe.id);}))||hdDetalhe;
+  mudarStatusHelpdesk(alvo,novo,function(c){
+    // recarrega o detalhe completo (com o histórico atualizado)
+    call('helpdeskChamado',{id:c.id}).then(function(r){ if(r&&r.ok&&r.chamado&&hdDetalheAberto===c.id) renderDetalheHelpdesk(r.chamado); });
+  }).then(function(){ if(hdDetalhe) renderAcoesDetalhe(hdDetalhe.id===alvo.id?Object.assign({},hdDetalhe,{status:alvo.status}):hdDetalhe); });
+}
+function receberChamadoHelpdesk(btn){
+  if(!hdDetalhe) return;
+  btn.disabled=true; btn.textContent='Recebendo…';
+  call('helpdeskReceber',{id:hdDetalhe.id}).then(function(res){ if(!hdAposEdicao(res,'Chamado recebido.')){ btn.disabled=false; btn.textContent='Receber chamado'; } })
+    .catch(function(e){ btn.disabled=false; btn.textContent='Receber chamado'; showToast('Erro de conexão: '+e.message); });
+}
+function hdEditar(qual){ hdEditando=(hdEditando===qual)?'':qual; if(hdDetalhe) renderDetalheHelpdesk(hdDetalhe); }
+function carregarEditorResponsaveis(c){
+  var g=(c.grupos||[]).filter(function(x){ return x.id!==''&&x.id!==undefined; })[0];
+  var pr=g?hdOpcoes('responsaveis',g.id):hdOpcoes('usuarios');
+  pr.then(function(itens){
+    var box=document.getElementById('hdInlineResp'); if(!box||hdEditando!=='resp') return;
+    var marcados={}; (c.responsaveis||[]).forEach(function(r){ marcados[String(r.id)]=1; });
+    box.innerHTML='<span class="hd-dica">'+(g?'Responsáveis do grupo '+escHtml(g.nome):'Usuários do Helpdesk')+'</span>'+
+      '<div class="hd-resp-lista">'+(itens.length?itens.map(function(x){
+        return '<label><input type="checkbox" value="'+escHtml(String(x.id))+'"'+(marcados[String(x.id)]?' checked':'')+'>'+escHtml(x.nome)+'</label>';
+      }).join(''):'<span class="hd-dica">Nenhum responsável disponível.</span>')+'</div>'+
+      '<div class="hd-inline-acoes"><button class="btn btn-ghost btn-sm" onclick="hdEditar(\'\')">Cancelar</button><button class="btn btn-primary btn-sm" id="hdRespSalvar" onclick="salvarResponsaveisHelpdesk()">Salvar responsáveis</button></div>';
+  }).catch(function(e){ var box=document.getElementById('hdInlineResp'); if(box) box.innerHTML='<span class="hd-dica">'+escHtml(e.message)+'</span>'; });
+}
+function salvarResponsaveisHelpdesk(){
+  if(!hdDetalhe) return;
+  var ids=Array.prototype.map.call(document.querySelectorAll('#hdInlineResp input:checked'),function(x){ return Number(x.value); });
+  var b=document.getElementById('hdRespSalvar'); if(b){ b.disabled=true; b.textContent='Salvando…'; }
+  call('helpdeskResponsaveis',{id:hdDetalhe.id,ids:ids}).then(function(res){ if(!hdAposEdicao(res,'Responsáveis atualizados.')&&b){ b.disabled=false; b.textContent='Salvar responsáveis'; } })
+    .catch(function(e){ if(b){ b.disabled=false; b.textContent='Salvar responsáveis'; } showToast('Erro de conexão: '+e.message); });
+}
+function salvarPrazoHelpdesk(remover){
+  if(!hdDetalhe) return;
+  var v=remover?'':(document.getElementById('hdPrazoNovo').value||'');
+  if(!remover&&!v){ showToast('Escolha a data e a hora do prazo.'); return; }
+  call('helpdeskPrazo',{id:hdDetalhe.id,prazo:v}).then(function(res){ hdAposEdicao(res,remover?'Prazo removido.':'Prazo atualizado.'); })
+    .catch(function(e){ showToast('Erro de conexão: '+e.message); });
+}
+
+// ---------- Responder ----------
+var hdRespArquivos=[], hdRespInterna=false, hdRespEnviando=false;
+function hdRespLimpar(){
+  hdRespArquivos=[]; document.getElementById('hdRespTexto').value='';
+  hdRespRenderArquivos(); hdRespVisibilidade(false); hdMsg('hdRespErro','');
+}
+function hdRespVisibilidade(interna){
+  hdRespInterna=!!interna;
+  document.querySelectorAll('#hdRespVis button').forEach(function(b){ b.classList.toggle('on',(b.getAttribute('data-v')==='int')===hdRespInterna); });
+  document.getElementById('hdComposer').classList.toggle('interna',hdRespInterna);
+  document.getElementById('hdRespDica').textContent=hdRespInterna?'Só a equipe vê esta resposta.':'O cliente vê esta resposta.';
+}
+function hdRespAddArquivos(lista){
+  hdMsg('hdRespErro','');
+  Array.prototype.forEach.call(lista||[],function(f){
+    if(hdRespArquivos.length>=5){ hdMsg('hdRespErro','Envie no máximo 5 anexos por vez.'); return; }
+    if(f.size>HDN_MAX_ARQ){ hdMsg('hdRespErro','"'+f.name+'" passa de 10 MB.'); return; }
+    var total=hdRespArquivos.reduce(function(s,x){ return s+x.size; },0)+f.size;
+    if(total>HDN_MAX_TOTAL){ hdMsg('hdRespErro','Os anexos somam mais de 15 MB.'); return; }
+    hdRespArquivos.push(f);
+  });
+  hdRespRenderArquivos();
+}
+function hdRespRenderArquivos(){
+  document.getElementById('hdRespArqLista').innerHTML=hdRespArquivos.map(function(f,i){
+    return '<span><b title="'+escHtml(f.name)+'">'+escHtml(f.name)+'</b><small>'+hdTamanho(f.size)+'</small><button type="button" onclick="hdRespArquivos.splice('+i+',1);hdRespRenderArquivos();" aria-label="Remover '+escHtml(f.name)+'">&#10005;</button></span>';
+  }).join('');
+}
+function enviarRespostaHelpdesk(){
+  if(hdRespEnviando||!hdDetalhe) return;
+  var texto=(document.getElementById('hdRespTexto').value||'').trim();
+  if(!texto){ hdMsg('hdRespErro','Escreva a resposta.'); return; }
+  hdMsg('hdRespErro','');
+  var btn=document.getElementById('hdRespEnviar'), id=hdDetalhe.id;
+  hdRespEnviando=true; btn.disabled=true; btn.textContent=hdRespArquivos.length?'Enviando anexos…':'Enviando…';
+  Promise.all(hdRespArquivos.map(hdnLerBase64)).then(function(arqs){
+    return call('helpdeskComentar',{id:id,mensagem:texto,interna:hdRespInterna,arquivos:arqs});
+  }).then(function(res){
+    hdRespEnviando=false; btn.disabled=false; btn.textContent='Enviar resposta';
+    if(res&&res.ok&&res.chamado){
+      hdRespLimpar();
+      hdAposEdicao(res,'Resposta enviada.');
+      document.getElementById('hdDetBody').scrollTop=0;
+    } else if(res&&res.ok&&res.conectado===false){
+      hdAposEdicao(res);
+    } else {
+      hdMsg('hdRespErro',(res&&res.error)||'Não foi possível enviar a resposta.');
+    }
+  }).catch(function(e){
+    hdRespEnviando=false; btn.disabled=false; btn.textContent='Enviar resposta';
+    hdMsg('hdRespErro','Erro de conexão: '+e.message+'. Confira o histórico antes de enviar de novo.');
+  });
+}
+function fecharDetalheHelpdesk(){
+  if(hdRespEnviando) return;
+  var txt=document.getElementById('hdRespTexto');
+  if(txt&&txt.value.trim()&&!confirm('Descartar a resposta que você começou a escrever?')) return;
+  hdDetalheAberto=null; hdDetalhe=null; hdEditando='';
+  document.getElementById('hdDetOverlay').classList.remove('open');
+  document.body.style.overflow='';
+}
+document.addEventListener('keydown',function(e){
+  if(e.key!=='Escape') return;
+  var novo=document.getElementById('hdNovoOverlay'), det=document.getElementById('hdDetOverlay');
+  if(novo&&novo.classList.contains('open')){ fecharNovoChamado(); return; }
+  if(det&&det.classList.contains('open')) fecharDetalheHelpdesk();
+});
+
+function baixarAnexoHelpdesk(id,btn){
+  // abre a aba já no clique (senão o navegador bloqueia como pop-up) e
+  // só depois aponta para o link que o Helpdesk gerar
+  var janela=window.open('about:blank','_blank');
+  if(btn) btn.style.opacity='.6';
+  call('helpdeskAnexo',{id:id}).then(function(res){
+    if(btn) btn.style.opacity='';
+    if(res&&res.ok&&res.url){ if(janela){ janela.opener=null; janela.location.href=res.url; } else window.open(res.url,'_blank','noopener'); }
+    else { if(janela) janela.close(); showToast((res&&(res.error||res.mensagem))||'Não foi possível baixar o anexo.'); }
+  }).catch(function(e){ if(btn) btn.style.opacity=''; if(janela) janela.close(); showToast('Erro de conexão: '+e.message); });
+}
+
+// ---------- Lista ou Funil ----------
+var hdVis='lista';
+try{ if(localStorage.getItem('gj_hd_vis')==='funil') hdVis='funil'; }catch(e){}
+function mudarVisHelpdesk(v){
+  hdVis=v==='funil'?'funil':'lista';
+  try{ localStorage.setItem('gj_hd_vis',hdVis); }catch(e){}
+  document.querySelectorAll('.hd-vis button').forEach(function(b){ b.classList.toggle('on',b.getAttribute('data-vis')===hdVis); });
+  document.getElementById('hdFunil').style.display=hdVis==='funil'?'':'none';
+  document.getElementById('hdFunilNota').style.display=hdVis==='funil'?'':'none';
+  document.getElementById('hdListaWrap').style.display=hdVis==='funil'?'none':'';
+  document.getElementById('hdFiltro').style.display=hdVis==='funil'?'none':'';
+  renderHelpdeskLista();
+}
+var HD_COLUNAS=['ABERTO','EM_TRIAGEM','EM_ATENDIMENTO','AGUARDANDO_CLIENTE','AGUARDANDO_INTERNO','RESOLVIDO'];
+function hdIniciais(nome){
+  var p=String(nome||'').replace(/\s*-\s*C3$/i,'').trim().split(/\s+/).filter(Boolean);
+  if(!p.length) return '?';
+  return (p[0].charAt(0)+(p.length>1?p[p.length-1].charAt(0):'')).toUpperCase();
+}
+function renderHelpdeskFunil(){
+  var box=document.getElementById('hdFunil'); if(!box||!hdDados) return;
+  document.querySelectorAll('.hd-kpis .kpi').forEach(function(k){ k.classList.remove('is-on'); });
+  var busca=(document.getElementById('hdBusca').value||'').trim().toLowerCase();
+  var todos=(hdDados.chamados||[]).filter(function(c){
+    if(!hdTemPessoa(c)) return false;
+    if(!busca) return true;
+    return [c.protocolo,c.titulo,c.organizacao,c.produto,c.responsavel,hdNomeStatus(c.status)].join(' ').toLowerCase().indexOf(busca)>=0;
+  }).sort(function(a,b){ return String(b.atualizado_em||'').localeCompare(String(a.atualizado_em||'')); });
+  hdListaVisivel=todos;
+  var prCls={CRITICA:'v',URGENTE:'v',ALTA:'u',MEDIA:'o',NORMAL:'o',BAIXA:'p'};
+  box.innerHTML=HD_COLUNAS.map(function(st){
+    var itens=todos.filter(function(c){ return String(c.status).toUpperCase()===st||(st==='ABERTO'&&String(c.status).toUpperCase()==='NOVO'); });
+    var cards=itens.map(function(c){
+      var i=todos.indexOf(c);
+      var pr=String(c.prioridade||'').toUpperCase();
+      var cls=(pr==='CRITICA'||pr==='URGENTE')?' p-crit':(pr==='ALTA'?' p-alta':'');
+      var org=[c.organizacao,c.produto].filter(Boolean).join(', ');
+      var arrasta=(HD_TRANSICOES[st]||[]).length?' draggable="true" ondragstart="hdArrastar(event,'+i+')" ondragend="hdSoltarFim()"':'';
+      return '<button type="button" class="hd-card'+cls+'" data-i="'+i+'"'+arrasta+' onclick="abrirDetalheHelpdesk('+i+')">'+
+        '<span class="hd-card-top"><span class="hd-card-prot">'+escHtml(c.protocolo||('#'+c.id))+'</span>'+
+          (pr?'<span class="dpill '+(prCls[pr]||'o')+'">'+escHtml(HD_PRIOR_NOME[pr]||pr)+'</span>':'')+'</span>'+
+        '<span class="hd-card-tit">'+escHtml(c.titulo)+'</span>'+
+        (org?'<span class="hd-card-org">'+escHtml(org)+'</span>':'')+
+        '<span class="hd-card-foot"><span class="hd-card-resp">'+hdAvatares(c,22)+'<span>'+escHtml((c.responsaveis||[]).map(hdNomeExibido).join(', ')||'Sem responsável')+'</span></span>'+
+          '<span>'+escHtml(hdQuando(c.atualizado_em))+'</span></span>'+
+      '</button>';
+    }).join('');
+    return '<section class="hd-col" data-st="'+st+'" style="--col:'+HD_COR_STATUS[st]+'" ondragover="hdSobreColuna(event,this)" ondragleave="this.classList.remove(\'drop-hover\')" ondrop="hdSoltar(event,this)">'+
+      '<div class="hd-col-h"><b>'+escHtml(hdNomeStatus(st))+'</b><span>'+itens.length+'</span></div>'+
+      '<div class="hd-col-list">'+(cards||'<div class="hd-col-vazio">Nenhum chamado</div>')+'</div></section>';
+  }).join('');
+}
+
+// ---------- Arrastar entre colunas = mudar status ----------
+var hdArrasto=null;
+function hdArrastar(ev,i){
+  var c=hdListaVisivel[i]; if(!c) return;
+  hdArrasto={c:c,de:String(c.status).toUpperCase()};
+  try{ ev.dataTransfer.effectAllowed='move'; ev.dataTransfer.setData('text/plain',String(c.id)); }catch(e){}
+  var permitidos=HD_TRANSICOES[hdArrasto.de]||[];
+  document.querySelectorAll('#hdFunil .hd-col').forEach(function(col){
+    var st=col.getAttribute('data-st');
+    if(st===hdArrasto.de) return;
+    col.classList.add(permitidos.indexOf(st)>=0?'drop-ok':'drop-no');
+  });
+  setTimeout(function(){ var el=document.querySelector('#hdFunil .hd-card[data-i="'+i+'"]'); if(el) el.classList.add('arrastando'); },0);
+}
+function hdSoltarFim(){
+  document.querySelectorAll('#hdFunil .hd-col').forEach(function(col){ col.classList.remove('drop-ok','drop-no','drop-hover'); });
+  document.querySelectorAll('#hdFunil .hd-card.arrastando').forEach(function(el){ el.classList.remove('arrastando'); });
+}
+function hdSobreColuna(ev,col){
+  if(!hdArrasto||!col.classList.contains('drop-ok')) return;
+  ev.preventDefault(); col.classList.add('drop-hover');
+}
+function hdSoltar(ev,col){
+  ev.preventDefault();
+  var st=col.getAttribute('data-st'), arr=hdArrasto; hdArrasto=null; hdSoltarFim();
+  if(!arr||!col.classList||(HD_TRANSICOES[arr.de]||[]).indexOf(st)<0) return;
+  mudarStatusHelpdesk(arr.c,st);
+}
+// Muda o status (na hora na tela; desfaz se o Helpdesk recusar)
+function mudarStatusHelpdesk(c,novo,depois){
+  var antes=c.status;
+  hdAplicarNoCache(c.id,{status:novo});
+  renderHelpdesk();
+  return call('helpdeskMudarStatus',{id:c.id,status:novo}).then(function(res){
+    if(res&&res.ok&&res.chamado){
+      hdAplicarNoCache(c.id,{status:res.chamado.status,atualizado_em:res.chamado.atualizado_em,responsaveis:res.chamado.responsaveis,responsavel:res.chamado.responsavel});
+      renderHelpdesk(); atualizarCardHelpdeskPainel();
+      showToast('Chamado '+(c.protocolo||'')+' em "'+hdNomeStatus(res.chamado.status)+'".');
+      if(depois) depois(res.chamado);
+      return res;
+    }
+    hdAplicarNoCache(c.id,{status:antes}); renderHelpdesk();
+    if(res&&res.ok&&res.conectado===false){ hdDados=null; hdCache={meus:null,todos:null}; hdMsg('hdAviso',res.mensagem||''); hdMostrar('conectar'); return res; }
+    showToast((res&&res.error)||'Não foi possível mudar o status.');
+    return res;
+  }).catch(function(e){ hdAplicarNoCache(c.id,{status:antes}); renderHelpdesk(); showToast('Erro de conexão: '+e.message); });
+}
+function hdAplicarNoCache(id,campos){
+  ['meus','todos'].forEach(function(e){
+    var d=hdCache[e]; if(!d) return;
+    (d.chamados||[]).forEach(function(c){ if(String(c.id)===String(id)) Object.keys(campos).forEach(function(k){ if(campos[k]!==undefined) c[k]=campos[k]; }); });
+  });
+}
+// ---------- Novo chamado ----------
+var hdnTipo='EXTERNO', hdnPrior='NORMAL', hdnArquivos=[], hdnEnviando=false;
+function hdOpcoes(tipo,id){
+  return call('helpdeskOpcoes',{tipo:tipo,id:id||''}).then(function(res){
+    if(res&&res.ok&&res.conectado===false){ throw new Error(res.mensagem||'Sua conexão com o Helpdesk expirou.'); }
+    if(!res||!res.ok) throw new Error((res&&res.error)||'Não foi possível carregar a lista.');
+    return res.itens||[];
+  });
+}
+function hdnPreencher(sel,itens,vazio,selecionado){
+  var el=document.getElementById(sel);
+  el.innerHTML='<option value="">'+escHtml(vazio)+'</option>'+itens.map(function(x){
+    return '<option value="'+escHtml(String(x.id))+'"'+(String(x.id)===String(selecionado)?' selected':'')+'>'+escHtml(x.nome)+'</option>';
+  }).join('');
+  el.disabled=false;
+}
+function hdnCarregando(sel,texto){ var el=document.getElementById(sel); el.innerHTML='<option value="">'+escHtml(texto)+'</option>'; el.disabled=true; }
+function hdnErro(msg){ hdMsg('hdnErroMsg',msg||''); }
+
+function abrirNovoChamado(){
+  hdnArquivos=[]; hdnRenderArquivos(); hdnErro('');
+  ['hdnTit','hdnDesc','hdnPrazo'].forEach(function(id){ document.getElementById(id).value=''; });
+  document.getElementById('hdnSol').value=''; document.getElementById('hdnErro').value=''; document.getElementById('hdnVis').value='PUBLICA';
+  hdnSolMudou(); hdnPrioridade('NORMAL');
+  document.getElementById('hdNovoOverlay').classList.add('open');
+  hdnMudarTipo(hdnTipo);
+  setTimeout(function(){ document.getElementById(hdnTipo==='EXTERNO'?'hdnOrg':'hdnTit').focus(); },80);
+}
+function fecharNovoChamado(){
+  if(hdnEnviando) return;
+  document.getElementById('hdNovoOverlay').classList.remove('open');
+}
+function hdnMudarTipo(t){
+  hdnTipo=t;
+  document.querySelectorAll('#hdnTipo button').forEach(function(b){ b.classList.toggle('on',b.getAttribute('data-v')===t); });
+  document.querySelectorAll('#hdNovoOverlay .hdn-ext').forEach(function(el){ el.style.display=t==='EXTERNO'?'':'none'; });
+  document.querySelectorAll('#hdNovoOverlay .hdn-int').forEach(function(el){ el.style.display=t==='INTERNO'?'':'none'; });
+  hdnSolMudou();
+  hdnErro('');
+  if(t==='EXTERNO'){
+    hdnCarregando('hdnOrg','Carregando…');
+    hdnCarregando('hdnProd','Escolha a organização');
+    hdnCarregando('hdnGrupo','Escolha o produto');
+    hdOpcoes('organizacoes').then(function(itens){
+      hdnPreencher('hdnOrg',itens,itens.length?'Selecione a organização':'Nenhuma organização disponível');
+    }).catch(function(e){ hdnCarregando('hdnOrg','Não carregou'); hdnErro(e.message); });
+  } else {
+    hdnCarregando('hdnGrupo','Carregando…');
+    document.getElementById('hdnResp').innerHTML='<span class="hd-dica">Escolha o grupo.</span>';
+    hdOpcoes('grupos').then(function(itens){
+      hdnPreencher('hdnGrupo',itens,'Selecione o grupo',itens[0]&&itens[0].id);
+      hdnGrupoMudou();
+    }).catch(function(e){ hdnCarregando('hdnGrupo','Não carregou'); hdnErro(e.message); });
+  }
+}
+function hdnOrgMudou(){
+  var org=document.getElementById('hdnOrg').value;
+  hdnCarregando('hdnGrupo','Escolha o produto');
+  if(!org){ hdnCarregando('hdnProd','Escolha a organização'); return; }
+  hdnCarregando('hdnProd','Carregando…');
+  hdOpcoes('produtos',org).then(function(itens){
+    if(document.getElementById('hdnOrg').value!==org) return;
+    hdnPreencher('hdnProd',itens,itens.length?'Selecione o produto':'Esta organização não tem produtos',itens.length===1?itens[0].id:'');
+    if(itens.length===1) hdnProdMudou();
+  }).catch(function(e){ hdnCarregando('hdnProd','Não carregou'); hdnErro(e.message); });
+}
+function hdnProdMudou(){
+  var prod=document.getElementById('hdnProd').value;
+  if(!prod){ hdnCarregando('hdnGrupo','Escolha o produto'); return; }
+  hdnCarregando('hdnGrupo','Carregando…');
+  hdOpcoes('grupos_produto',prod).then(function(itens){
+    if(document.getElementById('hdnProd').value!==prod) return;
+    var principal=itens.filter(function(x){ return x.principal; })[0]||itens[0];
+    hdnPreencher('hdnGrupo',itens,itens.length?'Selecione o grupo':'Produto sem grupo de atendimento',principal&&principal.id);
+  }).catch(function(e){ hdnCarregando('hdnGrupo','Não carregou'); hdnErro(e.message); });
+}
+function hdnGrupoMudou(){
+  if(hdnTipo!=='INTERNO') return;
+  var g=document.getElementById('hdnGrupo').value, box=document.getElementById('hdnResp');
+  if(!g){ box.innerHTML='<span class="hd-dica">Escolha o grupo.</span>'; return; }
+  box.innerHTML='<span class="hd-dica">Carregando&hellip;</span>';
+  hdOpcoes('responsaveis',g).then(function(itens){
+    if(document.getElementById('hdnGrupo').value!==g) return;
+    box.innerHTML=itens.length?itens.map(function(x){
+      return '<label><input type="checkbox" value="'+escHtml(String(x.id))+'">'+escHtml(x.nome)+'</label>';
+    }).join(''):'<span class="hd-dica">Este grupo não tem responsáveis cadastrados.</span>';
+  }).catch(function(e){ box.innerHTML='<span class="hd-dica">'+escHtml(e.message)+'</span>'; });
+}
+function hdnSolMudou(){
+  var erro=document.getElementById('hdnSol').value==='ERRO';
+  document.getElementById('hdnErroCampo').style.display=(erro&&hdnTipo==='EXTERNO')?'':'none';
+  if(!erro) document.getElementById('hdnErro').value='';
+}
+function hdnPrioridade(v){
+  hdnPrior=v;
+  document.querySelectorAll('#hdnPrior button').forEach(function(b){ b.classList.toggle('on',b.getAttribute('data-v')===v); });
+}
+
+var HDN_MAX_ARQ=10*1024*1024, HDN_MAX_TOTAL=15*1024*1024;
+function hdnAddArquivos(lista){
+  hdnErro('');
+  Array.prototype.forEach.call(lista||[],function(f){
+    if(hdnArquivos.length>=5){ hdnErro('Envie no máximo 5 anexos por vez.'); return; }
+    if(f.size>HDN_MAX_ARQ){ hdnErro('"'+f.name+'" passa de 10 MB.'); return; }
+    var total=hdnArquivos.reduce(function(s,x){ return s+x.size; },0)+f.size;
+    if(total>HDN_MAX_TOTAL){ hdnErro('Os anexos somam mais de 15 MB. Envie os maiores direto pelo Helpdesk.'); return; }
+    hdnArquivos.push(f);
+  });
+  hdnRenderArquivos();
+}
+function hdnRemoverArquivo(i){ hdnArquivos.splice(i,1); hdnRenderArquivos(); }
+function hdnRenderArquivos(){
+  document.getElementById('hdnArqLista').innerHTML=hdnArquivos.map(function(f,i){
+    return '<span><b title="'+escHtml(f.name)+'">'+escHtml(f.name)+'</b><small>'+hdTamanho(f.size)+'</small><button type="button" onclick="hdnRemoverArquivo('+i+')" aria-label="Remover '+escHtml(f.name)+'">&#10005;</button></span>';
+  }).join('');
+}
+(function(){
+  var drop=document.getElementById('hdnDrop'); if(!drop) return;
+  ['dragenter','dragover'].forEach(function(ev){ drop.addEventListener(ev,function(e){ e.preventDefault(); drop.classList.add('over'); }); });
+  ['dragleave','drop'].forEach(function(ev){ drop.addEventListener(ev,function(e){ e.preventDefault(); drop.classList.remove('over'); }); });
+  drop.addEventListener('drop',function(e){ hdnAddArquivos(e.dataTransfer&&e.dataTransfer.files); });
+})();
+function hdnLerBase64(f){
+  return new Promise(function(res,rej){
+    var r=new FileReader();
+    r.onload=function(){ var s=String(r.result||''); res({nome:f.name,mime:f.type||'application/octet-stream',base64:s.slice(s.indexOf(',')+1)}); };
+    r.onerror=function(){ rej(new Error('Não foi possível ler "'+f.name+'".')); };
+    r.readAsDataURL(f);
+  });
+}
+
+function criarChamadoHelpdesk(){
+  if(hdnEnviando) return;
+  var v=function(id){ return (document.getElementById(id).value||'').trim(); };
+  var dados={
+    tipo_chamado:hdnTipo, titulo:v('hdnTit'), descricao:v('hdnDesc'), prioridade:hdnPrior,
+    grupo_ids:v('hdnGrupo')?[Number(v('hdnGrupo'))]:[], prazo:v('hdnPrazo'),
+    tipo_mensagem:hdnTipo==='EXTERNO'?v('hdnVis'):'PUBLICA'
+  };
+  var faltando=null;
+  if(hdnTipo==='EXTERNO'){
+    dados.organizacao_id=v('hdnOrg'); dados.produto_id=v('hdnProd');
+    dados.tipo_solicitacao=v('hdnSol'); dados.tipo_erro=v('hdnErro');
+    if(!dados.organizacao_id) faltando='Selecione uma organização.';
+    else if(!dados.produto_id) faltando='Selecione um produto.';
+    else if(!dados.tipo_solicitacao) faltando='Selecione o tipo de solicitação.';
+    else if(dados.tipo_solicitacao==='ERRO'&&!dados.tipo_erro) faltando='Selecione o tipo de erro.';
+  } else {
+    dados.responsaveis_usuario_ids=Array.prototype.map.call(document.querySelectorAll('#hdnResp input:checked'),function(x){ return Number(x.value); });
+  }
+  if(!faltando&&!dados.grupo_ids.length) faltando='Selecione o grupo responsável.';
+  if(!faltando&&!dados.titulo) faltando='Informe o título do chamado.';
+  if(!faltando&&!dados.descricao) faltando='Descreva o chamado.';
+  if(faltando){ hdnErro(faltando); return; }
+  hdnErro('');
+  var btn=document.getElementById('hdnCriarBtn');
+  hdnEnviando=true; btn.disabled=true; btn.textContent=hdnArquivos.length?'Enviando anexos…':'Criando…';
+  Promise.all(hdnArquivos.map(hdnLerBase64)).then(function(arqs){
+    dados.arquivos=arqs;
+    return call('helpdeskCriar',dados);
+  }).then(function(res){
+    hdnEnviando=false; btn.disabled=false; btn.textContent='Criar chamado';
+    if(res&&res.ok&&res.conectado===false){ fecharNovoChamado(); hdDados=null; hdMsg('hdAviso',res.mensagem||''); hdMostrar('conectar'); atualizarCardHelpdeskPainel(); return; }
+    if(!res||!res.ok){ hdnErro((res&&res.error)||'Não foi possível criar o chamado.'); return; }
+    fecharNovoChamado();
+    showToast('Chamado '+(res.protocolo||'')+' criado.');
+    carregarHelpdesk(true).then(function(){
+      var novo=(hdDados&&hdDados.chamados||[]).filter(function(c){ return String(c.id)===String(res.id); })[0];
+      abrirDetalheChamado(novo||{id:res.id,protocolo:res.protocolo,titulo:dados.titulo,status:'ABERTO',prioridade:dados.prioridade});
+    });
+  }).catch(function(e){
+    hdnEnviando=false; btn.disabled=false; btn.textContent='Criar chamado';
+    hdnErro('Erro de conexão: '+e.message+'. Confira em "Meus chamados" se ele foi criado antes de tentar de novo.');
+  });
+}
+
+function atualizarCardHelpdeskPainel(){
+  var card=document.getElementById('painelHelpdeskStat');
+  var sum=document.getElementById('painelSummary');
+  if(!card||!sum) return;
+  var meus=hdCache.meus;
+  var conectado=!!(meus&&meus.conectado);
+  card.style.display=conectado?'':'none';
+  sum.classList.toggle('com-hd',conectado);
+  if(conectado) document.getElementById('agendaHelpdesk').textContent=(meus.chamados||[]).filter(hdAtivo).length;
+}
 function logout(){
   if(!confirm('Sair do sistema?')) return;
-  window.location.reload();
+  var sair=function(){ window.location.reload(); };
+  if(sessaoToken) call('logout',{}).then(sair,sair); else sair();
 }
 
 // ============================================================
