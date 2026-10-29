@@ -1439,6 +1439,14 @@ button.agenda-stat{text-align:left;font:inherit;color:inherit;cursor:pointer;pos
 .roda-fatia.vazia{fill:rgba(255,255,255,.03);}
 .roda-fatia.sel{fill:rgba(255,255,255,.94);stroke:#fff;filter:drop-shadow(0 0 22px rgba(255,255,255,.35));}
 .roda-item{position:absolute;width:150px;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;pointer-events:none;color:#f5f5f7;transition:color .14s,transform .18s cubic-bezier(.22,.8,.2,1);}
+.roda-ic{display:grid;place-items:center;height:26px;}
+.roda-thumb{display:block;width:26px;height:26px;border-radius:8px;background:center/cover no-repeat;box-shadow:0 0 0 1px rgba(255,255,255,.18);}
+.roda-item.sel .roda-thumb{box-shadow:0 0 0 1px rgba(0,0,0,.15);}
+.roda-item.vazia .roda-ic{opacity:.6;}
+.roda-link{position:fixed;left:50%;bottom:28px;z-index:310;transform:translateX(-50%);display:flex;align-items:center;gap:12px;padding:10px 10px 10px 18px;border-radius:999px;font-size:13.5px;color:#fff;background:rgba(20,20,22,.94);box-shadow:inset 0 1px 1px rgba(255,255,255,.18),0 20px 40px rgba(0,0,0,.5);animation:rodaFundo .2s ease both;}
+.roda-link a{display:inline-flex;padding:8px 16px;border-radius:999px;background:#fff;color:#000;font-weight:600;text-decoration:none;}
+.roda-link button{border:none;background:none;color:rgba(255,255,255,.6);cursor:pointer;font-size:14px;padding:6px 8px;}
+.site-title .pc-roda{display:inline-flex;margin-left:8px;}
 .roda-item svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;opacity:.9;}
 .roda-item b{font-size:13.5px;font-weight:600;letter-spacing:-.015em;line-height:1.2;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;}
 .roda-item small{font-size:11px;color:rgba(255,255,255,.55);line-height:1.2;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
@@ -2128,6 +2136,7 @@ button.agenda-stat{text-align:left;font:inherit;color:inherit;cursor:pointer;pos
       <div><div style="font-size:26px;font-weight:600;letter-spacing:-.035em;">Sites</div><div style="font-size:13.5px;color:var(--text-2);margin-top:5px;">Lista de sites úteis, compartilhada com toda a equipe.</div></div>
       <button class="btn btn-primary btn-sm" onclick="openSiteModal()">+ Novo Site</button>
     </div>
+    <div class="roda-cfg" id="rodaCfgSites"></div>
     <div class="site-grid" id="siteGrid"></div>
   </div>
 </div>
@@ -2547,7 +2556,7 @@ button.agenda-stat{text-align:left;font:inherit;color:inherit;cursor:pointer;pos
     <div class="roda-centro" id="rodaCentro"></div>
     <div class="roda-mira" id="rodaMira"></div>
   </div>
-  <div class="roda-dica"><span><kbd>Mouse</kbd>aponta</span><span><kbd>Soltar Shift</kbd>copia</span><span><kbd>Esc</kbd>cancela</span></div>
+  <div class="roda-dica"><span><kbd>Mouse</kbd>aponta</span><span id="rodaDicaSoltar"><kbd>Soltar Shift</kbd>copia</span><span><kbd>Esc</kbd>cancela</span></div>
 </div>
 <script>
 // ═══════════════════════════════════════════
@@ -2558,7 +2567,7 @@ button.agenda-stat{text-align:left;font:inherit;color:inherit;cursor:pointer;pos
 // URL do Apps Script, pode deixar como está: essa URL não é usada nesse
 // caso. Veja a função call(), logo abaixo, pra entender como isso é usado.
 // ═══════════════════════════════════════════
-var API_URL = 'https://script.google.com/macros/s/AKfycbxfFLYOv9K0hlbb-Tg-6Dfs1CwxWa5seNH2fDkKnAmIE0N429_X0JKKJKRL2fRa8itv3A/exec';
+var API_URL = 'https://script.google.com/macros/s/AKfycbwlF470rpR6djqx6f5XD63LklFQ-QExb7zQGIOilmxb4yBaiKKyS7MwljzivfIVxM79JQ/exec';
 
 // ═══════════════════════════════════════════
 // CONSTANTES
@@ -3030,7 +3039,7 @@ function salvarPerfil(){
   var btn=document.getElementById('profileSaveBtn'); btn.disabled=true; btn.textContent='Salvando…';
   var avSalvar=Object.assign({},perfilAvatarAtual||avatarConfigPadrao());
   // os atalhos da roda de prompts moram no mesmo JSON: não podem se perder ao trocar o avatar
-  try{ var avAntes=currentUser.avatar?JSON.parse(currentUser.avatar):null; if(avAntes&&Array.isArray(avAntes.atalhos)) avSalvar.atalhos=avAntes.atalhos; }catch(e){}
+  try{ var avAntes=currentUser.avatar?JSON.parse(currentUser.avatar):null; if(avAntes){ ['atalhos','atalhosSites'].forEach(function(c){ if(Array.isArray(avAntes[c])) avSalvar[c]=avAntes[c]; }); } }catch(e){}
   call('saveProfile',{ nome_exibicao:nome, avatar:JSON.stringify(avSalvar) }).then(function(res){
     btn.disabled=false; btn.textContent='Salvar';
     if(res.ok){ currentUser=Object.assign({},currentUser,res.user); var pp=perfis.find(function(x){return x.id===currentUser.id;}); if(pp) Object.assign(pp,res.user); updateSidebarUser(); renderPerfis(); fecharPerfil(); showToast('Perfil salvo.'); }
@@ -4172,15 +4181,14 @@ function deleteProcess(tipo,id){
 // COWORK — PROMPTS
 // ═══════════════════════════════════════════
 function renderPrompts(){
-  renderRodaCfg();
+  renderRodaCfg('prompts');
   var grid=document.getElementById('promptGrid');
   if(!cwPrompts.length){
     grid.innerHTML='<div style="background:var(--surface);border:1px dashed var(--line-2);border-radius:var(--r-lg);padding:48px;text-align:center;color:var(--text-3);font-size:13px;grid-column:1/-1">Nenhum prompt salvo ainda.<br>Clique em <strong>+ Novo Prompt</strong> para criar o primeiro.</div>';
     return;
   }
   grid.innerHTML=cwPrompts.map(function(p,i){
-    var slot=RODA_POS?rodaAtalhos().indexOf(String(p.id)):-1;
-    var selo=slot>=0?'<span class="pc-roda" title="Atalho na roda (segure Shift)">'+rodaSeta(slot)+'Roda: '+RODA_POS[slot]+'</span>':'';
+    var selo=rodaSelo('prompts',p.id);
     return'<div class="prompt-card"><div class="pc-head"><div><span class="pc-funcao">'+escHtml(p.funcao)+'</span>'+selo+'<div class="pc-title">'+escHtml(p.title)+'</div></div></div><div class="pc-body">'+escHtml(p.body)+'</div><div class="pc-footer"><button class="copy-btn" onclick="copyPrompt('+i+',this)">Copiar Prompt</button><button class="edit-prompt-btn" onclick="openPromptEdit('+i+')">Editar Informações</button><button class="del-prompt-btn" onclick="deletePrompt('+i+')">Excluir</button></div></div>';
   }).join('');
 }
@@ -4554,6 +4562,7 @@ function siteIconSvg(){
   return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>';
 }
 function renderSites(){
+  renderRodaCfg('sites');
   var grid=document.getElementById('siteGrid'); if(!grid) return;
   if(!siteItems.length){
     grid.innerHTML='<div style="background:var(--surface);border:1px dashed var(--line-2);border-radius:var(--r-lg);padding:48px;text-align:center;color:var(--text-3);font-size:13px;grid-column:1/-1">Nenhum site cadastrado ainda.<br>Clique em <strong>+ Novo Site</strong> para adicionar um link útil para toda a equipe.</div>';
@@ -4564,7 +4573,7 @@ function renderSites(){
     var icone=s.imagem_url?'<span class="site-icon" style="background-image:url(\''+escHtml(s.imagem_url)+'\')"></span>':'<span class="site-icon">'+siteIconSvg()+'</span>';
     return '<div class="site-card">'+
       banner+
-      '<div class="site-card-head">'+icone+'<div class="site-title">'+escHtml(s.nome||'(sem nome)')+'</div></div>'+
+      '<div class="site-card-head">'+icone+'<div class="site-title">'+escHtml(s.nome||'(sem nome)')+rodaSelo('sites',s.id)+'</div></div>'+
       '<div class="site-footer">'+
         (s.url?'<a class="btn btn-primary site-enter-btn" href="'+escHtml(s.url)+'" target="_blank" rel="noopener">Entrar &#8594;</a>':'')+
         '<div class="site-footer-row">'+
@@ -6991,57 +7000,106 @@ document.addEventListener('keydown',function(e){
 });
 
 // ═══════════════════════════════════════════
-// RODA DE PROMPTS (segure Shift)
-// Segurar Shift por um instante abre a roda no centro da tela com os 6
-// prompts que a pessoa escolheu em Cowork > Prompts > Atalhos da roda.
-// O mouse aponta a fatia (como um analógico: conta o movimento desde a
-// abertura, não onde o cursor estava) e soltar o Shift copia o escolhido.
-// Toque rápido no Shift, ou Shift enquanto se digita, não abre nada.
+// RODAS DE ATALHOS
+// Segurar Shift abre a roda de PROMPTS (soltar copia); segurar Ctrl abre a
+// roda de SITES (soltar abre o site). Cada roda tem 6 fatias, que cada pessoa
+// escolhe em Cowork (aba Prompts e aba Sites). O mouse aponta a fatia como
+// um analógico: conta o movimento desde a abertura, não onde o cursor estava.
+// Toque rápido na tecla, tecla junto com outra (Ctrl+C, Shift+letra) ou
+// tecla enquanto se digita num campo não abre nada.
 // ═══════════════════════════════════════════
 var RODA_N=6, RODA_R_EXT=250, RODA_R_INT=104, RODA_ZONA_MORTA=34;
-var RODA_ICONE='<svg viewBox="0 0 24 24"><path d="m12 3-1.7 5.3L5 10l5.3 1.7L12 17l1.7-5.3L19 10l-5.3-1.7z"/></svg>';
 var RODA_POS=['Cima','Cima direita','Baixo direita','Baixo','Baixo esquerda','Cima esquerda'];
-var roda={aberta:false,sel:-1,vx:0,vy:0,timer:null,desenhada:false};
+var RODA_ICONE_PROMPT='<svg viewBox="0 0 24 24"><path d="m12 3-1.7 5.3L5 10l5.3 1.7L12 17l1.7-5.3L19 10l-5.3-1.7z"/></svg>';
+var RODA_ICONE_SITE='<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>';
+function rodaHost(u){ try{ return new URL(u).hostname.replace(/^www\./,''); }catch(e){ return ''; } }
+var RODA_MODOS={
+  prompts:{
+    tecla:'Shift', teclaNome:'Shift', chave:'atalhos', nome:'Prompts', verbo:'copia', aba:'Prompts',
+    lista:function(){ return (typeof cwPrompts!=='undefined'&&cwPrompts)||[]; },
+    titulo:function(p){ return p.title||'Prompt sem título'; },
+    sub:function(p){ return p.funcao||''; },
+    icone:function(){ return RODA_ICONE_PROMPT; },
+    acao:function(p){ return /\[[^\]]+\]/.test(p.body||'')?'Soltar abre os campos para preencher':'Soltar copia o prompt'; },
+    usar:function(p,k){
+      if(/\[[^\]]+\]/.test(p.body||'')){ openPromptEdit(k); showToast('Preencha os campos do prompt e copie.'); }
+      else rodaCopiar(p.body||'','Prompt "'+(p.title||'')+'" copiado.');
+    }
+  },
+  sites:{
+    tecla:'Control', teclaNome:'Ctrl', chave:'atalhosSites', nome:'Sites', verbo:'abre', aba:'Sites',
+    lista:function(){ return (typeof siteItems!=='undefined'&&siteItems)||[]; },
+    titulo:function(s){ return s.nome||'(sem nome)'; },
+    sub:function(s){ return rodaHost(s.url); },
+    icone:function(s){ return s&&s.imagem_url?'<span class="roda-thumb" style="background-image:url(\''+escHtml(s.imagem_url)+'\')"></span>':RODA_ICONE_SITE; },
+    acao:function(s){ return s.url?'Soltar abre o site':'Este site não tem link'; },
+    usar:function(s){ rodaAbrirLink(s.url,s.nome||'Site'); }
+  }
+};
+var roda={aberta:false,modo:'prompts',sel:-1,vx:0,vy:0,timer:null,timerModo:null,desenhada:false};
 
-// Os 6 atalhos de cada pessoa ficam junto da configuração do avatar dela
-// (campo "atalhos" no JSON do avatar): valem em qualquer computador sem
-// mudar o Code.gs. Enquanto a pessoa não configurar, a roda usa os 6 primeiros.
-function rodaAtalhos(){
-  var cfg=null;
+// Os atalhos de cada pessoa ficam junto da configuração do avatar dela
+// (campos "atalhos" e "atalhosSites" no JSON do avatar): valem em qualquer
+// computador sem mudar o Code.gs. Sem configuração, a roda usa os 6 primeiros.
+function rodaAtalhos(modo){
+  var M=RODA_MODOS[modo||'prompts'], cfg=null;
   try{ cfg=currentUser&&currentUser.avatar?JSON.parse(currentUser.avatar):null; }catch(e){}
-  var ids=cfg&&Array.isArray(cfg.atalhos)?cfg.atalhos:null;
-  if(!ids) ids=(cwPrompts||[]).slice(0,RODA_N).map(function(p){ return p.id; });
+  var ids=cfg&&Array.isArray(cfg[M.chave])?cfg[M.chave]:null;
+  if(!ids) ids=M.lista().slice(0,RODA_N).map(function(x){ return x.id; });
   var out=[]; for(var i=0;i<RODA_N;i++) out.push(ids[i]===undefined||ids[i]===null?'':String(ids[i]));
   return out;
 }
-function rodaSalvarAtalhos(ids){
+function rodaRender(modo){ if(modo==='sites') renderSites(); else renderPrompts(); }
+function rodaSalvarAtalhos(modo,ids){
   if(!currentUser){ showToast('Faça login para configurar os atalhos.'); return; }
-  var antes=currentUser.avatar;
-  var cfg=parseAvatarConfig(currentUser.avatar); cfg.atalhos=ids.slice(0,RODA_N);
+  var M=RODA_MODOS[modo], antes=currentUser.avatar;
+  var cfg=parseAvatarConfig(currentUser.avatar); cfg[M.chave]=ids.slice(0,RODA_N);
   var novo=JSON.stringify(cfg);
   currentUser.avatar=novo;
   var pp=(typeof perfis!=='undefined'&&perfis)?perfis.find(function(x){return x.id===currentUser.id;}):null; if(pp) pp.avatar=novo;
-  renderPrompts();
+  rodaRender(modo);
   call('saveProfile',{avatar:novo}).then(function(res){
     if(!res||!res.ok) throw new Error((res&&res.error)||'falha ao salvar');
     showToast('Atalhos da roda salvos.');
   }).catch(function(e){
-    currentUser.avatar=antes; if(pp) pp.avatar=antes; renderPrompts();
+    currentUser.avatar=antes; if(pp) pp.avatar=antes; rodaRender(modo);
     showToast('Não foi possível salvar os atalhos: '+e.message);
   });
 }
 function rodaSeta(i){
   return '<svg viewBox="0 0 24 24" style="transform:rotate('+(i*60)+'deg)"><path d="M12 19V5M6 11l6-6 6 6"/></svg>';
 }
+function rodaSelo(modo,id){
+  if(!RODA_POS) return '';
+  var slot=rodaAtalhos(modo).indexOf(String(id));
+  return slot>=0?'<span class="pc-roda" title="Atalho na roda (segure '+RODA_MODOS[modo].teclaNome+')">'+rodaSeta(slot)+'Roda: '+RODA_POS[slot]+'</span>':'';
+}
 function rodaCopiar(txt,msg){
   var ok=function(){ showToast(msg); };
   if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(ok).catch(function(){ fallbackCopy(txt); ok(); });
   else { fallbackCopy(txt); ok(); }
 }
-// índice (em cwPrompts) do prompt cadastrado na fatia i, ou -1
-function rodaPromptIdx(i){
-  var id=rodaAtalhos()[i]; if(!id) return -1;
-  for(var k=0;k<(cwPrompts||[]).length;k++) if(String(cwPrompts[k].id)===id) return k;
+function rodaAbrirLink(url,nome){
+  if(!url){ showToast('"'+nome+'" não tem link cadastrado.'); return; }
+  var w=null; try{ w=window.open(url,'_blank','noopener'); }catch(e){}
+  // com "noopener" alguns navegadores devolvem null mesmo abrindo: só avisa se nada abriu
+  if(w||document.hidden) return;
+  setTimeout(function(){
+    if(document.hidden||!document.hasFocus()) return; // a aba nova abriu e levou o foco
+    var antigo=document.getElementById('rodaLink'); if(antigo) antigo.remove();
+    var box=document.createElement('div'); box.className='roda-link'; box.id='rodaLink';
+    box.innerHTML='<span>'+escHtml(nome)+'</span><a href="'+escHtml(url)+'" target="_blank" rel="noopener">Abrir</a><button type="button" aria-label="Fechar">&#10005;</button>';
+    box.querySelector('a').addEventListener('click',function(){ setTimeout(function(){ box.remove(); },50); });
+    box.querySelector('button').addEventListener('click',function(){ box.remove(); });
+    document.body.appendChild(box);
+    setTimeout(function(){ if(box.parentNode) box.remove(); },9000);
+  },250);
+}
+// índice (na lista do modo) do item cadastrado na fatia i, ou -1
+function rodaItemIdx(modo,i){
+  var id=rodaAtalhos(modo)[i]; if(!id) return -1;
+  var l=RODA_MODOS[modo].lista();
+  for(var k=0;k<l.length;k++) if(String(l[k].id)===id) return k;
   return -1;
 }
 function rodaArco(i,re,ri,folga){
@@ -7052,23 +7110,28 @@ function rodaArco(i,re,ri,folga){
   return 'M'+pt(re,a0)+' A'+re+' '+re+' 0 0 1 '+pt(re,a1)+' L'+pt(ri,a1)+' A'+ri+' '+ri+' 0 0 0 '+pt(ri,a0)+' Z';
 }
 
-// Painel "Atalhos da roda" em Cowork > Prompts
-function renderRodaCfg(){
-  var box=document.getElementById('rodaCfg'); if(!box||!RODA_POS) return;
-  var ids=rodaAtalhos();
+// Painel "Atalhos da roda" (Cowork > Prompts e Cowork > Sites)
+function renderRodaCfg(modo){
+  modo=modo||'prompts';
+  var box=document.getElementById(modo==='sites'?'rodaCfgSites':'rodaCfg'); if(!box||!RODA_POS) return;
+  var M=RODA_MODOS[modo], ids=rodaAtalhos(modo), l=M.lista();
   var opcoes=function(sel){
-    return '<option value="">Livre</option>'+(cwPrompts||[]).map(function(p){
-      var v=String(p.id); return '<option value="'+escHtml(v)+'"'+(v===sel?' selected':'')+'>'+escHtml(p.title||'Prompt sem título')+'</option>';
+    return '<option value="">Livre</option>'+l.map(function(x){
+      var v=String(x.id); return '<option value="'+escHtml(v)+'"'+(v===sel?' selected':'')+'>'+escHtml(M.titulo(x))+'</option>';
     }).join('');
   };
   var mapa='';
-  for(var i=0;i<RODA_N;i++) mapa+='<path data-i="'+i+'" class="'+(rodaPromptIdx(i)>=0?'cheia':'')+'" d="'+rodaArco(i,98,48,2)+'"/>';
-  box.innerHTML='<div class="roda-cfg-mapa"><svg viewBox="-100 -100 200 200">'+mapa+'</svg><div class="meio"><kbd>Shift</kbd><div>segure</div></div></div>'+
-    '<div><div class="roda-cfg-topo"><div><h3>Atalhos da roda</h3><p>Escolha os 6 prompts que aparecem ao segurar Shift. Aponte com o mouse e solte o Shift para copiar.</p></div>'+
-    '<button type="button" onclick="rodaLimparAtalhos()">Deixar todos livres</button></div>'+
+  for(var i=0;i<RODA_N;i++) mapa+='<path data-i="'+i+'" class="'+(rodaItemIdx(modo,i)>=0?'cheia':'')+'" d="'+rodaArco(i,98,48,2)+'"/>';
+  var texto=modo==='sites'
+    ?'Escolha os 6 sites que aparecem ao segurar Ctrl. Aponte com o mouse e solte o Ctrl para abrir.'
+    :'Escolha os 6 prompts que aparecem ao segurar Shift. Aponte com o mouse e solte o Shift para copiar.';
+  box.innerHTML='<div class="roda-cfg-mapa"><svg viewBox="-100 -100 200 200">'+mapa+'</svg><div class="meio"><kbd>'+M.teclaNome+'</kbd><div>segure</div></div></div>'+
+    '<div><div class="roda-cfg-topo"><div><h3>Atalhos da roda</h3><p>'+texto+'</p></div>'+
+    '<button type="button" onclick="rodaLimparAtalhos(\''+modo+'\')">Deixar todos livres</button></div>'+
     '<div class="roda-cfg-lista">'+ids.map(function(id,i){
-      return '<div class="roda-cfg-slot" data-i="'+i+'"><span class="dir">'+rodaSeta(i)+'</span><label for="rodaCfg'+i+'">'+RODA_POS[i]+'</label>'+
-        '<select id="rodaCfg'+i+'" data-i="'+i+'" onchange="rodaCfgMudou(this)">'+opcoes(id)+'</select></div>';
+      var sid='rodaCfg'+(modo==='sites'?'S':'')+i;
+      return '<div class="roda-cfg-slot" data-i="'+i+'"><span class="dir">'+rodaSeta(i)+'</span><label for="'+sid+'">'+RODA_POS[i]+'</label>'+
+        '<select id="'+sid+'" data-i="'+i+'" data-modo="'+modo+'" onchange="rodaCfgMudou(this)">'+opcoes(id)+'</select></div>';
     }).join('')+'</div></div>';
   function foco(i){
     box.querySelectorAll('.roda-cfg-mapa path').forEach(function(p){ p.classList.toggle('foco',+p.getAttribute('data-i')===i); });
@@ -7087,17 +7150,18 @@ function renderRodaCfg(){
     var i=+p.getAttribute('data-i');
     p.addEventListener('mouseenter',function(){ foco(i); });
     p.addEventListener('mouseleave',function(){ foco(-1); });
-    p.addEventListener('click',function(){ var s=document.getElementById('rodaCfg'+i); if(s){ s.focus(); if(s.showPicker) try{ s.showPicker(); }catch(e){} } });
+    p.addEventListener('click',function(){ var s=box.querySelector('select[data-i="'+i+'"]'); if(s){ s.focus(); if(s.showPicker) try{ s.showPicker(); }catch(e){} } });
   });
 }
 function rodaCfgMudou(sel){
-  var ids=rodaAtalhos(), i=+sel.getAttribute('data-i'), v=sel.value;
-  // o mesmo prompt não fica em duas fatias: a outra fica livre
+  var modo=sel.getAttribute('data-modo')||'prompts';
+  var ids=rodaAtalhos(modo), i=+sel.getAttribute('data-i'), v=sel.value;
+  // o mesmo item não fica em duas fatias: a outra fica livre
   if(v) for(var k=0;k<ids.length;k++) if(k!==i&&ids[k]===v) ids[k]='';
   ids[i]=v;
-  rodaSalvarAtalhos(ids);
+  rodaSalvarAtalhos(modo,ids);
 }
-function rodaLimparAtalhos(){ rodaSalvarAtalhos(['','','','','','']); }
+function rodaLimparAtalhos(modo){ rodaSalvarAtalhos(modo||'prompts',['','','','','','']); }
 
 // Roda na tela
 function rodaDesenhar(){
@@ -7107,7 +7171,7 @@ function rodaDesenhar(){
   for(var i=0;i<RODA_N;i++){
     var a=i*(360/RODA_N)*Math.PI/180, x=260+raio*Math.sin(a), y=260-raio*Math.cos(a);
     svgHtml+='<path class="roda-fatia" data-i="'+i+'" d="'+rodaArco(i)+'"/>';
-    html+='<div class="roda-item" data-i="'+i+'" style="left:'+x.toFixed(1)+'px;top:'+y.toFixed(1)+'px">'+RODA_ICONE+'<b></b><small></small></div>';
+    html+='<div class="roda-item" data-i="'+i+'" style="left:'+x.toFixed(1)+'px;top:'+y.toFixed(1)+'px"><span class="roda-ic"></span><b></b><small></small></div>';
   }
   svg.innerHTML=svgHtml; itens.innerHTML=html;
   svg.addEventListener('click',function(e){
@@ -7117,38 +7181,43 @@ function rodaDesenhar(){
   roda.desenhada=true;
 }
 function rodaAtualizar(){
-  var cheias=0;
+  var modo=roda.modo, M=RODA_MODOS[modo], l=M.lista(), cheias=0;
   document.querySelectorAll('#rodaFatias .roda-fatia').forEach(function(f){
     var i=+f.getAttribute('data-i');
     f.classList.toggle('sel',i===roda.sel);
-    f.classList.toggle('vazia',rodaPromptIdx(i)<0);
+    f.classList.toggle('vazia',rodaItemIdx(modo,i)<0);
   });
   document.querySelectorAll('#rodaItens .roda-item').forEach(function(el){
-    var i=+el.getAttribute('data-i'), k=rodaPromptIdx(i), p=k>=0?cwPrompts[k]:null;
-    if(p) cheias++;
+    var i=+el.getAttribute('data-i'), k=rodaItemIdx(modo,i), x=k>=0?l[k]:null;
+    if(x) cheias++;
     el.classList.toggle('sel',i===roda.sel);
-    el.classList.toggle('vazia',!p);
-    el.querySelector('b').textContent=p?(p.title||'Prompt sem título'):'Livre';
-    el.querySelector('small').textContent=p?(p.funcao||''):'';
+    el.classList.toggle('vazia',!x);
+    var ic=el.querySelector('.roda-ic'), novoIc=x?M.icone(x):M.icone(null);
+    if(ic.getAttribute('data-v')!==novoIc){ ic.innerHTML=novoIc; ic.setAttribute('data-v',novoIc); }
+    el.querySelector('b').textContent=x?M.titulo(x):'Livre';
+    el.querySelector('small').textContent=x?M.sub(x):'';
   });
   var c=document.getElementById('rodaCentro');
-  if(!cheias){ c.innerHTML='<span class="k">Prompts</span><span class="t">Nenhum atalho</span><span class="s">Escolha os 6 em Cowork, aba Prompts.</span>'; return; }
-  var k=roda.sel>=0?rodaPromptIdx(roda.sel):-1;
+  if(!cheias){ c.innerHTML='<span class="k">'+M.nome+'</span><span class="t">Nenhum atalho</span><span class="s">Escolha os 6 em Cowork, aba '+M.aba+'.</span>'; return; }
+  var k=roda.sel>=0?rodaItemIdx(modo,roda.sel):-1;
   if(k<0){
-    c.innerHTML='<span class="k">Prompts</span><span class="t">'+(roda.sel>=0?'Fatia livre':'Aponte com o mouse')+'</span><span class="s">'+(roda.sel>=0?'Escolha um prompt para ela em Cowork, aba Prompts.':'Solte o Shift no meio para fechar.')+'</span>';
+    c.innerHTML='<span class="k">'+M.nome+'</span><span class="t">'+(roda.sel>=0?'Fatia livre':'Aponte com o mouse')+'</span><span class="s">'+(roda.sel>=0?'Escolha um item para ela em Cowork, aba '+M.aba+'.':'Solte o '+M.teclaNome+' no meio para fechar.')+'</span>';
     return;
   }
-  var p=cwPrompts[k], campos=/\[[^\]]+\]/.test(p.body||'');
-  c.innerHTML='<span class="k">'+escHtml(p.funcao||'Prompt')+'</span><span class="t">'+escHtml(p.title||'Prompt sem título')+'</span>'+
-    '<span class="s">'+(campos?'Soltar abre os campos para preencher':'Soltar copia o prompt')+'</span>';
+  var x=l[k], sub=M.sub(x);
+  c.innerHTML='<span class="k">'+escHtml(modo==='prompts'?(sub||'Prompt'):'Site')+'</span><span class="t">'+escHtml(M.titulo(x))+'</span>'+
+    '<span class="s">'+escHtml(modo==='sites'&&sub?sub:M.acao(x))+'</span>';
 }
 function rodaSelecionar(i){ if(roda.sel===i) return; roda.sel=i; rodaAtualizar(); }
-function rodaAbrir(){
+function rodaAbrir(modo){
   if(roda.aberta) return;
   rodaDesenhar();
-  roda.aberta=true; roda.sel=-1; roda.vx=0; roda.vy=0;
+  roda.modo=modo; roda.aberta=true; roda.sel=-1; roda.vx=0; roda.vy=0;
+  var M=RODA_MODOS[modo];
   var mira=document.getElementById('rodaMira'); mira.style.transform='translate(0,0)'; mira.style.opacity='0';
-  var el=document.getElementById('roda'); el.classList.add('aberta'); el.setAttribute('aria-hidden','false');
+  var d=document.getElementById('rodaDicaSoltar'); if(d) d.innerHTML='<kbd>Soltar '+M.teclaNome+'</kbd>'+M.verbo;
+  var el=document.getElementById('roda'); el.classList.add('aberta'); el.setAttribute('aria-hidden','false'); el.setAttribute('aria-label','Roda de '+M.nome.toLowerCase());
+  el.setAttribute('data-modo',modo);
   rodaAtualizar();
 }
 function rodaFechar(executar){
@@ -7156,55 +7225,60 @@ function rodaFechar(executar){
   roda.aberta=false;
   var el=document.getElementById('roda'); el.classList.remove('aberta'); el.setAttribute('aria-hidden','true');
   if(!executar||roda.sel<0) return;
-  var k=rodaPromptIdx(roda.sel); if(k<0) return;
-  var p=cwPrompts[k];
-  if(/\[[^\]]+\]/.test(p.body||'')){ openPromptEdit(k); showToast('Preencha os campos do prompt e copie.'); }
-  else rodaCopiar(p.body||'','Prompt "'+(p.title||'')+'" copiado.');
+  var M=RODA_MODOS[roda.modo], k=rodaItemIdx(roda.modo,roda.sel); if(k<0) return;
+  M.usar(M.lista()[k],k);
 }
 // Dica única, só em computador com mouse
 function rodaDicaInicial(){
   try{
-    if(localStorage.getItem('gj_roda_dica')) return;
+    if(localStorage.getItem('gj_roda_dica2')) return;
     if(!window.matchMedia||!matchMedia('(pointer:fine)').matches) return;
-    localStorage.setItem('gj_roda_dica','1');
+    localStorage.setItem('gj_roda_dica2','1');
   }catch(e){ return; }
-  setTimeout(function(){ showToast('Dica: segure Shift para abrir a roda de prompts.'); },2600);
+  setTimeout(function(){ showToast('Dica: segure Shift para os prompts e Ctrl para os sites.'); },2600);
 }
 function rodaPodeAbrir(){
   var a=document.activeElement;
   if(a&&(a.isContentEditable||/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName))) return false;
+  if(document.querySelector('.modal-overlay.open')) return false; // com janela aberta, Ctrl e Shift ficam livres
   var sp=document.getElementById('splash');
   if(sp&&sp.style.display!=='none'&&!sp.classList.contains('hide')) return false; // ainda na tela de login
   if(!currentUser) return false;
   return true;
 }
+function rodaCancelarTimer(){ if(roda.timer){ clearTimeout(roda.timer); roda.timer=null; roda.timerModo=null; } }
+function rodaModoDaTecla(k){ return k==='Shift'?'prompts':(k==='Control'?'sites':null); }
 document.addEventListener('keydown',function(e){
-  if(e.key==='Shift'){
-    if(e.repeat||roda.aberta||roda.timer) return;
+  var modo=rodaModoDaTecla(e.key);
+  if(modo){
+    if(e.repeat||roda.aberta) return;
+    if(roda.timer){ rodaCancelarTimer(); return; } // Shift e Ctrl juntos: nenhuma roda
     if(!rodaPodeAbrir()) return;
-    roda.timer=setTimeout(function(){ roda.timer=null; rodaAbrir(); },170);
+    roda.timerModo=modo;
+    roda.timer=setTimeout(function(){ var m=roda.timerModo; roda.timer=null; roda.timerModo=null; rodaAbrir(m); },170);
     return;
   }
-  // qualquer outra tecla junto com o Shift (ex.: digitar maiúscula) cancela
-  if(roda.timer){ clearTimeout(roda.timer); roda.timer=null; }
+  // qualquer outra tecla junto (Shift+letra, Ctrl+C...) cancela
+  rodaCancelarTimer();
   if(roda.aberta){
-    if(e.key==='Escape'){ e.preventDefault(); e.stopPropagation(); rodaFechar(false); return; }
-    if(e.key==='ArrowRight'||e.key==='ArrowLeft'){ e.preventDefault(); rodaSelecionar(((roda.sel<0?0:roda.sel)+(e.key==='ArrowRight'?1:-1)+RODA_N)%RODA_N); }
-    if(e.key==='ArrowUp'){ e.preventDefault(); rodaSelecionar(0); }
-    if(e.key==='ArrowDown'){ e.preventDefault(); rodaSelecionar(3); }
+    e.preventDefault();
+    if(e.key==='Escape'){ e.stopPropagation(); rodaFechar(false); return; }
+    if(e.key==='ArrowRight'||e.key==='ArrowLeft') rodaSelecionar(((roda.sel<0?0:roda.sel)+(e.key==='ArrowRight'?1:-1)+RODA_N)%RODA_N);
+    if(e.key==='ArrowUp') rodaSelecionar(0);
+    if(e.key==='ArrowDown') rodaSelecionar(3);
   }
 },true);
 document.addEventListener('keyup',function(e){
-  if(e.key!=='Shift') return;
-  if(roda.timer){ clearTimeout(roda.timer); roda.timer=null; return; } // toque rápido: nada
-  if(roda.aberta){ e.preventDefault(); rodaFechar(true); }
+  var modo=rodaModoDaTecla(e.key); if(!modo) return;
+  if(roda.timer){ rodaCancelarTimer(); return; } // toque rápido: nada
+  if(roda.aberta&&roda.modo===modo){ e.preventDefault(); rodaFechar(true); }
 },true);
 document.addEventListener('mousedown',function(e){
-  if(roda.timer){ clearTimeout(roda.timer); roda.timer=null; } // Shift+clique (seleção de texto) não abre a roda
+  rodaCancelarTimer(); // Shift+clique ou Ctrl+clique não abrem a roda
   if(roda.aberta&&e.button===2){ e.preventDefault(); rodaFechar(false); }
 },true);
 document.addEventListener('contextmenu',function(e){ if(roda.aberta) e.preventDefault(); },true);
-window.addEventListener('blur',function(){ if(roda.timer){ clearTimeout(roda.timer); roda.timer=null; } rodaFechar(false); });
+window.addEventListener('blur',function(){ rodaCancelarTimer(); rodaFechar(false); });
 // O mouse funciona como um analógico: o movimento desde a abertura escolhe a direção
 document.addEventListener('mousemove',function(e){
   if(!roda.aberta) return;
@@ -7222,7 +7296,7 @@ document.addEventListener('mousemove',function(e){
   var ang=Math.atan2(roda.vx,-roda.vy)*180/Math.PI; if(ang<0) ang+=360;
   rodaSelecionar(Math.round(ang/(360/RODA_N))%RODA_N);
 },true);
-// Com a roda aberta, a rodinha do mouse não rola a página por trás
+// Com a roda aberta, a rodinha do mouse não rola nem dá zoom (Ctrl+rolar) na página
 document.addEventListener('wheel',function(e){ if(roda.aberta) e.preventDefault(); },{passive:false,capture:true});
 
 </script>
