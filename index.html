@@ -769,7 +769,9 @@ button.agenda-stat{text-align:left;font:inherit;color:inherit;cursor:pointer;pos
 .notes-inline-meta{display:flex;gap:12px;align-items:center;flex-wrap:wrap;}
 .notes-inline-meta label{display:flex;align-items:center;gap:7px;font-size:11.5px;color:var(--text-2);}
 .notes-inline-meta input{font-size:12px;padding:7px 11px;border-radius:10px;background:rgba(255,255,255,.045);border:1px solid var(--line);color:var(--text);outline:none;}
-.notes-inline-meta input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft);}
+.notes-inline-meta select{font:inherit;font-size:12px;padding:7px 11px;border-radius:10px;background:rgba(255,255,255,.045);border:1px solid var(--line);color:var(--text);outline:none;}
+.notes-inline-meta select option{background:#1c1c1e;}
+.notes-inline-meta input:focus,.notes-inline-meta select:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft);}
 .notes-editor-body{flex:1;padding:20px 22px;display:flex;flex-direction:column;gap:14px;}
 .notes-editor-body textarea{
   flex:1;min-height:300px;resize:vertical;padding:12px;border-radius:12px;outline:none;
@@ -1502,6 +1504,143 @@ button.agenda-stat{text-align:left;font:inherit;color:inherit;cursor:pointer;pos
 .roda-cfg>div{min-width:0;}
 @media(max-width:860px){.roda-cfg{grid-template-columns:minmax(0,1fr);gap:18px;padding:18px 16px;}.roda-cfg-mapa{margin:0 auto;width:150px;height:150px;}.roda-cfg-lista{grid-template-columns:minmax(0,1fr);}.roda-cfg-slot label{width:auto;flex:0 0 92px;}}
 
+/* ── WORK SPACE (visual Apple: anéis de atividade, contagem de prazo, funil) ── */
+#page-work .notes-sub{font-variant-numeric:tabular-nums;}
+.wk-hero{display:grid;grid-template-columns:auto minmax(0,1fr);gap:34px;align-items:center;padding:26px 30px;margin-top:22px;border-radius:28px;position:relative;overflow:hidden;
+  background:linear-gradient(180deg,rgba(255,255,255,.065),rgba(255,255,255,.02));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 30px 60px -40px rgba(0,0,0,.9);border:1px solid var(--line);}
+.wk-hero::before{content:"";position:absolute;inset:-40% -10% auto auto;width:520px;height:520px;border-radius:50%;pointer-events:none;
+  background:radial-gradient(circle,rgba(41,151,255,.13),transparent 62%);animation:wkAura 14s ease-in-out infinite alternate;}
+@keyframes wkAura{from{transform:translate(0,0);}to{transform:translate(-160px,60px);}}
+.wk-aneis-box{display:flex;align-items:center;gap:24px;position:relative;}
+.wk-aneis{width:158px;height:158px;flex:none;}
+.wk-aneis circle{fill:none;stroke-linecap:round;}
+.wk-aneis .trilho{opacity:.2;}
+.wk-aneis .arco{transition:stroke-dashoffset 1.25s cubic-bezier(.22,.8,.2,1);}
+.wk-legenda{display:flex;flex-direction:column;gap:14px;min-width:150px;}
+.wk-leg{display:grid;grid-template-columns:10px 1fr;column-gap:10px;align-items:baseline;}
+.wk-leg i{width:10px;height:10px;border-radius:50%;align-self:center;}
+.wk-leg b{font-size:13px;font-weight:600;letter-spacing:-.01em;}
+.wk-leg span{grid-column:2;font-size:21px;font-weight:600;letter-spacing:-.03em;font-variant-numeric:tabular-nums;line-height:1.15;}
+.wk-leg span small{font-size:12px;font-weight:500;color:var(--text-3);letter-spacing:0;margin-left:4px;}
+.wk-prox{position:relative;min-width:0;}
+.wk-prox-rot{font-size:12.5px;color:var(--text-2);display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.wk-prox-rot .wk-atraso{font-size:11.5px;font-weight:600;color:var(--red);background:var(--red-soft);padding:3px 10px;border-radius:999px;}
+.wk-prox-tempo{margin-top:6px;font-size:clamp(28px,3.4vw,42px);font-weight:650;letter-spacing:-.045em;line-height:1.05;font-variant-numeric:tabular-nums;}
+.wk-prox-tempo.hoje{color:var(--amber);}
+.wk-prox-nome{margin-top:8px;font-size:14px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;}
+.wk-prox-nome:hover{text-decoration:underline;text-underline-offset:3px;}
+.wk-prox-nome span{color:var(--text-3);}
+.wk-faixa{display:grid;grid-template-columns:repeat(14,minmax(0,1fr));gap:6px;margin-top:20px;}
+.wk-dia{display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 0 9px;border-radius:14px;font-variant-numeric:tabular-nums;transition:background .2s;}
+.wk-dia:hover{background:rgba(255,255,255,.05);}
+.wk-dia em{font-style:normal;font-size:10px;font-weight:600;color:var(--text-3);}
+.wk-dia b{font-size:14px;font-weight:600;width:28px;height:28px;display:grid;place-items:center;border-radius:50%;}
+.wk-dia.hoje b{background:var(--red);color:#fff;}
+.wk-dia.fds b{color:var(--text-3);}
+.wk-dia .pontos{display:flex;gap:3px;height:6px;align-items:center;}
+.wk-dia .pontos i{width:5px;height:5px;border-radius:50%;background:var(--accent);}
+.wk-dia .pontos i.concluido{background:var(--green);}
+.wk-dia .pontos i.analise{background:var(--teal);}
+.wk-dia .pontos small{font-size:9px;color:var(--text-3);line-height:1;}
+
+.wk-barra{justify-content:space-between;margin-top:22px;}
+.wk-seg{position:relative;display:grid;grid-template-columns:1fr 1fr;padding:3px;border-radius:12px;background:rgba(118,118,128,.24);width:188px;}
+.wk-seg button{position:relative;z-index:1;border:none;background:none;color:var(--text);font:inherit;font-size:13px;font-weight:500;padding:7px 0;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;}
+.wk-seg button svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;opacity:.85;}
+.wk-seg-pill{position:absolute;top:3px;left:3px;width:calc(50% - 3px);height:calc(100% - 6px);border-radius:9px;background:#636366;box-shadow:0 3px 8px rgba(0,0,0,.25),0 0 0 .5px rgba(0,0,0,.04);transition:transform .32s cubic-bezier(.3,.9,.3,1);}
+.wk-seg[data-modo="funil"] .wk-seg-pill{transform:translateX(100%);}
+.wk-seg button:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:9px;}
+
+/* cartões da lista */
+.notes-list{border-radius:22px;}
+.note-list-item.wk-card{align-items:center;gap:14px;padding:14px 16px;}
+.note-list-item.wk-card.active{background:rgba(41,151,255,.1);box-shadow:inset 3px 0 var(--accent);}
+.note-list-item.wk-card.feita .note-list-title{color:var(--text-2);}
+.wk-dias{flex:none;width:58px;height:58px;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;text-align:center;
+  background:rgba(255,255,255,.06);font-variant-numeric:tabular-nums;}
+.wk-dias b{font-size:22px;font-weight:650;letter-spacing:-.04em;line-height:1;}
+.wk-dias span{font-size:9.5px;font-weight:600;color:var(--text-2);line-height:1.15;max-width:54px;}
+.wk-dias.ok b{color:var(--text);}
+.wk-dias.urgente{background:var(--amber-soft);} .wk-dias.urgente b{color:var(--amber);}
+.wk-dias.hoje{background:var(--amber);} .wk-dias.hoje b,.wk-dias.hoje span{color:#1c1300;} .wk-dias.hoje b{font-size:16px;}
+.wk-dias.vencido{background:var(--red-soft);} .wk-dias.vencido b{color:var(--red);}
+.wk-dias.sem b{color:var(--text-3);font-size:18px;}
+.wk-dias.feito{background:var(--green-soft);} .wk-dias.feito b{color:var(--green);font-size:20px;}
+.wk-dias.feito svg{width:22px;height:22px;fill:none;stroke:var(--green);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;}
+.note-list-meta.wk-meta{margin-top:9px;font-size:11px;gap:10px;flex-wrap:wrap;}
+.wk-prazo-txt{color:var(--text-2);font-variant-numeric:tabular-nums;}
+.wk-prazo-txt.vencido{color:var(--red);font-weight:600;} .wk-prazo-txt.hoje,.wk-prazo-txt.urgente{color:var(--amber);font-weight:600;}
+
+/* seletor de status dentro do cartão */
+.wk-st{position:relative;display:inline-flex;align-items:center;gap:6px;padding:3px 9px 3px 8px;border-radius:999px;font-size:11px;font-weight:600;line-height:1.4;cursor:pointer;
+  background:rgba(255,255,255,.07);color:var(--text-2);}
+.wk-st i{width:7px;height:7px;border-radius:50%;background:var(--text-3);}
+.wk-st.analise{background:var(--teal-soft);color:var(--teal);} .wk-st.analise i{background:var(--teal);}
+.wk-st.concluido{background:var(--green-soft);color:var(--green);} .wk-st.concluido i{background:var(--green);}
+.wk-st svg{width:9px;height:9px;fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round;opacity:.7;}
+.wk-st select{position:absolute;inset:0;width:100%;opacity:0;cursor:pointer;font-size:13px;}
+.wk-st select option{background:#1c1c1e;color:#f5f5f7;}
+.wk-st:focus-within{box-shadow:0 0 0 2px var(--accent);}
+
+/* status no editor */
+.wk-st-seg{display:inline-flex;padding:2px;border-radius:10px;background:rgba(118,118,128,.24);}
+.wk-st-seg button{border:none;background:none;color:var(--text-2);font:inherit;font-size:11.5px;font-weight:500;padding:5px 11px;border-radius:8px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:background .2s,color .2s;}
+.wk-st-seg button i{width:7px;height:7px;border-radius:50%;background:var(--text-3);}
+.wk-st-seg button[data-st="analise"] i{background:var(--teal);} .wk-st-seg button[data-st="concluido"] i{background:var(--green);}
+.wk-st-seg button.on{background:#636366;color:#fff;box-shadow:0 2px 6px rgba(0,0,0,.25);}
+.wk-editor-prazo{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:5px 11px;border-radius:999px;background:rgba(255,255,255,.06);color:var(--text-2);font-variant-numeric:tabular-nums;}
+.wk-editor-prazo.urgente,.wk-editor-prazo.hoje{background:var(--amber-soft);color:var(--amber);}
+.wk-editor-prazo.vencido{background:var(--red-soft);color:var(--red);}
+.wk-editor-prazo.feito{background:var(--green-soft);color:var(--green);}
+.notes-editor-fechar{display:none;border:none;background:rgba(255,255,255,.08);color:var(--text);width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:14px;flex:none;}
+
+/* funil */
+.wk-funil{display:none;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-items:start;}
+.wk-col{border-radius:22px;background:rgba(255,255,255,.03);border:1px solid var(--line);padding:12px;min-height:320px;transition:background .2s,border-color .2s;}
+.wk-col.alvo{background:rgba(41,151,255,.08);border-color:var(--accent-line);}
+.wk-col-head{display:flex;align-items:center;gap:9px;padding:4px 6px 12px;font-size:14px;font-weight:600;letter-spacing:-.02em;}
+.wk-col-head i{width:9px;height:9px;border-radius:50%;background:var(--text-3);}
+.wk-col[data-st="analise"] .wk-col-head i{background:var(--teal);} .wk-col[data-st="concluido"] .wk-col-head i{background:var(--green);}
+.wk-col-head span{margin-left:auto;font-size:12px;font-weight:600;color:var(--text-3);font-variant-numeric:tabular-nums;}
+.wk-col-lista{display:flex;flex-direction:column;gap:10px;}
+.wk-fcard{display:flex;gap:12px;align-items:flex-start;padding:13px;border-radius:18px;background:var(--surface-2);border:1px solid var(--line);cursor:pointer;
+  transition:transform .25s cubic-bezier(.22,.8,.2,1),box-shadow .25s,border-color .2s;}
+.wk-fcard:hover{transform:translateY(-2px);box-shadow:0 14px 30px -18px rgba(0,0,0,.9);border-color:var(--line-2);}
+.wk-fcard.arrastando{opacity:.45;transform:scale(.98);}
+.wk-fcard.active{border-color:var(--accent-line);}
+.wk-fcard .wk-dias{width:50px;height:50px;border-radius:14px;}
+.wk-fcard .wk-dias b{font-size:19px;}
+.wk-fcard-main{flex:1;min-width:0;}
+.wk-fcard-titulo{font-size:13.5px;font-weight:600;letter-spacing:-.015em;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.wk-fcard-meta{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:8px;font-size:11px;color:var(--text-3);}
+.wk-col-vazia{padding:26px 10px;text-align:center;font-size:12px;color:var(--text-3);border:1px dashed var(--line-2);border-radius:16px;}
+
+.notes-layout.modo-funil{grid-template-columns:minmax(0,1fr);}
+.notes-layout.modo-funil .notes-list{display:none;}
+.notes-layout.modo-funil .wk-funil{display:grid;}
+.wk-scrim{display:none;}
+.wk-gaveta .notes-editor{position:fixed;top:12px;right:12px;bottom:12px;z-index:160;width:min(600px,calc(100vw - 24px));border-radius:24px;
+  background:rgba(28,28,30,.94);-webkit-backdrop-filter:blur(30px) saturate(1.4);backdrop-filter:blur(30px) saturate(1.4);box-shadow:0 40px 80px -20px rgba(0,0,0,.8);
+  transform:translateX(calc(100% + 40px));visibility:hidden;transition:transform .42s cubic-bezier(.22,.8,.2,1),visibility 0s linear .42s;overflow:auto;}
+.wk-gaveta.aberta .notes-editor{transform:none;visibility:visible;transition:transform .42s cubic-bezier(.22,.8,.2,1);}
+.wk-gaveta .notes-editor-fechar{display:grid;place-items:center;}
+.wk-gaveta .wk-scrim{display:block;position:fixed;inset:0;z-index:159;background:rgba(0,0,0,.4);opacity:0;pointer-events:none;transition:opacity .3s;}
+.wk-gaveta.aberta .wk-scrim{opacity:1;pointer-events:auto;}
+
+@media(max-width:980px){
+  .wk-hero{grid-template-columns:minmax(0,1fr);gap:22px;padding:22px 20px;}
+  .wk-funil{grid-template-columns:minmax(0,1fr);}
+  .wk-faixa{grid-template-columns:repeat(7,minmax(0,1fr));}
+  .wk-faixa .wk-dia:nth-child(n+8){display:none;}
+}
+@media(max-width:520px){
+  .wk-aneis{width:120px;height:120px;} .wk-aneis-box{gap:16px;} .wk-legenda{min-width:0;gap:10px;}
+  .wk-leg span{font-size:18px;}
+  .wk-gaveta .notes-editor{top:0;right:0;bottom:0;width:100vw;border-radius:0;}
+}
+@media(prefers-reduced-motion:reduce){.wk-hero::before{animation:none;}.wk-aneis .arco,.wk-seg-pill,.wk-gaveta .notes-editor{transition:none;}}
+
 /* dock aposentado — a navegação vive no rail lateral */
 .dock-wrap{display:none !important;}
 
@@ -1791,7 +1930,7 @@ button.agenda-stat{text-align:left;font:inherit;color:inherit;cursor:pointer;pos
 
   <div class="cw-pane active" id="workpane-workspace">
     <div class="notes-head">
-      <div><div class="notes-title">Work Space</div><p class="notes-sub">Seu espaço individual: anotações, prompts e modelos à mão, com salvamento automático.</p></div>
+      <div><div class="notes-title">Work Space</div><p class="notes-sub" id="wkHoje">Seu espaço individual, com salvamento automático.</p></div>
       <div class="workspace-badge" title="Este é o seu espaço individual">
         <span class="workspace-badge-av" id="workspaceAvatar"></span>
         <div class="workspace-badge-info">
@@ -1803,11 +1942,19 @@ button.agenda-stat{text-align:left;font:inherit;color:inherit;cursor:pointer;pos
         </div>
       </div>
     </div>
-    <div class="notes-controls" style="justify-content:space-between;margin-top:2px;">
+    <section class="wk-hero" id="wkHero" aria-label="Resumo do Work Space"></section>
+    <div class="notes-controls wk-barra">
+      <div class="notes-controls" style="gap:10px;">
+      <div class="wk-seg" id="wkModo" role="tablist" aria-label="Visualização" data-modo="lista">
+        <span class="wk-seg-pill" aria-hidden="true"></span>
+        <button type="button" role="tab" data-modo="lista" class="active" aria-selected="true" onclick="wkMudarModo('lista')"><svg viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></svg>Lista</button>
+        <button type="button" role="tab" data-modo="funil" aria-selected="false" onclick="wkMudarModo('funil')"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="5" height="16" rx="1.5"/><rect x="10" y="4" width="5" height="11" rx="1.5"/><rect x="17" y="4" width="4" height="7" rx="1.5"/></svg>Funil</button>
+      </div>
       <div class="view-toggle" id="workEspacoToggle">
         <button class="view-toggle-btn active" data-work-espaco="" onclick="filtrarNotaEspaco('')">Todos</button>
         <button class="view-toggle-btn" data-work-espaco="Interno" onclick="filtrarNotaEspaco('Interno')">Internos</button>
         <button class="view-toggle-btn" data-work-espaco="Externo" onclick="filtrarNotaEspaco('Externo')">Externo</button>
+      </div>
       </div>
       <div class="notes-controls" style="gap:9px;">
         <input class="search-input" id="notesSearch" placeholder="Buscar nota..." oninput="renderNotas()">
@@ -1820,8 +1967,10 @@ button.agenda-stat{text-align:left;font:inherit;color:inherit;cursor:pointer;pos
       <div class="nu-head">Anotações sem dono <span id="nuCount">0</span></div>
       <div class="nu-list" id="nuList"></div>
     </div>
-    <div class="notes-layout">
+    <div class="notes-layout" id="notesLayout">
       <div class="notes-list" id="notesList"></div>
+      <div class="wk-funil" id="wkFunil"></div>
+      <div class="wk-scrim" id="wkScrim" onclick="wkFecharEditor()"></div>
       <div class="notes-editor" id="notesEditor"><div class="note-empty">Selecione uma nota ou crie uma nova anotação.</div></div>
     </div>
   </div>
@@ -2567,7 +2716,7 @@ button.agenda-stat{text-align:left;font:inherit;color:inherit;cursor:pointer;pos
 // URL do Apps Script, pode deixar como está: essa URL não é usada nesse
 // caso. Veja a função call(), logo abaixo, pra entender como isso é usado.
 // ═══════════════════════════════════════════
-var API_URL = 'https://script.google.com/macros/s/AKfycbwlF470rpR6djqx6f5XD63LklFQ-QExb7zQGIOilmxb4yBaiKKyS7MwljzivfIVxM79JQ/exec';
+var API_URL = 'https://script.google.com/macros/s/AKfycbzfhuoc5zfCpLXBOv0PxPP3bi2kLGMBKBRE4FPvIb4f1mMA389LxTa4v3kvwaxB6fi51Q/exec';
 
 // ═══════════════════════════════════════════
 // CONSTANTES
@@ -3482,6 +3631,7 @@ var pageMeta={
 // clique mesmo enquanto o conteúdo ainda está trocando.
 function showPage(id,btn){
   fecharMenuMobile();
+  if(id!=='work'&&typeof wkFecharEditor==='function') wkFecharEditor();
   var current=document.querySelector('.page.active');
   var targetPage=document.getElementById('page-'+id);
   if(!targetPage) return;
@@ -3784,7 +3934,7 @@ function renderCompromissosTrello(){
 
 function montarTarefasAnotacoes(){
   return (notas||[])
-    .filter(function(n){ return n.data_entrega; })
+    .filter(function(n){ return n.data_entrega && notaStatus(n)!=='concluido'; })
     .slice()
     .sort(function(a,b){
       var da=diasAgenda(a.data_entrega), db=diasAgenda(b.data_entrega);
@@ -6774,7 +6924,7 @@ function updateNotasBadge(){
 }
 
 function notaIsFavorite(n){return n && (n.favorita===true || n.favorita==='true');}
-function formatNotaDate(s){var d=s?new Date(s):null;return d&&!isNaN(d)?d.toLocaleDateString('pt-BR'):'';}
+function formatNotaDate(s){var d=parseDate(s);return d?d.toLocaleDateString('pt-BR'):'';}
 function notaDueLabel(s){return s?'Entrega '+formatNotaDate(s):'Sem data de entrega';}
 
 function renderNotas(){
@@ -6797,16 +6947,20 @@ function renderNotasList(){
   var sel=document.getElementById('notesCategory');
   if(sel){var old=sel.value;sel.innerHTML='<option value="">Todas as categorias</option>'+Object.keys(categories).sort().map(function(c){return '<option value="'+escHtml(c)+'">'+escHtml(c)+'</option>';}).join('');sel.value=cat||old||'';}
   var filtered=notas.filter(function(n){var hay=(n.titulo+' '+n.conteudo+' '+n.categoria+' '+n.data_entrega).toLowerCase();return (!q||hay.indexOf(q.toLowerCase())>=0)&&(!cat||n.categoria===cat)&&(!notaEspacoFiltro||(n.tipo_espaco||'Interno')===notaEspacoFiltro);});
+  renderWkHero();
+  renderWkFunil(filtered);
   if(!filtered.length){list.innerHTML='<div class="note-empty">Nenhuma nota encontrada.<br><span style="font-size:12px">Crie uma anotação usando o botão acima.</span></div>';return;}
-  list.innerHTML=filtered.map(function(n){
+  list.innerHTML=wkOrdenar(filtered).map(function(n){
     var title=n.titulo||'Sem título',preview=String(n.conteudo||'').replace(/\s+/g,' ').trim()||'Sem conteúdo';
-    return '<article class="note-list-item '+(editingNotaId===n.id&&!notaDraft?'active':'')+'" onclick="selectNota(\''+escHtml(n.id)+'\')"><div class="note-list-main"><div class="note-list-title">'+(notaIsFavorite(n)?'&#9733; ':'')+escHtml(title)+'</div><div class="note-list-preview">'+escHtml(preview)+'</div><div class="note-list-meta"><span>'+escHtml(n.categoria||'Geral')+'</span><span>'+escHtml(notaDueLabel(n.data_entrega))+'</span></div></div><button class="note-star" title="Favoritar" onclick="event.stopPropagation();toggleNotaFavorite(\''+escHtml(n.id)+'\')">'+(notaIsFavorite(n)?'&#9733;':'&#9734;')+'</button></article>';
+    var p=wkPrazo(n), feita=notaStatus(n)==='concluido';
+    var prazoTxt=n.data_entrega?(feita?'Entrega em '+formatNotaDate(n.data_entrega):formatNotaDate(n.data_entrega)+', '+p.txt.charAt(0).toLowerCase()+p.txt.slice(1)):'Sem data de entrega';
+    return '<article class="note-list-item wk-card '+(editingNotaId===n.id&&!notaDraft?'active ':'')+(feita?'feita':'')+'" onclick="selectNota(\''+escHtml(n.id)+'\')">'+wkTile(n)+'<div class="note-list-main"><div class="note-list-title">'+(notaIsFavorite(n)?'&#9733; ':'')+escHtml(title)+'</div><div class="note-list-preview">'+escHtml(preview)+'</div><div class="note-list-meta wk-meta">'+wkStatusPill(n)+'<span>'+escHtml(n.categoria||'Geral')+'</span><span class="wk-prazo-txt '+(feita?'':p.cls)+'">'+escHtml(prazoTxt)+'</span></div></div><button class="note-star" title="Favoritar" onclick="event.stopPropagation();toggleNotaFavorite(\''+escHtml(n.id)+'\')">'+(notaIsFavorite(n)?'&#9733;':'&#9734;')+'</button></article>';
   }).join('');
 }
 
 function selectNota(id){
-  if(notaAutosaveTimer)clearTimeout(notaAutosaveTimer);
-  notaDraft=false;editingNotaId=id;renderNotas();
+  if(notaAutosaveTimer){clearTimeout(notaAutosaveTimer);notaAutosaveTimer=null;if(!notaDraft&&editingNotaId&&editingNotaId!==id)saveNota(true);}
+  notaDraft=false;editingNotaId=id;renderNotas();wkAbrirEditor();
 }
 
 // Filtro Todos/Internos/Externo do Work Space (chips acima da lista de notas).
@@ -6819,19 +6973,22 @@ function filtrarNotaEspaco(v){
 // Extrai até 2 ids de modelo do campo modelo_ids (string separada por vírgula) —
 // hoje só o primeiro slot (Modelo 1) é usado no editor.
 function notaModeloIds(n){
-  return String((n&&n.modelo_ids)||'').split(',').map(function(s){return s.trim();}).filter(function(s){return s;});
+  return String((n&&n.modelo_ids)||'').split(',').map(function(s){return s.trim();}).filter(function(s){return s&&!/^status:/.test(s);});
 }
 
 function renderNotaEditor(n,isDraft){
   var editor=document.getElementById('notesEditor');if(!editor)return;
   var due=n.data_entrega||'';
+  var stAtual=isDraft?'nenhum':notaStatus(n);
+  var prazoInfo=wkPrazo({data_entrega:due,status:stAtual});
+  var stSeg='<div class="wk-st-seg" id="inlineNotaStatusSeg" role="group" aria-label="Status">'+WK_ORDEM.map(function(s){return '<button type="button" data-st="'+s+'" class="'+(s===stAtual?'on':'')+'" aria-pressed="'+(s===stAtual)+'" onclick="wkEditorStatus(\''+s+'\')"><i></i>'+WK_STATUS[s]+'</button>';}).join('')+'</div><input type="hidden" id="inlineNotaStatus" value="'+stAtual+'">';
   var tipoEsp=n.tipo_espaco||'Interno';
   var modIds=notaModeloIds(n);
   var promptOptions='<option value="">Nenhum</option>'+cwPrompts.map(function(p){return '<option value="'+escHtml(p.id)+'"'+(n.prompt_id===p.id?' selected':'')+'>'+escHtml(p.title)+'</option>';}).join('');
   var modeloOptions='<option value="">Nenhum</option>'+cwModelos.map(function(m){return '<option value="'+escHtml(m.id)+'"'+((modIds[0]||'')===m.id?' selected':'')+'>'+escHtml(m.name)+'</option>';}).join('');
   var memoriaOptions='<option value="">Nenhuma</option>'+cwMemorias.map(function(m){return '<option value="'+escHtml(m.id)+'"'+(n.memoria_id===m.id?' selected':'')+'>'+escHtml(m.name)+'</option>';}).join('');
-  editor.innerHTML='<div class="notes-editor-head"><input id="inlineNotaTitulo" value="'+escHtml(n.titulo||'')+'" placeholder="Título da anotação" oninput="scheduleNotaAutosave()"><label class="note-star" title="Favorita"><input id="inlineNotaFavorita" type="checkbox" '+(notaIsFavorite(n)?'checked':'')+' onchange="scheduleNotaAutosave()"> &#9733;</label></div>'+
-    '<div class="notes-editor-body"><div class="notes-inline-meta"><label>Categoria <input id="inlineNotaCategoria" list="notaCategorias" value="'+escHtml(n.categoria||'Geral')+'" oninput="scheduleNotaAutosave()"></label><label>Data de entrega <input id="inlineNotaEntrega" type="date" value="'+escHtml(due)+'" onchange="scheduleNotaAutosave()"></label><label>Tipo <select id="inlineNotaTipoEspaco" onchange="scheduleNotaAutosave()"><option value="Interno"'+(tipoEsp==='Interno'?' selected':'')+'>Interno</option><option value="Externo"'+(tipoEsp==='Externo'?' selected':'')+'>Externo</option></select></label></div>'+
+  editor.innerHTML='<div class="notes-editor-head"><input id="inlineNotaTitulo" value="'+escHtml(n.titulo||'')+'" placeholder="Título da anotação" oninput="scheduleNotaAutosave()"><label class="note-star" title="Favorita"><input id="inlineNotaFavorita" type="checkbox" '+(notaIsFavorite(n)?'checked':'')+' onchange="scheduleNotaAutosave()"> &#9733;</label><button type="button" class="notes-editor-fechar" title="Fechar (Esc)" aria-label="Fechar" onclick="wkFecharEditor()">&#10005;</button></div>'+
+    '<div class="notes-editor-body"><div class="notes-inline-meta">'+stSeg+'<span class="wk-editor-prazo '+prazoInfo.cls+'" id="inlineNotaPrazo">'+escHtml(prazoInfo.txt)+'</span></div><div class="notes-inline-meta"><label>Categoria <input id="inlineNotaCategoria" list="notaCategorias" value="'+escHtml(n.categoria||'Geral')+'" oninput="scheduleNotaAutosave()"></label><label>Data de entrega <input id="inlineNotaEntrega" type="date" value="'+escHtml(due)+'" onchange="wkAtualizarPrazoEditor();scheduleNotaAutosave()"></label><label>Tipo <select id="inlineNotaTipoEspaco" onchange="scheduleNotaAutosave()"><option value="Interno"'+(tipoEsp==='Interno'?' selected':'')+'>Interno</option><option value="Externo"'+(tipoEsp==='Externo'?' selected':'')+'>Externo</option></select></label></div>'+
     '<textarea id="inlineNotaConteudo" placeholder="Escreva o conteúdo da anotação..." oninput="scheduleNotaAutosave()">'+escHtml(n.conteudo||'')+'</textarea>'+
     '<div class="nota-addons"><div class="nota-addon-title">Adicionadores</div>'+
       '<div class="nota-addon-row"><label>Prompt</label><select id="inlineNotaPrompt" onchange="scheduleNotaAutosave()">'+promptOptions+'</select><button type="button" class="btn btn-outline btn-sm" onclick="copiarNotaPrompt()">Copiar Prompt</button></div>'+
@@ -6839,7 +6996,7 @@ function renderNotaEditor(n,isDraft){
       '<div class="nota-addon-row"><label>Memória</label><select id="inlineNotaMemoria" onchange="scheduleNotaAutosave()">'+memoriaOptions+'</select><button type="button" class="btn btn-outline btn-sm" onclick="abrirNotaMemoria()">Abrir</button></div>'+
       '<div class="nota-addon-row"><label>Link de trabalho</label><input id="inlineNotaLink" type="url" placeholder="URL da pasta onde está o documento" value="'+escHtml(n.link_trabalho||'')+'" oninput="scheduleNotaAutosave()"><button type="button" class="btn btn-outline btn-sm" onclick="abrirLinkTrabalho()">Abrir</button></div>'+
     '</div></div>'+
-    '<div class="notes-editor-foot"><span id="inlineNotaState" class="notes-save-state '+(isDraft?'':'saved')+'">'+(isDraft?'Rascunho não salvo':'Salva')+'</span><span class="spacer"></span><span id="inlineNotaDueLabel">'+escHtml(notaDueLabel(n.data_entrega))+'</span>'+(isDraft?'':'<button class="btn btn-danger btn-sm" onclick="deleteNota()">Excluir</button>')+'<button class="btn btn-primary btn-sm" onclick="saveNota()">Salvar</button></div>';
+    '<div class="notes-editor-foot"><span id="inlineNotaState" class="notes-save-state '+(isDraft?'':'saved')+'">'+(isDraft?'Rascunho não salvo':'Salva')+'</span><span class="spacer"></span>'+(isDraft?'':'<button class="btn btn-danger btn-sm" onclick="deleteNota()">Excluir</button>')+'<button class="btn btn-primary btn-sm" onclick="saveNota()">Salvar</button></div>';
 }
 
 // Copia o corpo do prompt selecionado no adicionador da nota atual.
@@ -6884,8 +7041,8 @@ function abrirLinkTrabalho(){
 function openNotaModal(id){
   if(id){selectNota(id);return;}
   if(notaAutosaveTimer)clearTimeout(notaAutosaveTimer);
-  notaDraft=true;editingNotaId=null;renderNotas();
-  setTimeout(function(){var el=document.getElementById('inlineNotaTitulo');if(el)el.focus();},30);
+  notaDraft=true;editingNotaId=null;renderNotas();wkAbrirEditor();
+  setTimeout(function(){var el=document.getElementById('inlineNotaTitulo');if(el)el.focus();},wkModo==='funil'?380:30);
 }
 
 function closeNotaModal(){notaDraft=false;editingNotaId=null;renderNotas();}
@@ -6893,7 +7050,8 @@ function setNotaSaveState(text,cls){var el=document.getElementById('inlineNotaSt
 function buildNotaPayload(){
   var m1=(document.getElementById('inlineNotaModelo1')||{}).value||'';
   var modeloIds=[m1].filter(function(x){return x;});
-  return {id:notaDraft?'':editingNotaId||'',titulo:(document.getElementById('inlineNotaTitulo')||{}).value||'',conteudo:(document.getElementById('inlineNotaConteudo')||{}).value||'',categoria:(document.getElementById('inlineNotaCategoria')||{}).value||'Geral',favorita:!!((document.getElementById('inlineNotaFavorita')||{}).checked),data_entrega:(document.getElementById('inlineNotaEntrega')||{}).value||'',tipo_espaco:(document.getElementById('inlineNotaTipoEspaco')||{}).value||'Interno',prompt_id:(document.getElementById('inlineNotaPrompt')||{}).value||'',modelo_ids:modeloIds.join(','),link_trabalho:(document.getElementById('inlineNotaLink')||{}).value||'',memoria_id:(document.getElementById('inlineNotaMemoria')||{}).value||''};
+  var stNota=(document.getElementById('inlineNotaStatus')||{}).value||'nenhum';
+  return {status:stNota,id:notaDraft?'':editingNotaId||'',titulo:(document.getElementById('inlineNotaTitulo')||{}).value||'',conteudo:(document.getElementById('inlineNotaConteudo')||{}).value||'',categoria:(document.getElementById('inlineNotaCategoria')||{}).value||'Geral',favorita:!!((document.getElementById('inlineNotaFavorita')||{}).checked),data_entrega:(document.getElementById('inlineNotaEntrega')||{}).value||'',tipo_espaco:(document.getElementById('inlineNotaTipoEspaco')||{}).value||'Interno',prompt_id:(document.getElementById('inlineNotaPrompt')||{}).value||'',modelo_ids:notaModeloIdsComStatus(modeloIds,stNota),link_trabalho:(document.getElementById('inlineNotaLink')||{}).value||'',memoria_id:(document.getElementById('inlineNotaMemoria')||{}).value||''};
 }
 
 function scheduleNotaAutosave(){
@@ -6915,6 +7073,7 @@ function saveNota(silent){
   return call('saveNota',payload).then(function(res){
     if(!res||!res.ok)throw new Error((res&&res.error)||'Não foi possível salvar a nota.');
     if(res.nota){
+      if(!res.nota.status&&payload.status)res.nota.status=payload.status;
       var idx=notas.findIndex(function(n){return n.id===res.nota.id;});
       if(idx>=0)notas[idx]=res.nota;else notas.unshift(res.nota);
       editingNotaId=res.nota.id;notaDraft=false;
@@ -6930,15 +7089,15 @@ function saveNota(silent){
 
 function toggleNotaFavorite(id){
   var n=notas.find(function(x){return x.id===id;});if(!n)return;
-  call('saveNota',{id:n.id,titulo:n.titulo,conteudo:n.conteudo,categoria:n.categoria,favorita:!notaIsFavorite(n),data_entrega:n.data_entrega||'',tipo_espaco:n.tipo_espaco||'Interno',prompt_id:n.prompt_id||'',modelo_ids:n.modelo_ids||'',link_trabalho:n.link_trabalho||'',memoria_id:n.memoria_id||''}).then(function(res){
-    if(res&&res.ok&&res.nota){var i=notas.findIndex(function(x){return x.id===id;});notas[i]=res.nota;renderNotasList();if(editingNotaId===id)renderNotaEditor(res.nota,false);}
+  call('saveNota',{id:n.id,titulo:n.titulo,conteudo:n.conteudo,categoria:n.categoria,favorita:!notaIsFavorite(n),data_entrega:n.data_entrega||'',tipo_espaco:n.tipo_espaco||'Interno',prompt_id:n.prompt_id||'',modelo_ids:n.modelo_ids||'',link_trabalho:n.link_trabalho||'',memoria_id:n.memoria_id||'',status:notaStatus(n)}).then(function(res){
+    if(res&&res.ok&&res.nota){var i=notas.findIndex(function(x){return x.id===id;});if(!res.nota.status)res.nota.status=notaStatus(n);notas[i]=res.nota;renderNotasList();if(editingNotaId===id)renderNotaEditor(res.nota,false);}
   }).catch(function(e){showToast(e.message||'Erro ao atualizar favorito.');});
 }
 
 function deleteNota(){
   if(!editingNotaId)return;
   if(!confirm('Excluir esta anotação?'))return;
-  var id=editingNotaId; editingNotaId=null; notaDraft=false;
+  var id=editingNotaId; editingNotaId=null; notaDraft=false; wkFecharEditor();
   excluirOtimista({ id:id, action:'deleteNota', payload:{id:id}, msg:'Nota excluída.', get:function(){return notas;}, set:function(v){notas=v;},
     render:function(){renderNotas();updateNotasBadge();renderTarefasAnotacoes();} });
 }
@@ -7000,12 +7159,244 @@ document.addEventListener('keydown',function(e){
 });
 
 // ═══════════════════════════════════════════
+// WORK SPACE: status, contagem de prazo, funil e resumo com anéis
+// O status de cada anotação viaja junto do campo modelo_ids, como um item
+// "status:analise" ou "status:concluido" (o Code.gs atual já grava esse campo
+// como texto). Assim nada muda no servidor. Se um dia a planilha ganhar uma
+// coluna "status", o valor dela tem prioridade.
+// ═══════════════════════════════════════════
+var WK_STATUS={nenhum:'Nenhum',analise:'Em análise',concluido:'Concluído'};
+var WK_ORDEM=['nenhum','analise','concluido'];
+var wkModo='lista';
+try{ if(localStorage.getItem('gj_work_modo')==='funil') wkModo='funil'; }catch(e){}
+
+function notaStatus(n){
+  if(!n) return 'nenhum';
+  if(n.status&&WK_STATUS[n.status]) return n.status;
+  var m=String(n.modelo_ids||'').match(/(?:^|,)\s*status:(\w+)/);
+  return m&&WK_STATUS[m[1]]?m[1]:'nenhum';
+}
+function notaModeloIdsComStatus(ids,st){
+  var l=(ids||[]).filter(function(x){ return !/^status:/.test(x); });
+  if(st&&st!=='nenhum') l.push('status:'+st);
+  return l.join(',');
+}
+// Prazo em dias, pronto para mostrar
+function wkPrazo(n){
+  var st=notaStatus(n), d=n&&n.data_entrega?diasRestantes(n.data_entrega):null;
+  if(st==='concluido') return {cls:'feito',num:'',rot:'concluída',txt:'Concluída',d:d};
+  if(d===null) return {cls:'sem',num:'–',rot:'sem prazo',txt:'Sem prazo de entrega',d:null};
+  if(d<0){ var a=-d; return {cls:'vencido',num:String(a),rot:a===1?'dia de atraso':'dias de atraso',txt:a===1?'Venceu ontem':'Venceu há '+a+' dias',d:d}; }
+  if(d===0) return {cls:'hoje',num:'Hoje',rot:'',txt:'Vence hoje',d:0};
+  if(d===1) return {cls:'urgente',num:'1',rot:'dia',txt:'Vence amanhã',d:1};
+  return {cls:d<=7?'urgente':'ok',num:String(d),rot:'dias',txt:'Faltam '+d+' dias',d:d};
+}
+function wkTile(n){
+  var p=wkPrazo(n);
+  if(p.cls==='feito') return '<div class="wk-dias feito" title="Concluída"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>feito</span></div>';
+  return '<div class="wk-dias '+p.cls+'" title="'+escHtml(p.txt)+'"><b>'+escHtml(p.num)+'</b><span>'+escHtml(p.rot)+'</span></div>';
+}
+function wkStatusPill(n){
+  var st=notaStatus(n), id=escHtml(n.id);
+  return '<label class="wk-st '+st+'" title="Mudar status" onclick="event.stopPropagation()" onmousedown="event.stopPropagation()"><i></i>'+WK_STATUS[st]+
+    '<svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>'+
+    '<select aria-label="Status da anotação" onchange="wkMudarStatus(\''+id+'\',this.value)">'+
+    WK_ORDEM.map(function(s){ return '<option value="'+s+'"'+(s===st?' selected':'')+'>'+WK_STATUS[s]+'</option>'; }).join('')+'</select></label>';
+}
+// Abertas por prazo (vencidas primeiro, sem prazo depois); concluídas no fim
+function wkOrdenar(lista){
+  return lista.map(function(n,i){ return {n:n,i:i}; }).sort(function(a,b){
+    var ca=notaStatus(a.n)==='concluido'?1:0, cb=notaStatus(b.n)==='concluido'?1:0;
+    if(ca!==cb) return ca-cb;
+    var da=a.n.data_entrega?diasRestantes(a.n.data_entrega):null, db=b.n.data_entrega?diasRestantes(b.n.data_entrega):null;
+    if(da===null&&db!==null) return 1; if(db===null&&da!==null) return -1;
+    if(da!==null&&db!==null&&da!==db) return da-db;
+    return a.i-b.i;
+  }).map(function(x){ return x.n; });
+}
+
+// Muda o status direto do cartão (lista ou funil)
+function wkMudarStatus(id,st){
+  var n=notas.find(function(x){ return x.id===id; }); if(!n||!WK_STATUS[st]||notaStatus(n)===st) return;
+  if(editingNotaId===id&&!notaDraft&&document.getElementById('inlineNotaStatus')){ wkEditorStatus(st,true); return; }
+  var antes={modelo_ids:n.modelo_ids,status:n.status};
+  n.modelo_ids=notaModeloIdsComStatus(notaModeloIds(n),st); n.status=st;
+  renderNotasList(); renderTarefasAnotacoes();
+  showToast(st==='concluido'?'Anotação concluída.':'Status: '+WK_STATUS[st]+'.');
+  call('saveNota',{id:n.id,titulo:n.titulo,conteudo:n.conteudo,categoria:n.categoria,favorita:notaIsFavorite(n),data_entrega:n.data_entrega||'',tipo_espaco:n.tipo_espaco||'Interno',prompt_id:n.prompt_id||'',modelo_ids:n.modelo_ids,link_trabalho:n.link_trabalho||'',memoria_id:n.memoria_id||'',status:st}).then(function(res){
+    if(!res||!res.ok) throw new Error((res&&res.error)||'Não foi possível salvar o status.');
+    if(res.nota){ var i=notas.findIndex(function(x){return x.id===id;}); if(i>=0){ notas[i]=res.nota; if(!res.nota.status) notas[i].status=st; } }
+  }).catch(function(e){
+    n.modelo_ids=antes.modelo_ids; n.status=antes.status; renderNotasList(); renderTarefasAnotacoes();
+    showToast(e.message||'Erro ao salvar o status.');
+  });
+}
+// Status pelo controle do editor (salva junto com o autosalvamento)
+function wkEditorStatus(st,salvarJa){
+  var inp=document.getElementById('inlineNotaStatus'); if(!inp||!WK_STATUS[st]) return;
+  inp.value=st;
+  document.querySelectorAll('#inlineNotaStatusSeg button').forEach(function(b){ var on=b.getAttribute('data-st')===st; b.classList.toggle('on',on); b.setAttribute('aria-pressed',on?'true':'false'); });
+  var n=!notaDraft&&notas.find(function(x){ return x.id===editingNotaId; });
+  if(n){ n.modelo_ids=notaModeloIdsComStatus(notaModeloIds(n),st); n.status=st; renderNotasList(); renderTarefasAnotacoes(); }
+  wkAtualizarPrazoEditor();
+  if(salvarJa&&!notaDraft){ if(notaAutosaveTimer) clearTimeout(notaAutosaveTimer); saveNota(true); }
+  else scheduleNotaAutosave();
+}
+function wkAtualizarPrazoEditor(){
+  var el=document.getElementById('inlineNotaPrazo'); if(!el) return;
+  var p=wkPrazo({data_entrega:(document.getElementById('inlineNotaEntrega')||{}).value||'',status:(document.getElementById('inlineNotaStatus')||{}).value||'nenhum'});
+  el.className='wk-editor-prazo '+p.cls; el.textContent=p.txt;
+}
+
+// Funil: três colunas, arrastar muda o status
+var wkArrastando=null;
+function renderWkFunil(lista){
+  var box=document.getElementById('wkFunil'); if(!box) return;
+  lista=wkOrdenar(lista||[]);
+  box.innerHTML=WK_ORDEM.map(function(st){
+    var itens=lista.filter(function(n){ return notaStatus(n)===st; });
+    return '<section class="wk-col" data-st="'+st+'" ondragover="wkDragOver(event,this)" ondragleave="this.classList.remove(\'alvo\')" ondrop="wkDrop(event,this)">'+
+      '<div class="wk-col-head"><i></i>'+WK_STATUS[st]+'<span>'+itens.length+'</span></div><div class="wk-col-lista">'+
+      (itens.length?itens.map(function(n){
+        var p=wkPrazo(n);
+        return '<article class="wk-fcard'+(editingNotaId===n.id&&!notaDraft?' active':'')+'" draggable="true" data-id="'+escHtml(n.id)+'" ondragstart="wkDragStart(event,this)" ondragend="wkDragEnd(this)" onclick="selectNota(\''+escHtml(n.id)+'\')">'+
+          wkTile(n)+'<div class="wk-fcard-main"><div class="wk-fcard-titulo">'+(notaIsFavorite(n)?'&#9733; ':'')+escHtml(n.titulo||'Sem título')+'</div>'+
+          '<div class="wk-fcard-meta">'+wkStatusPill(n)+'<span>'+escHtml(n.categoria||'Geral')+'</span>'+(n.data_entrega&&p.cls!=='feito'?'<span class="wk-prazo-txt '+p.cls+'">'+escHtml(formatNotaDate(n.data_entrega))+'</span>':'')+'</div></div></article>';
+      }).join(''):'<div class="wk-col-vazia">'+(st==='nenhum'?'Nada por aqui.':'Arraste um cartão para cá.')+'</div>')+
+      '</div></section>';
+  }).join('');
+}
+function wkDragStart(e,el){ wkArrastando=el.getAttribute('data-id'); el.classList.add('arrastando'); try{ e.dataTransfer.setData('text/plain',wkArrastando); e.dataTransfer.effectAllowed='move'; }catch(x){} }
+function wkDragEnd(el){ el.classList.remove('arrastando'); document.querySelectorAll('.wk-col.alvo').forEach(function(c){ c.classList.remove('alvo'); }); wkArrastando=null; }
+function wkDragOver(e,col){ if(!wkArrastando) return; e.preventDefault(); col.classList.add('alvo'); }
+function wkDrop(e,col){ e.preventDefault(); col.classList.remove('alvo'); var id=wkArrastando; wkArrastando=null; if(id) wkMudarStatus(id,col.getAttribute('data-st')); }
+
+// Lista ou funil
+function wkMudarModo(m){
+  wkModo=m==='funil'?'funil':'lista';
+  try{ localStorage.setItem('gj_work_modo',wkModo); }catch(e){}
+  wkAplicarModo();
+}
+// No funil o editor vira uma gaveta presa à janela; ela mora no <body> para
+// não herdar o transform da animação da página
+function wkPosicionarEditor(){
+  var ed=document.getElementById('notesEditor'), sc=document.getElementById('wkScrim'), lay=document.getElementById('notesLayout');
+  if(!ed||!sc||!lay) return;
+  var gav=document.getElementById('wkGaveta');
+  if(!gav){ gav=document.createElement('div'); gav.id='wkGaveta'; gav.className='wk-gaveta'; document.body.appendChild(gav); }
+  if(wkModo==='funil'){ if(sc.parentNode!==gav) gav.appendChild(sc); if(ed.parentNode!==gav) gav.appendChild(ed); }
+  else { if(sc.parentNode!==lay) lay.appendChild(sc); if(ed.parentNode!==lay) lay.appendChild(ed); }
+  gav.classList.remove('aberta');
+}
+function wkAplicarModo(){
+  var seg=document.getElementById('wkModo'); if(seg){ seg.setAttribute('data-modo',wkModo); seg.querySelectorAll('button').forEach(function(b){ var on=b.getAttribute('data-modo')===wkModo; b.classList.toggle('active',on); b.setAttribute('aria-selected',on?'true':'false'); }); }
+  var lay=document.getElementById('notesLayout'); if(!lay) return;
+  lay.classList.toggle('modo-funil',wkModo==='funil');
+  wkPosicionarEditor();
+}
+function wkGavetaAberta(){ var g=document.getElementById('wkGaveta'); return !!(g&&g.classList.contains('aberta')); }
+function wkAbrirEditor(){ if(wkModo!=='funil') return; var g=document.getElementById('wkGaveta'); if(g) g.classList.add('aberta'); }
+function wkFecharEditor(){
+  if(!wkGavetaAberta()) return;
+  document.getElementById('wkGaveta').classList.remove('aberta');
+  if(notaDraft){ setTimeout(closeNotaModal,300); }
+}
+document.addEventListener('keydown',function(e){
+  if(e.key!=='Escape') return;
+  if(wkGavetaAberta()&&!document.querySelector('.modal-overlay.open')) wkFecharEditor();
+});
+
+// Resumo: anéis (concluídas, em análise, em dia), próxima entrega e 14 dias
+var WK_ANEIS=[
+  {id:'concluido',nome:'Concluídas',r:68,c1:'#9cff57',c2:'#30d158'},
+  {id:'analise',nome:'Em análise',r:49,c1:'#7df9ff',c2:'#0a84ff'},
+  {id:'emdia',nome:'Em dia',r:30,c1:'#ff6b8b',c2:'#ff2d55'}
+];
+function wkMontarHero(box){
+  var defs='', circ='';
+  WK_ANEIS.forEach(function(a){
+    var C=(2*Math.PI*a.r).toFixed(2);
+    defs+='<linearGradient id="wkG'+a.id+'" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="'+a.c1+'"/><stop offset="1" stop-color="'+a.c2+'"/></linearGradient>';
+    circ+='<circle class="trilho" cx="80" cy="80" r="'+a.r+'" stroke="'+a.c2+'" stroke-width="15"/>'+
+          '<circle class="arco" id="wkArco'+a.id+'" cx="80" cy="80" r="'+a.r+'" stroke="url(#wkG'+a.id+')" stroke-width="15" stroke-dasharray="'+C+'" stroke-dashoffset="'+C+'" transform="rotate(-90 80 80)"/>';
+  });
+  box.innerHTML='<div class="wk-aneis-box"><svg class="wk-aneis" viewBox="0 0 160 160" role="img" aria-label="Resumo das anotações"><defs>'+defs+'</defs>'+circ+'</svg>'+
+    '<div class="wk-legenda">'+WK_ANEIS.map(function(a){ return '<div class="wk-leg"><i style="background:'+a.c2+'"></i><b>'+a.nome+'</b><span id="wkLeg'+a.id+'">0</span></div>'; }).join('')+'</div></div>'+
+    '<div class="wk-prox"><div class="wk-prox-rot" id="wkProxRot">Próxima entrega</div><div class="wk-prox-tempo" id="wkProxTempo">&nbsp;</div><div class="wk-prox-nome" id="wkProxNome"></div><div class="wk-faixa" id="wkFaixa"></div></div>';
+}
+function renderWkHero(){
+  var box=document.getElementById('wkHero'); if(!box) return;
+  if(!box.firstChild) wkMontarHero(box);
+  var l=notas||[], total=l.length, conc=0, anal=0, abertas=0, emDia=0, atrasadas=0;
+  l.forEach(function(n){
+    var st=notaStatus(n);
+    if(st==='concluido'){ conc++; return; }
+    if(st==='analise') anal++;
+    abertas++;
+    var d=n.data_entrega?diasRestantes(n.data_entrega):null;
+    if(d!==null&&d<0) atrasadas++; else emDia++;
+  });
+  var fr={concluido:total?conc/total:0, analise:total?anal/total:0, emdia:abertas?emDia/abertas:(total?1:0)};
+  var leg={concluido:conc+'<small>de '+total+'</small>', analise:anal+'<small>de '+total+'</small>', emdia:emDia+'<small>de '+abertas+' abertas</small>'};
+  requestAnimationFrame(function(){ requestAnimationFrame(function(){
+    WK_ANEIS.forEach(function(a){
+      var el=document.getElementById('wkArco'+a.id); if(!el) return;
+      var C=2*Math.PI*a.r; el.style.strokeDashoffset=(C*(1-Math.max(0,Math.min(1,fr[a.id])))).toFixed(2);
+    });
+  }); });
+  WK_ANEIS.forEach(function(a){ var e=document.getElementById('wkLeg'+a.id); if(e) e.innerHTML=leg[a.id]; });
+  // próxima entrega (a mais próxima ainda não vencida)
+  var prox=null;
+  l.forEach(function(n){
+    if(notaStatus(n)==='concluido'||!n.data_entrega) return;
+    var d=diasRestantes(n.data_entrega); if(d===null||d<0) return;
+    if(!prox||d<prox.d) prox={n:n,d:d};
+  });
+  wkProx=prox; wkAtrasadas=atrasadas;
+  var rot=document.getElementById('wkProxRot');
+  rot.innerHTML='Próxima entrega'+(atrasadas?'<span class="wk-atraso">'+atrasadas+(atrasadas===1?' atrasada':' atrasadas')+'</span>':'');
+  var nome=document.getElementById('wkProxNome');
+  if(prox){ nome.innerHTML=escHtml(prox.n.titulo||'Sem título')+' <span>'+escHtml(formatNotaDate(prox.n.data_entrega))+'</span>'; nome.onclick=function(){ selectNota(prox.n.id); }; }
+  else { nome.innerHTML='<span>'+(total?'Nenhuma entrega com data pela frente.':'Crie uma anotação com data de entrega para acompanhar aqui.')+'</span>'; nome.onclick=null; }
+  wkTick();
+  // faixa de 14 dias
+  var dias=[], hoje=new Date(); hoje.setHours(0,0,0,0);
+  var LET=['D','S','T','Q','Q','S','S'];
+  for(var i=0;i<14;i++){
+    var dt=new Date(hoje); dt.setDate(hoje.getDate()+i);
+    var doDia=l.filter(function(n){ return n.data_entrega&&diasRestantes(n.data_entrega)===i; });
+    var pts=doDia.slice(0,3).map(function(n){ return '<i class="'+notaStatus(n)+'"></i>'; }).join('')+(doDia.length>3?'<small>+'+(doDia.length-3)+'</small>':'');
+    var tit=dt.toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long'})+(doDia.length?': '+doDia.map(function(n){ return n.titulo||'Sem título'; }).join(', '):'');
+    dias.push('<div class="wk-dia'+(i===0?' hoje':'')+(dt.getDay()===0||dt.getDay()===6?' fds':'')+'" title="'+escHtml(tit)+'"><em>'+LET[dt.getDay()]+'</em><b>'+dt.getDate()+'</b><span class="pontos">'+pts+'</span></div>');
+  }
+  document.getElementById('wkFaixa').innerHTML=dias.join('');
+  var hj=document.getElementById('wkHoje');
+  if(hj){ var t=new Date().toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long'}); hj.textContent=t.charAt(0).toUpperCase()+t.slice(1)+'. Seu espaço individual, com salvamento automático.'; }
+}
+// Contagem regressiva até o fim do dia da próxima entrega (atualiza a cada 30 s)
+var wkProx=null, wkAtrasadas=0;
+function wkTick(){
+  var el=document.getElementById('wkProxTempo'); if(!el) return;
+  if(!wkProx){ el.textContent=wkAtrasadas?'Nada pela frente':'Tudo em dia'; el.className='wk-prox-tempo'; return; }
+  var p=parseDate(wkProx.n.data_entrega); if(!p){ el.textContent=''; return; }
+  var fim=new Date(p); fim.setHours(23,59,59,999);
+  var ms=Math.max(0,fim-new Date()), min=Math.floor(ms/60000), h=Math.floor(min/60), d=Math.floor(h/24);
+  var txt;
+  if(d>=1){ var hr=h%24; txt=(d===1?'1 dia':d+' dias')+(hr?' e '+hr+' h':''); }
+  else txt=h+' h '+String(min%60).padStart(2,'0')+' min';
+  el.textContent=txt; el.className='wk-prox-tempo'+(d<1?' hoje':'');
+}
+setInterval(function(){ var pg=document.getElementById('page-work'); if(pg&&pg.classList.contains('active')&&!document.hidden) wkTick(); },30000);
+
+wkAplicarModo();
+
+// ═══════════════════════════════════════════
 // RODAS DE ATALHOS
-// Segurar Shift abre a roda de PROMPTS (soltar copia); segurar Ctrl abre a
+// Segurar Shift abre a roda de PROMPTS (soltar copia); segurar Alt abre a
 // roda de SITES (soltar abre o site). Cada roda tem 6 fatias, que cada pessoa
 // escolhe em Cowork (aba Prompts e aba Sites). O mouse aponta a fatia como
 // um analógico: conta o movimento desde a abertura, não onde o cursor estava.
-// Toque rápido na tecla, tecla junto com outra (Ctrl+C, Shift+letra) ou
+// Toque rápido na tecla, tecla junto com outra (Alt+Tab, Shift+letra) ou
 // tecla enquanto se digita num campo não abre nada.
 // ═══════════════════════════════════════════
 var RODA_N=6, RODA_R_EXT=250, RODA_R_INT=104, RODA_ZONA_MORTA=34;
@@ -7027,7 +7418,7 @@ var RODA_MODOS={
     }
   },
   sites:{
-    tecla:'Control', teclaNome:'Ctrl', chave:'atalhosSites', nome:'Sites', verbo:'abre', aba:'Sites',
+    tecla:'Alt', teclaNome:'Alt', chave:'atalhosSites', nome:'Sites', verbo:'abre', aba:'Sites',
     lista:function(){ return (typeof siteItems!=='undefined'&&siteItems)||[]; },
     titulo:function(s){ return s.nome||'(sem nome)'; },
     sub:function(s){ return rodaHost(s.url); },
@@ -7123,7 +7514,7 @@ function renderRodaCfg(modo){
   var mapa='';
   for(var i=0;i<RODA_N;i++) mapa+='<path data-i="'+i+'" class="'+(rodaItemIdx(modo,i)>=0?'cheia':'')+'" d="'+rodaArco(i,98,48,2)+'"/>';
   var texto=modo==='sites'
-    ?'Escolha os 6 sites que aparecem ao segurar Ctrl. Aponte com o mouse e solte o Ctrl para abrir.'
+    ?'Escolha os 6 sites que aparecem ao segurar Alt. Aponte com o mouse e solte o Alt para abrir.'
     :'Escolha os 6 prompts que aparecem ao segurar Shift. Aponte com o mouse e solte o Shift para copiar.';
   box.innerHTML='<div class="roda-cfg-mapa"><svg viewBox="-100 -100 200 200">'+mapa+'</svg><div class="meio"><kbd>'+M.teclaNome+'</kbd><div>segure</div></div></div>'+
     '<div><div class="roda-cfg-topo"><div><h3>Atalhos da roda</h3><p>'+texto+'</p></div>'+
@@ -7235,30 +7626,31 @@ function rodaDicaInicial(){
     if(!window.matchMedia||!matchMedia('(pointer:fine)').matches) return;
     localStorage.setItem('gj_roda_dica2','1');
   }catch(e){ return; }
-  setTimeout(function(){ showToast('Dica: segure Shift para os prompts e Ctrl para os sites.'); },2600);
+  setTimeout(function(){ showToast('Dica: segure Shift para os prompts e Alt para os sites.'); },2600);
 }
 function rodaPodeAbrir(){
   var a=document.activeElement;
   if(a&&(a.isContentEditable||/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName))) return false;
-  if(document.querySelector('.modal-overlay.open')) return false; // com janela aberta, Ctrl e Shift ficam livres
+  if(document.querySelector('.modal-overlay.open')) return false; // com janela aberta, Alt e Shift ficam livres
   var sp=document.getElementById('splash');
   if(sp&&sp.style.display!=='none'&&!sp.classList.contains('hide')) return false; // ainda na tela de login
   if(!currentUser) return false;
   return true;
 }
 function rodaCancelarTimer(){ if(roda.timer){ clearTimeout(roda.timer); roda.timer=null; roda.timerModo=null; } }
-function rodaModoDaTecla(k){ return k==='Shift'?'prompts':(k==='Control'?'sites':null); }
+function rodaModoDaTecla(k){ return k==='Shift'?'prompts':(k==='Alt'?'sites':null); }
 document.addEventListener('keydown',function(e){
   var modo=rodaModoDaTecla(e.key);
   if(modo){
     if(e.repeat||roda.aberta) return;
-    if(roda.timer){ rodaCancelarTimer(); return; } // Shift e Ctrl juntos: nenhuma roda
+    if(roda.timer){ rodaCancelarTimer(); return; } // Shift e Alt juntos: nenhuma roda
     if(!rodaPodeAbrir()) return;
+    if(modo==='sites') e.preventDefault(); // Alt sozinho não vai para o menu do navegador
     roda.timerModo=modo;
     roda.timer=setTimeout(function(){ var m=roda.timerModo; roda.timer=null; roda.timerModo=null; rodaAbrir(m); },170);
     return;
   }
-  // qualquer outra tecla junto (Shift+letra, Ctrl+C...) cancela
+  // qualquer outra tecla junto (Shift+letra, Alt+Tab...) cancela
   rodaCancelarTimer();
   if(roda.aberta){
     e.preventDefault();
@@ -7272,9 +7664,10 @@ document.addEventListener('keyup',function(e){
   var modo=rodaModoDaTecla(e.key); if(!modo) return;
   if(roda.timer){ rodaCancelarTimer(); return; } // toque rápido: nada
   if(roda.aberta&&roda.modo===modo){ e.preventDefault(); rodaFechar(true); }
+  else if(modo==='sites'&&roda.aberta) e.preventDefault();
 },true);
 document.addEventListener('mousedown',function(e){
-  rodaCancelarTimer(); // Shift+clique ou Ctrl+clique não abrem a roda
+  rodaCancelarTimer(); // Shift+clique ou Alt+clique não abrem a roda
   if(roda.aberta&&e.button===2){ e.preventDefault(); rodaFechar(false); }
 },true);
 document.addEventListener('contextmenu',function(e){ if(roda.aberta) e.preventDefault(); },true);
@@ -7296,7 +7689,7 @@ document.addEventListener('mousemove',function(e){
   var ang=Math.atan2(roda.vx,-roda.vy)*180/Math.PI; if(ang<0) ang+=360;
   rodaSelecionar(Math.round(ang/(360/RODA_N))%RODA_N);
 },true);
-// Com a roda aberta, a rodinha do mouse não rola nem dá zoom (Ctrl+rolar) na página
+// Com a roda aberta, a rodinha do mouse não rola a página por trás
 document.addEventListener('wheel',function(e){ if(roda.aberta) e.preventDefault(); },{passive:false,capture:true});
 
 </script>
