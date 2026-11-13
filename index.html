@@ -1641,6 +1641,75 @@ button.agenda-stat{text-align:left;font:inherit;color:inherit;cursor:pointer;pos
 }
 @media(prefers-reduced-motion:reduce){.wk-hero::before{animation:none;}.wk-aneis .arco,.wk-seg-pill,.wk-gaveta .notes-editor{transition:none;}}
 
+/* ── Anexos das anotações ── */
+.nota-anexos{margin-top:16px;padding:16px 18px;border-radius:18px;background:rgba(255,255,255,.035);border:1px solid var(--line);}
+.anx-topo{display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.anx-topo .nota-addon-title{margin:0;}
+.anx-topo .nota-addon-title em{font-style:normal;margin-left:6px;padding:1px 7px;border-radius:999px;background:rgba(255,255,255,.1);color:var(--text);font-size:10.5px;}
+.anx-add{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;background:var(--accent);color:#fff;font-size:12px;font-weight:600;cursor:pointer;}
+.anx-add:hover{filter:brightness(1.1);}
+.anx-add input{display:none;}
+.anx-add svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;}
+.anx-add:focus-within{outline:2px solid var(--accent);outline-offset:2px;}
+.anx-vazio{margin-top:12px;padding:16px;border:1px dashed var(--line-2);border-radius:14px;text-align:center;font-size:12px;color:var(--text-3);}
+.anx-lista{display:flex;flex-direction:column;gap:6px;margin-top:12px;}
+.anx-item{display:flex;align-items:center;gap:10px;padding:7px 8px;border-radius:12px;background:rgba(255,255,255,.04);}
+.anx-item:hover{background:rgba(255,255,255,.07);}
+.anx-ic{flex:none;width:36px;height:42px;border-radius:7px;display:grid;place-items:end center;padding-bottom:6px;font-size:8.5px;font-weight:700;letter-spacing:.02em;color:#fff;background:#636366;position:relative;
+  clip-path:polygon(0 0,70% 0,100% 22%,100% 100%,0 100%);}
+.anx-ic::after{content:"";position:absolute;top:0;right:0;width:30%;height:22%;background:rgba(255,255,255,.35);clip-path:polygon(0 0,100% 100%,0 100%);}
+.anx-pdf{background:#e5484d;} .anx-img{background:#30a46c;} .anx-doc{background:#3b82f6;} .anx-xls{background:#16a34a;} .anx-txt{background:#8e8e93;}
+.anx-nome{flex:1;min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:2px;border:none;background:none;padding:0;color:var(--text);font:inherit;text-align:left;cursor:pointer;}
+.anx-nome b{max-width:100%;font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.anx-nome small{font-size:11px;color:var(--text-3);}
+.anx-item.erro .anx-nome small{color:var(--red);}
+.anx-barra{display:block;width:100%;height:4px;border-radius:4px;background:rgba(255,255,255,.08);overflow:hidden;margin-top:4px;}
+.anx-barra i{display:block;height:100%;background:var(--accent);border-radius:4px;transition:width .3s;}
+.anx-btn{flex:none;width:32px;height:32px;border-radius:50%;border:none;background:none;color:var(--text-2);cursor:pointer;display:grid;place-items:center;}
+.anx-btn:hover{background:rgba(255,255,255,.08);color:var(--text);}
+.anx-btn.anx-del:hover{color:var(--red);}
+.anx-btn svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;}
+.notes-editor.anx-soltar{outline:2px dashed var(--accent);outline-offset:-8px;}
+.notes-editor.anx-soltar .nota-anexos{background:rgba(41,151,255,.1);border-color:var(--accent-line);}
+.wk-clip{display:inline-flex;align-items:center;gap:3px;color:var(--text-2);}
+.wk-clip svg{width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+
+/* visualizador em tela cheia */
+.anx-visor{position:fixed;inset:0;z-index:400;display:flex;flex-direction:column;background:rgba(10,10,12,.86);-webkit-backdrop-filter:blur(24px) saturate(1.2);backdrop-filter:blur(24px) saturate(1.2);
+  opacity:0;visibility:hidden;transition:opacity .25s,visibility 0s linear .25s;}
+.anx-visor.aberto{opacity:1;visibility:visible;transition:opacity .25s;}
+.anx-visor-topo{display:flex;align-items:center;gap:12px;padding:14px 18px;color:#fff;}
+.anx-visor-tit{flex:1;min-width:0;}
+.anx-visor-tit b{display:block;font-size:15px;font-weight:600;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.anx-visor-tit small{font-size:12px;color:rgba(255,255,255,.55);white-space:pre;}
+.anx-visor-topo button{display:inline-flex;align-items:center;gap:7px;border:none;cursor:pointer;font:inherit;font-size:13px;font-weight:600;padding:8px 14px;border-radius:999px;background:rgba(255,255,255,.12);color:#fff;}
+.anx-visor-topo button:hover{background:rgba(255,255,255,.2);}
+.anx-visor-topo button.prim{background:#fff;color:#000;}
+.anx-visor-topo button.circ{width:36px;height:36px;padding:0;justify-content:center;}
+.anx-visor-topo svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+.anx-visor-corpo{flex:1;min-height:0;display:flex;align-items:center;gap:10px;padding:0 14px 16px;}
+.anx-visor-nav{flex:none;width:44px;height:44px;border-radius:50%;border:none;background:rgba(255,255,255,.12);color:#fff;font-size:22px;cursor:pointer;}
+.anx-visor-nav:hover:not(:disabled){background:rgba(255,255,255,.22);}
+.anx-visor-nav:disabled{visibility:hidden;}
+.anx-visor-palco{flex:1;min-width:0;height:100%;display:flex;align-items:center;justify-content:center;}
+.anx-visor-palco img{max-width:100%;max-height:100%;object-fit:contain;border-radius:8px;box-shadow:0 30px 60px rgba(0,0,0,.5);animation:anxEntra .3s cubic-bezier(.22,.8,.2,1);}
+.anx-pdf-rolo{width:100%;height:100%;overflow:auto;display:flex;flex-direction:column;align-items:center;gap:14px;padding:4px 0 24px;outline:none;overscroll-behavior:contain;}
+.anx-pdf-pag{flex:none;background:#fff;border-radius:4px;box-shadow:0 18px 40px -12px rgba(0,0,0,.6);overflow:hidden;}
+.anx-pdf-pag canvas{display:block;}
+.anx-alt{margin-top:4px;border:none;cursor:pointer;font:inherit;font-size:13px;font-weight:600;padding:9px 18px;border-radius:999px;background:#fff;color:#000;}
+.anx-visor-palco pre{width:100%;max-width:960px;height:100%;overflow:auto;margin:0;padding:24px;border-radius:12px;background:#1c1c1e;color:#f5f5f7;font-size:13px;line-height:1.55;white-space:pre-wrap;}
+@keyframes anxEntra{from{opacity:0;transform:scale(.97);}to{opacity:1;transform:none;}}
+.anx-carregando{display:flex;flex-direction:column;align-items:center;gap:14px;color:rgba(255,255,255,.75);font-size:13px;}
+.anx-giro{width:30px;height:30px;border-radius:50%;border:3px solid rgba(255,255,255,.18);border-top-color:#fff;animation:anxGiro .8s linear infinite;}
+@keyframes anxGiro{to{transform:rotate(360deg);}}
+@media(max-width:640px){
+  .anx-visor-topo{flex-wrap:wrap;padding:12px;}
+  .anx-visor-topo .txt{display:none;}
+  .anx-visor-corpo{padding:0 6px 10px;gap:4px;}
+  .anx-visor-nav{width:34px;height:34px;font-size:18px;}
+}
+@media(prefers-reduced-motion:reduce){.anx-visor,.anx-visor-palco img{transition:none;animation:none;}}
+
 /* dock aposentado — a navegação vive no rail lateral */
 .dock-wrap{display:none !important;}
 
@@ -2697,6 +2766,20 @@ button.agenda-stat{text-align:left;font:inherit;color:inherit;cursor:pointer;pos
 </div>
 
 <div class="toast" id="toast"></div>
+<!-- Visualizador de anexos em tela cheia -->
+<div class="anx-visor" id="anexoVisor" role="dialog" aria-modal="true" aria-label="Anexo" aria-hidden="true">
+  <div class="anx-visor-topo">
+    <div class="anx-visor-tit"><b id="anexoVisorNome"></b><small id="anexoVisorInfo"></small></div>
+    <button type="button" onclick="anexoVisorNovaAba()" title="Abrir em nova aba"><svg viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg><span class="txt">Nova aba</span></button>
+    <button type="button" class="prim" onclick="anexoVisorBaixar()" title="Baixar"><svg viewBox="0 0 24 24"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg><span class="txt">Baixar</span></button>
+    <button type="button" class="circ" onclick="anexoFechar()" title="Fechar (Esc)" aria-label="Fechar"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  </div>
+  <div class="anx-visor-corpo">
+    <button type="button" class="anx-visor-nav" id="anexoVisorAnt" onclick="anexoNavegar(-1)" aria-label="Anterior">&lsaquo;</button>
+    <div class="anx-visor-palco" id="anexoVisorPalco"></div>
+    <button type="button" class="anx-visor-nav" id="anexoVisorProx" onclick="anexoNavegar(1)" aria-label="Próximo">&rsaquo;</button>
+  </div>
+</div>
 <!-- Roda de atalhos: segure Shift -->
 <div class="roda" id="roda" role="dialog" aria-modal="true" aria-label="Roda de prompts" aria-hidden="true">
   <div class="roda-anel" id="rodaAnel">
@@ -2716,7 +2799,7 @@ button.agenda-stat{text-align:left;font:inherit;color:inherit;cursor:pointer;pos
 // URL do Apps Script, pode deixar como está: essa URL não é usada nesse
 // caso. Veja a função call(), logo abaixo, pra entender como isso é usado.
 // ═══════════════════════════════════════════
-var API_URL = 'https://script.google.com/macros/s/AKfycbzfhuoc5zfCpLXBOv0PxPP3bi2kLGMBKBRE4FPvIb4f1mMA389LxTa4v3kvwaxB6fi51Q/exec';
+var API_URL = 'https://script.google.com/macros/s/AKfycbxdZte5X3nboRrtM1MHiNHRVKkwmvcI83ccOB54R4fr6n8h2_3Fp-1h4OMH3BGVKbNWYg/exec';
 
 // ═══════════════════════════════════════════
 // CONSTANTES
@@ -6954,7 +7037,7 @@ function renderNotasList(){
     var title=n.titulo||'Sem título',preview=String(n.conteudo||'').replace(/\s+/g,' ').trim()||'Sem conteúdo';
     var p=wkPrazo(n), feita=notaStatus(n)==='concluido';
     var prazoTxt=n.data_entrega?(feita?'Entrega em '+formatNotaDate(n.data_entrega):formatNotaDate(n.data_entrega)+', '+p.txt.charAt(0).toLowerCase()+p.txt.slice(1)):'Sem data de entrega';
-    return '<article class="note-list-item wk-card '+(editingNotaId===n.id&&!notaDraft?'active ':'')+(feita?'feita':'')+'" onclick="selectNota(\''+escHtml(n.id)+'\')">'+wkTile(n)+'<div class="note-list-main"><div class="note-list-title">'+(notaIsFavorite(n)?'&#9733; ':'')+escHtml(title)+'</div><div class="note-list-preview">'+escHtml(preview)+'</div><div class="note-list-meta wk-meta">'+wkStatusPill(n)+'<span>'+escHtml(n.categoria||'Geral')+'</span><span class="wk-prazo-txt '+(feita?'':p.cls)+'">'+escHtml(prazoTxt)+'</span></div></div><button class="note-star" title="Favoritar" onclick="event.stopPropagation();toggleNotaFavorite(\''+escHtml(n.id)+'\')">'+(notaIsFavorite(n)?'&#9733;':'&#9734;')+'</button></article>';
+    return '<article class="note-list-item wk-card '+(editingNotaId===n.id&&!notaDraft?'active ':'')+(feita?'feita':'')+'" onclick="selectNota(\''+escHtml(n.id)+'\')">'+wkTile(n)+'<div class="note-list-main"><div class="note-list-title">'+(notaIsFavorite(n)?'&#9733; ':'')+escHtml(title)+'</div><div class="note-list-preview">'+escHtml(preview)+'</div><div class="note-list-meta wk-meta">'+wkStatusPill(n)+wkClip(n)+'<span>'+escHtml(n.categoria||'Geral')+'</span><span class="wk-prazo-txt '+(feita?'':p.cls)+'">'+escHtml(prazoTxt)+'</span></div></div><button class="note-star" title="Favoritar" onclick="event.stopPropagation();toggleNotaFavorite(\''+escHtml(n.id)+'\')">'+(notaIsFavorite(n)?'&#9733;':'&#9734;')+'</button></article>';
   }).join('');
 }
 
@@ -6990,6 +7073,7 @@ function renderNotaEditor(n,isDraft){
   editor.innerHTML='<div class="notes-editor-head"><input id="inlineNotaTitulo" value="'+escHtml(n.titulo||'')+'" placeholder="Título da anotação" oninput="scheduleNotaAutosave()"><label class="note-star" title="Favorita"><input id="inlineNotaFavorita" type="checkbox" '+(notaIsFavorite(n)?'checked':'')+' onchange="scheduleNotaAutosave()"> &#9733;</label><button type="button" class="notes-editor-fechar" title="Fechar (Esc)" aria-label="Fechar" onclick="wkFecharEditor()">&#10005;</button></div>'+
     '<div class="notes-editor-body"><div class="notes-inline-meta">'+stSeg+'<span class="wk-editor-prazo '+prazoInfo.cls+'" id="inlineNotaPrazo">'+escHtml(prazoInfo.txt)+'</span></div><div class="notes-inline-meta"><label>Categoria <input id="inlineNotaCategoria" list="notaCategorias" value="'+escHtml(n.categoria||'Geral')+'" oninput="scheduleNotaAutosave()"></label><label>Data de entrega <input id="inlineNotaEntrega" type="date" value="'+escHtml(due)+'" onchange="wkAtualizarPrazoEditor();scheduleNotaAutosave()"></label><label>Tipo <select id="inlineNotaTipoEspaco" onchange="scheduleNotaAutosave()"><option value="Interno"'+(tipoEsp==='Interno'?' selected':'')+'>Interno</option><option value="Externo"'+(tipoEsp==='Externo'?' selected':'')+'>Externo</option></select></label></div>'+
     '<textarea id="inlineNotaConteudo" placeholder="Escreva o conteúdo da anotação..." oninput="scheduleNotaAutosave()">'+escHtml(n.conteudo||'')+'</textarea>'+
+    '<div class="nota-anexos" id="notaAnexos"></div>'+
     '<div class="nota-addons"><div class="nota-addon-title">Adicionadores</div>'+
       '<div class="nota-addon-row"><label>Prompt</label><select id="inlineNotaPrompt" onchange="scheduleNotaAutosave()">'+promptOptions+'</select><button type="button" class="btn btn-outline btn-sm" onclick="copiarNotaPrompt()">Copiar Prompt</button></div>'+
       '<div class="nota-addon-row"><label>Modelo</label><select id="inlineNotaModelo1" onchange="scheduleNotaAutosave()">'+modeloOptions+'</select><button type="button" class="btn btn-outline btn-sm" onclick="abrirNotaModelo()">Abrir</button></div>'+
@@ -6997,6 +7081,7 @@ function renderNotaEditor(n,isDraft){
       '<div class="nota-addon-row"><label>Link de trabalho</label><input id="inlineNotaLink" type="url" placeholder="URL da pasta onde está o documento" value="'+escHtml(n.link_trabalho||'')+'" oninput="scheduleNotaAutosave()"><button type="button" class="btn btn-outline btn-sm" onclick="abrirLinkTrabalho()">Abrir</button></div>'+
     '</div></div>'+
     '<div class="notes-editor-foot"><span id="inlineNotaState" class="notes-save-state '+(isDraft?'':'saved')+'">'+(isDraft?'Rascunho não salvo':'Salva')+'</span><span class="spacer"></span>'+(isDraft?'':'<button class="btn btn-danger btn-sm" onclick="deleteNota()">Excluir</button>')+'<button class="btn btn-primary btn-sm" onclick="saveNota()">Salvar</button></div>';
+  renderNotaAnexos();
 }
 
 // Copia o corpo do prompt selecionado no adicionador da nota atual.
@@ -7075,6 +7160,7 @@ function saveNota(silent){
     if(res.nota){
       if(!res.nota.status&&payload.status)res.nota.status=payload.status;
       var idx=notas.findIndex(function(n){return n.id===res.nota.id;});
+      if(!Array.isArray(res.nota.anexos))res.nota.anexos=idx>=0?notaAnexos(notas[idx]):[];
       if(idx>=0)notas[idx]=res.nota;else notas.unshift(res.nota);
       editingNotaId=res.nota.id;notaDraft=false;
     }
@@ -7090,7 +7176,7 @@ function saveNota(silent){
 function toggleNotaFavorite(id){
   var n=notas.find(function(x){return x.id===id;});if(!n)return;
   call('saveNota',{id:n.id,titulo:n.titulo,conteudo:n.conteudo,categoria:n.categoria,favorita:!notaIsFavorite(n),data_entrega:n.data_entrega||'',tipo_espaco:n.tipo_espaco||'Interno',prompt_id:n.prompt_id||'',modelo_ids:n.modelo_ids||'',link_trabalho:n.link_trabalho||'',memoria_id:n.memoria_id||'',status:notaStatus(n)}).then(function(res){
-    if(res&&res.ok&&res.nota){var i=notas.findIndex(function(x){return x.id===id;});if(!res.nota.status)res.nota.status=notaStatus(n);notas[i]=res.nota;renderNotasList();if(editingNotaId===id)renderNotaEditor(res.nota,false);}
+    if(res&&res.ok&&res.nota){var i=notas.findIndex(function(x){return x.id===id;});if(!res.nota.status)res.nota.status=notaStatus(n);if(!Array.isArray(res.nota.anexos))res.nota.anexos=notaAnexos(n);notas[i]=res.nota;renderNotasList();if(editingNotaId===id)renderNotaEditor(res.nota,false);}
   }).catch(function(e){showToast(e.message||'Erro ao atualizar favorito.');});
 }
 
@@ -7159,6 +7245,303 @@ document.addEventListener('keydown',function(e){
 });
 
 // ═══════════════════════════════════════════
+// ANEXOS DAS ANOTAÇÕES
+// Arquivos privados no Drive do Gestor (ver Code.gs, ANEXOS DAS ANOTAÇÕES).
+// Envio em partes de 2 MB; leitura em fatias de 1,5 MB, montada aqui num
+// Blob. PDF, imagem e texto abrem em tela cheia; tudo pode ser baixado.
+// ═══════════════════════════════════════════
+var ANEXO_LIMITE=15*1024*1024, ANEXO_PARTE=2*1024*1024;
+var anexoEnvios={};      // nota_id -> [{tmp, nome, tamanho, pct, erro}]
+var anexoBlobs={};       // anexo_id -> {url, blob}
+var anexoVisor={lista:[],i:0,aberto:false,seq:0};
+
+function notaAnexos(n){ return (n&&Array.isArray(n.anexos))?n.anexos:[]; }
+function fmtTamanho(b){ b=Number(b)||0; if(b<1024) return b+' B'; if(b<1048576) return Math.round(b/1024)+' KB'; return (b/1048576).toFixed(b<10485760?1:0).replace('.',',')+' MB'; }
+function anexoExt(nome){ var m=String(nome||'').match(/\.([A-Za-z0-9]{1,5})$/); return m?m[1].toUpperCase():'ARQ'; }
+function anexoTipo(a){
+  var m=String(a.mime||'').toLowerCase(), e=anexoExt(a.nome);
+  if(m==='application/pdf'||e==='PDF') return 'pdf';
+  if(/^image\/(png|jpe?g|gif|webp|bmp|svg\+xml)$/.test(m)||/^(PNG|JPE?G|GIF|WEBP|BMP)$/.test(e)) return 'img';
+  if(/^text\//.test(m)||/^(TXT|CSV|MD|JSON)$/.test(e)) return 'txt';
+  if(/word|document/.test(m)||/^(DOCX?|ODT|RTF)$/.test(e)) return 'doc';
+  if(/sheet|excel/.test(m)||/^(XLSX?|ODS)$/.test(e)) return 'xls';
+  return 'outro';
+}
+function anexoVisualizavel(a){ var t=anexoTipo(a); return t==='pdf'||t==='img'||t==='txt'; }
+function anexoIcone(a){ return '<span class="anx-ic anx-'+anexoTipo(a)+'">'+escHtml(anexoExt(a.nome).slice(0,4))+'</span>'; }
+
+// ── Lista dentro do editor ──
+function renderNotaAnexos(){
+  var box=document.getElementById('notaAnexos'); if(!box) return;
+  var n=!notaDraft&&notas.find(function(x){ return x.id===editingNotaId; });
+  var lista=notaAnexos(n), envios=(n&&anexoEnvios[n.id])||(notaDraft&&anexoEnvios._rascunho)||[];
+  var itens=lista.map(function(a){
+    var ver=anexoVisualizavel(a);
+    return '<div class="anx-item" data-id="'+escHtml(a.id)+'">'+anexoIcone(a)+
+      '<button type="button" class="anx-nome" onclick="'+(ver?'anexoAbrir(\''+escHtml(a.id)+'\')':'anexoBaixar(\''+escHtml(a.id)+'\')')+'" title="'+(ver?'Ver em tela cheia':'Baixar')+'"><b>'+escHtml(a.nome)+'</b><small>'+fmtTamanho(a.tamanho)+(ver?'':', só download')+'</small></button>'+
+      (ver?'<button type="button" class="anx-btn" title="Ver em tela cheia" aria-label="Ver em tela cheia" onclick="anexoAbrir(\''+escHtml(a.id)+'\')"><svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>':'')+
+      '<button type="button" class="anx-btn" title="Baixar" aria-label="Baixar" onclick="anexoBaixar(\''+escHtml(a.id)+'\')"><svg viewBox="0 0 24 24"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></button>'+
+      '<button type="button" class="anx-btn anx-del" title="Excluir" aria-label="Excluir" onclick="anexoExcluir(\''+escHtml(a.id)+'\')"><svg viewBox="0 0 24 24"><path d="M5 7h14M10 7V4h4v3M7 7l1 13h8l1-13"/></svg></button></div>';
+  }).join('');
+  itens+=envios.map(function(e){
+    return '<div class="anx-item enviando'+(e.erro?' erro':'')+'">'+anexoIcone({nome:e.nome,mime:e.mime})+'<div class="anx-nome"><b>'+escHtml(e.nome)+'</b><small>'+(e.erro?escHtml(e.erro):'Enviando '+e.pct+'% de '+fmtTamanho(e.tamanho))+'</small>'+
+      (e.erro?'':'<span class="anx-barra"><i style="width:'+e.pct+'%"></i></span>')+'</div>'+
+      (e.erro?'<button type="button" class="anx-btn" title="Dispensar" aria-label="Dispensar" onclick="anexoDispensar(\''+e.tmp+'\')">&#10005;</button>':'')+'</div>';
+  }).join('');
+  box.innerHTML='<div class="anx-topo"><span class="nota-addon-title">Anexos'+(lista.length?' <em>'+lista.length+'</em>':'')+'</span>'+
+    '<label class="anx-add"><input type="file" multiple onchange="anexoEscolher(this.files);this.value=\'\'"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Anexar</label></div>'+
+    (itens?'<div class="anx-lista">'+itens+'</div>':'<div class="anx-vazio">Arraste arquivos para cá ou use Anexar. Até 15 MB por arquivo.</div>');
+}
+function anexoDispensar(tmp){
+  Object.keys(anexoEnvios).forEach(function(k){ anexoEnvios[k]=anexoEnvios[k].filter(function(e){ return e.tmp!==tmp; }); });
+  renderNotaAnexos();
+}
+
+// ── Envio ──
+function anexoEscolher(fileList){
+  var arqs=Array.prototype.slice.call(fileList||[]); if(!arqs.length) return;
+  var grandes=arqs.filter(function(f){ return f.size>ANEXO_LIMITE; });
+  if(grandes.length) showToast('"'+grandes[0].name+'" passa de 15 MB e não foi anexado.');
+  arqs=arqs.filter(function(f){ return f.size<=ANEXO_LIMITE&&f.size>0; });
+  if(!arqs.length) return;
+  garantirNotaSalva(arqs[0].name).then(function(notaId){
+    if(!notaId) return;
+    // um por vez: o servidor junta as partes de cada arquivo em sequência
+    var fila=Promise.resolve();
+    arqs.forEach(function(f){ fila=fila.then(function(){ return anexoEnviar(f,notaId); }); });
+  });
+}
+// Anexar num rascunho: salva a anotação primeiro (com o nome do arquivo como título, se estiver vazio)
+function garantirNotaSalva(nomeArq){
+  if(!notaDraft&&editingNotaId) return Promise.resolve(editingNotaId);
+  var t=document.getElementById('inlineNotaTitulo'), c=document.getElementById('inlineNotaConteudo');
+  if(t&&!t.value.trim()&&!(c&&c.value.trim())) t.value=String(nomeArq||'Anexos').replace(/\.[^.]+$/,'');
+  if(notaAutosaveTimer){ clearTimeout(notaAutosaveTimer); notaAutosaveTimer=null; }
+  return Promise.resolve(saveNota(true)).then(function(){ return (!notaDraft&&editingNotaId)?editingNotaId:null; });
+}
+function anexoLerArquivo(f){
+  return new Promise(function(ok,falha){
+    var r=new FileReader();
+    r.onload=function(){ var s=String(r.result||''); ok(s.slice(s.indexOf(',')+1)); };
+    r.onerror=function(){ falha(new Error('Não foi possível ler o arquivo.')); };
+    r.readAsDataURL(f);
+  });
+}
+function anexoEnviar(f,notaId){
+  var env={tmp:'e'+Date.now()+Math.random().toString(36).slice(2,7),nome:f.name,mime:f.type,tamanho:f.size,pct:0,erro:''};
+  (anexoEnvios[notaId]=anexoEnvios[notaId]||[]).push(env); renderNotaAnexos();
+  var uploadId='a'+Date.now().toString(36)+Math.random().toString(36).slice(2,10);
+  return anexoLerArquivo(f).then(function(b64){
+    var partes=[]; for(var i=0;i<b64.length;i+=ANEXO_PARTE) partes.push(b64.slice(i,i+ANEXO_PARTE));
+    var feito=0;
+    function enviarParte(i,tentativa){
+      return call('anexoParte',{upload_id:uploadId,index:i,dados:partes[i]}).then(function(res){
+        if(!res||!res.ok) throw new Error((res&&res.error)||'Falha ao enviar.');
+        feito++; env.pct=Math.min(95,Math.round(feito/partes.length*95)); renderNotaAnexos();
+      }).catch(function(e){ if(tentativa<2) return enviarParte(i,tentativa+1); throw e; });
+    }
+    // duas partes por vez
+    var prox=0;
+    function trabalhador(){ if(prox>=partes.length) return Promise.resolve(); var i=prox++; return enviarParte(i,0).then(trabalhador); }
+    return Promise.all([trabalhador(),trabalhador()]).then(function(){
+      return call('anexoConcluir',{upload_id:uploadId,total:partes.length,nota_id:notaId,nome:f.name,mime:f.type||'application/octet-stream'});
+    });
+  }).then(function(res){
+    if(!res||!res.ok) throw new Error((res&&res.error)||'Não foi possível concluir o envio.');
+    var n=notas.find(function(x){ return x.id===notaId; });
+    if(n){ n.anexos=notaAnexos(n).concat([res.anexo]); }
+    anexoEnvios[notaId]=(anexoEnvios[notaId]||[]).filter(function(e){ return e!==env; });
+    renderNotaAnexos(); renderNotasList();
+    showToast('"'+f.name+'" anexado.');
+  }).catch(function(e){
+    var msg=e&&e.message||'Erro ao enviar.';
+    if(/Ação desconhecida/.test(msg)) msg='Atualize o Code.gs para usar anexos.';
+    env.erro=msg; renderNotaAnexos();
+  });
+}
+
+// ── Leitura (monta o arquivo no navegador) ──
+function anexoAcharTodos(){
+  var mapa={}; (notas||[]).forEach(function(n){ notaAnexos(n).forEach(function(a){ mapa[a.id]={a:a,n:n}; }); }); return mapa;
+}
+function anexoCarregar(a,progresso){
+  if(anexoBlobs[a.id]) return Promise.resolve(anexoBlobs[a.id]);
+  var pedacos=[], total=0;
+  function ler(ini){
+    return call('anexoLer',{id:a.id,inicio:ini}).then(function(res){
+      if(!res||!res.ok) throw new Error((res&&res.error)||'Não foi possível abrir o anexo.');
+      var bin=atob(res.dados), arr=new Uint8Array(bin.length);
+      for(var i=0;i<bin.length;i++) arr[i]=bin.charCodeAt(i);
+      pedacos.push(arr); total=res.total;
+      if(progresso) progresso(total?Math.round(res.fim/total*100):100);
+      return res.fim<res.total?ler(res.fim):null;
+    });
+  }
+  return ler(0).then(function(){
+    var mime=a.mime||'application/octet-stream';
+    if(anexoTipo(a)==='txt') mime='text/plain;charset=utf-8';
+    var blob=new Blob(pedacos,{type:mime});
+    // guarda só os últimos arquivos abertos, para não pesar na memória
+    var ids=Object.keys(anexoBlobs); if(ids.length>=6){ try{ URL.revokeObjectURL(anexoBlobs[ids[0]].url); }catch(e){} delete anexoBlobs[ids[0]]; }
+    anexoBlobs[a.id]={blob:blob,url:URL.createObjectURL(blob)};
+    return anexoBlobs[a.id];
+  });
+}
+function anexoBaixar(id){
+  var r=anexoAcharTodos()[id]; if(!r) return;
+  showToast('Preparando "'+r.a.nome+'"...');
+  anexoCarregar(r.a).then(function(x){
+    var l=document.createElement('a'); l.href=x.url; l.download=r.a.nome||'anexo'; document.body.appendChild(l); l.click(); l.remove();
+  }).catch(function(e){ showToast(e.message||'Erro ao baixar.'); });
+}
+function anexoExcluir(id){
+  var r=anexoAcharTodos()[id]; if(!r) return;
+  if(!confirm('Excluir o anexo "'+r.a.nome+'"?')) return;
+  var antes=r.n.anexos.slice();
+  r.n.anexos=r.n.anexos.filter(function(a){ return a.id!==id; });
+  renderNotaAnexos(); renderNotasList();
+  call('anexoExcluir',{id:id}).then(function(res){
+    if(!res||!res.ok) throw new Error((res&&res.error)||'Não foi possível excluir.');
+    if(anexoBlobs[id]){ try{ URL.revokeObjectURL(anexoBlobs[id].url); }catch(e){} delete anexoBlobs[id]; }
+    showToast('Anexo excluído.');
+  }).catch(function(e){ r.n.anexos=antes; renderNotaAnexos(); renderNotasList(); showToast(e.message||'Erro ao excluir.'); });
+}
+
+// ── Tela cheia ──
+function anexoAbrir(id){
+  var r=anexoAcharTodos()[id]; if(!r) return;
+  anexoVisor.lista=notaAnexos(r.n).filter(anexoVisualizavel);
+  anexoVisor.i=Math.max(0,anexoVisor.lista.findIndex(function(a){ return a.id===id; }));
+  var v=document.getElementById('anexoVisor');
+  v.classList.add('aberto'); v.setAttribute('aria-hidden','false'); anexoVisor.aberto=true;
+  document.body.style.overflow='hidden';
+  anexoMostrar();
+}
+function anexoMostrar(){
+  var a=anexoVisor.lista[anexoVisor.i]; if(!a) return;
+  anexoFecharPdf();
+  var seq=++anexoVisor.seq, n=anexoVisor.lista.length;
+  document.getElementById('anexoVisorNome').textContent=a.nome;
+  document.getElementById('anexoVisorInfo').textContent=fmtTamanho(a.tamanho)+(n>1?', '+(anexoVisor.i+1)+' de '+n:'');
+  document.getElementById('anexoVisorAnt').disabled=n<2; document.getElementById('anexoVisorProx').disabled=n<2;
+  var palco=document.getElementById('anexoVisorPalco');
+  palco.innerHTML='<div class="anx-carregando"><span class="anx-giro"></span><b id="anexoVisorPct">Carregando</b></div>';
+  anexoCarregar(a,function(p){ var el=document.getElementById('anexoVisorPct'); if(el&&seq===anexoVisor.seq) el.textContent='Carregando '+p+'%'; }).then(function(x){
+    if(seq!==anexoVisor.seq) return;
+    var t=anexoTipo(a);
+    if(t==='img') palco.innerHTML='<img src="'+x.url+'" alt="'+escHtml(a.nome)+'">';
+    else if(t==='pdf') return anexoRenderPdf(palco,x,a,seq);
+    else return x.blob.text().then(function(txt){ if(seq===anexoVisor.seq) palco.innerHTML='<pre>'+escHtml(txt)+'</pre>'; });
+  }).catch(function(e){
+    if(seq!==anexoVisor.seq) return;
+    palco.innerHTML='<div class="anx-carregando"><b>'+escHtml(e.message||'Não foi possível abrir.')+'</b></div>';
+  });
+}
+// PDF desenhado pelo PDF.js (página por página, em canvas). Não depende do
+// leitor de PDF embutido do Chrome, que é bloqueado dentro de molduras
+// protegidas ("Esta página foi bloqueada pelo Chrome") e não existe no celular.
+var PDFJS_BASE='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/';
+var pdfjsPromessa=null;
+function carregarPdfJs(){
+  if(window.pdfjsLib&&window.pdfjsLib.GlobalWorkerOptions.workerSrc) return Promise.resolve(window.pdfjsLib);
+  if(pdfjsPromessa) return pdfjsPromessa;
+  pdfjsPromessa=new Promise(function(ok,falha){
+    var s=document.createElement('script'); s.src=PDFJS_BASE+'pdf.min.js'; s.async=true;
+    s.onload=function(){
+      var lib=window.pdfjsLib; if(!lib){ falha(new Error('Leitor de PDF indisponível.')); return; }
+      // o worker vira um blob local, o que funciona mesmo dentro de molduras de outro domínio
+      fetch(PDFJS_BASE+'pdf.worker.min.js').then(function(r){ return r.text(); }).then(function(t){
+        lib.GlobalWorkerOptions.workerSrc=URL.createObjectURL(new Blob([t],{type:'text/javascript'})); ok(lib);
+      }).catch(function(){ lib.GlobalWorkerOptions.workerSrc=PDFJS_BASE+'pdf.worker.min.js'; ok(lib); });
+    };
+    s.onerror=function(){ pdfjsPromessa=null; falha(new Error('Não foi possível carregar o leitor de PDF. Verifique a internet ou use Baixar.')); };
+    document.head.appendChild(s);
+  });
+  return pdfjsPromessa;
+}
+function anexoFecharPdf(){
+  if(anexoVisor.obs){ anexoVisor.obs.disconnect(); anexoVisor.obs=null; }
+  if(anexoVisor.pdf){ try{ anexoVisor.pdf.destroy(); }catch(e){} anexoVisor.pdf=null; }
+}
+function anexoRenderPdf(palco,x,a,seq){
+  anexoFecharPdf();
+  return carregarPdfJs().then(function(lib){
+    return x.blob.arrayBuffer().then(function(buf){ return lib.getDocument({data:new Uint8Array(buf)}).promise; });
+  }).then(function(doc){
+    if(seq!==anexoVisor.seq){ doc.destroy(); return; }
+    anexoVisor.pdf=doc;
+    return doc.getPage(1).then(function(p1){
+      var v1=p1.getViewport({scale:1});
+      palco.innerHTML='<div class="anx-pdf-rolo" id="anxPdfRolo" tabindex="0"></div>';
+      var rolo=document.getElementById('anxPdfRolo');
+      var larg=Math.max(260,Math.min(rolo.clientWidth-(window.innerWidth<640?12:48),980));
+      var info=document.getElementById('anexoVisorInfo');
+      info.textContent+=', '+doc.numPages+(doc.numPages===1?' página':' páginas');
+      for(var i=1;i<=doc.numPages;i++){
+        var d=document.createElement('div'); d.className='anx-pdf-pag'; d.setAttribute('data-p',i);
+        d.style.width=larg+'px'; d.style.height=Math.round(larg*v1.height/v1.width)+'px';
+        rolo.appendChild(d);
+      }
+      var dpr=Math.min(window.devicePixelRatio||1,2);
+      function desenhar(el){
+        if(el.getAttribute('data-ok')) return; el.setAttribute('data-ok','1');
+        doc.getPage(+el.getAttribute('data-p')).then(function(pg){
+          if(seq!==anexoVisor.seq) return;
+          var vp0=pg.getViewport({scale:1}), esc=larg/vp0.width, vp=pg.getViewport({scale:esc*dpr});
+          var c=document.createElement('canvas'); c.width=Math.floor(vp.width); c.height=Math.floor(vp.height);
+          c.style.width=larg+'px'; c.style.height=Math.round(vp0.height*esc)+'px';
+          el.style.height='auto'; el.appendChild(c);
+          return pg.render({canvasContext:c.getContext('2d'),viewport:vp}).promise;
+        }).catch(function(){});
+      }
+      if('IntersectionObserver' in window){
+        anexoVisor.obs=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting) desenhar(e.target); }); },{root:rolo,rootMargin:'800px 0px'});
+        rolo.querySelectorAll('.anx-pdf-pag').forEach(function(el){ anexoVisor.obs.observe(el); });
+      } else rolo.querySelectorAll('.anx-pdf-pag').forEach(desenhar);
+    });
+  }).catch(function(e){
+    if(seq!==anexoVisor.seq) return;
+    palco.innerHTML='<div class="anx-carregando"><b>'+escHtml(e.message||'Não foi possível mostrar o PDF.')+'</b><button type="button" class="anx-alt" onclick="anexoVisorBaixar()">Baixar o PDF</button></div>';
+  });
+}
+function anexoNavegar(d){ var n=anexoVisor.lista.length; if(n<2) return; anexoVisor.i=(anexoVisor.i+d+n)%n; anexoMostrar(); }
+function anexoFechar(){
+  var v=document.getElementById('anexoVisor'); if(!v) return;
+  v.classList.remove('aberto'); v.setAttribute('aria-hidden','true'); anexoVisor.aberto=false; anexoVisor.seq++; anexoFecharPdf();
+  document.body.style.overflow='';
+  setTimeout(function(){ if(!anexoVisor.aberto) document.getElementById('anexoVisorPalco').innerHTML=''; },250);
+}
+function anexoVisorBaixar(){ var a=anexoVisor.lista[anexoVisor.i]; if(a) anexoBaixar(a.id); }
+function anexoVisorNovaAba(){
+  var a=anexoVisor.lista[anexoVisor.i]; if(!a) return;
+  anexoCarregar(a).then(function(x){ var w=window.open(x.url,'_blank'); if(!w) showToast('O navegador bloqueou a nova aba.'); });
+}
+document.addEventListener('keydown',function(e){
+  if(!anexoVisor.aberto) return;
+  if(e.key==='Escape'){ e.preventDefault(); e.stopImmediatePropagation(); anexoFechar(); }
+  else if(e.key==='ArrowRight'){ e.preventDefault(); anexoNavegar(1); }
+  else if(e.key==='ArrowLeft'){ e.preventDefault(); anexoNavegar(-1); }
+},true);
+
+// Arrastar arquivos para cima do editor
+(function(){
+  var cont=0;
+  function editor(){ return document.getElementById('notesEditor'); }
+  function temArquivo(e){ var t=e.dataTransfer&&e.dataTransfer.types; return !!t&&Array.prototype.indexOf.call(t,'Files')>=0; }
+  document.addEventListener('dragenter',function(e){ var ed=editor(); if(!ed||!temArquivo(e)||!ed.contains(e.target)) return; cont++; ed.classList.add('anx-soltar'); });
+  document.addEventListener('dragleave',function(e){ var ed=editor(); if(!ed||!temArquivo(e)||!ed.contains(e.target)) return; cont=Math.max(0,cont-1); if(!cont) ed.classList.remove('anx-soltar'); });
+  document.addEventListener('dragover',function(e){ var ed=editor(); if(ed&&temArquivo(e)&&ed.contains(e.target)) e.preventDefault(); });
+  document.addEventListener('drop',function(e){
+    var ed=editor(); if(!ed||!temArquivo(e)) return;
+    cont=0; ed.classList.remove('anx-soltar');
+    if(!ed.contains(e.target)) return;
+    e.preventDefault();
+    if(!document.getElementById('notaAnexos')) return;
+    anexoEscolher(e.dataTransfer.files);
+  });
+})();
+
+// ═══════════════════════════════════════════
 // WORK SPACE: status, contagem de prazo, funil e resumo com anéis
 // O status de cada anotação viaja junto do campo modelo_ids, como um item
 // "status:analise" ou "status:concluido" (o Code.gs atual já grava esse campo
@@ -7196,6 +7579,10 @@ function wkTile(n){
   if(p.cls==='feito') return '<div class="wk-dias feito" title="Concluída"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>feito</span></div>';
   return '<div class="wk-dias '+p.cls+'" title="'+escHtml(p.txt)+'"><b>'+escHtml(p.num)+'</b><span>'+escHtml(p.rot)+'</span></div>';
 }
+function wkClip(n){
+  var q=notaAnexos(n).length; if(!q) return '';
+  return '<span class="wk-clip" title="'+q+(q===1?' anexo':' anexos')+'"><svg viewBox="0 0 24 24"><path d="M21 11.5l-8.6 8.6a5 5 0 0 1-7.1-7.1l8.6-8.6a3.3 3.3 0 0 1 4.7 4.7l-8.6 8.6a1.7 1.7 0 0 1-2.4-2.4l7.9-7.9"/></svg>'+q+'</span>';
+}
 function wkStatusPill(n){
   var st=notaStatus(n), id=escHtml(n.id);
   return '<label class="wk-st '+st+'" title="Mudar status" onclick="event.stopPropagation()" onmousedown="event.stopPropagation()"><i></i>'+WK_STATUS[st]+
@@ -7225,7 +7612,7 @@ function wkMudarStatus(id,st){
   showToast(st==='concluido'?'Anotação concluída.':'Status: '+WK_STATUS[st]+'.');
   call('saveNota',{id:n.id,titulo:n.titulo,conteudo:n.conteudo,categoria:n.categoria,favorita:notaIsFavorite(n),data_entrega:n.data_entrega||'',tipo_espaco:n.tipo_espaco||'Interno',prompt_id:n.prompt_id||'',modelo_ids:n.modelo_ids,link_trabalho:n.link_trabalho||'',memoria_id:n.memoria_id||'',status:st}).then(function(res){
     if(!res||!res.ok) throw new Error((res&&res.error)||'Não foi possível salvar o status.');
-    if(res.nota){ var i=notas.findIndex(function(x){return x.id===id;}); if(i>=0){ notas[i]=res.nota; if(!res.nota.status) notas[i].status=st; } }
+    if(res.nota){ var i=notas.findIndex(function(x){return x.id===id;}); if(i>=0){ if(!Array.isArray(res.nota.anexos)) res.nota.anexos=notaAnexos(notas[i]); notas[i]=res.nota; if(!res.nota.status) notas[i].status=st; } }
   }).catch(function(e){
     n.modelo_ids=antes.modelo_ids; n.status=antes.status; renderNotasList(); renderTarefasAnotacoes();
     showToast(e.message||'Erro ao salvar o status.');
@@ -7261,7 +7648,7 @@ function renderWkFunil(lista){
         var p=wkPrazo(n);
         return '<article class="wk-fcard'+(editingNotaId===n.id&&!notaDraft?' active':'')+'" draggable="true" data-id="'+escHtml(n.id)+'" ondragstart="wkDragStart(event,this)" ondragend="wkDragEnd(this)" onclick="selectNota(\''+escHtml(n.id)+'\')">'+
           wkTile(n)+'<div class="wk-fcard-main"><div class="wk-fcard-titulo">'+(notaIsFavorite(n)?'&#9733; ':'')+escHtml(n.titulo||'Sem título')+'</div>'+
-          '<div class="wk-fcard-meta">'+wkStatusPill(n)+'<span>'+escHtml(n.categoria||'Geral')+'</span>'+(n.data_entrega&&p.cls!=='feito'?'<span class="wk-prazo-txt '+p.cls+'">'+escHtml(formatNotaDate(n.data_entrega))+'</span>':'')+'</div></div></article>';
+          '<div class="wk-fcard-meta">'+wkStatusPill(n)+wkClip(n)+'<span>'+escHtml(n.categoria||'Geral')+'</span>'+(n.data_entrega&&p.cls!=='feito'?'<span class="wk-prazo-txt '+p.cls+'">'+escHtml(formatNotaDate(n.data_entrega))+'</span>':'')+'</div></div></article>';
       }).join(''):'<div class="wk-col-vazia">'+(st==='nenhum'?'Nada por aqui.':'Arraste um cartão para cá.')+'</div>')+
       '</div></section>';
   }).join('');
@@ -7631,7 +8018,7 @@ function rodaDicaInicial(){
 function rodaPodeAbrir(){
   var a=document.activeElement;
   if(a&&(a.isContentEditable||/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName))) return false;
-  if(document.querySelector('.modal-overlay.open')) return false; // com janela aberta, Alt e Shift ficam livres
+  if(document.querySelector('.modal-overlay.open')||document.querySelector('.anx-visor.aberto')) return false; // com janela aberta, Alt e Shift ficam livres
   var sp=document.getElementById('splash');
   if(sp&&sp.style.display!=='none'&&!sp.classList.contains('hide')) return false; // ainda na tela de login
   if(!currentUser) return false;
