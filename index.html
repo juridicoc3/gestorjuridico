@@ -1710,6 +1710,31 @@ button.agenda-stat{text-align:left;font:inherit;color:inherit;cursor:pointer;pos
 }
 @media(prefers-reduced-motion:reduce){.anx-visor,.anx-visor-palco img{transition:none;animation:none;}}
 
+/* contagem de dias nas tabelas e cartões (Trello, Helpdesk, Contratos, Prazos) */
+.wk-dias.mini{width:46px;height:46px;border-radius:13px;}
+.wk-dias.mini b{font-size:17px;}
+.wk-dias.mini span{font-size:8.5px;max-width:44px;}
+.wk-dias.mini.hoje b{font-size:13px;}
+.wk-dias.mini.feito svg{width:18px;height:18px;}
+.wk-dias.mini.sem b{font-size:15px;}
+.pz-cel{display:flex;align-items:center;gap:11px;min-width:150px;}
+.pz-data{display:flex;flex-direction:column;gap:2px;line-height:1.25;white-space:nowrap;}
+.pz-data b{font-size:12.5px;font-weight:600;font-variant-numeric:tabular-nums;}
+.pz-data small{font-size:11px;font-weight:500;color:var(--text-3);}
+.pz-data small.vencido{color:var(--red);font-weight:600;}
+.pz-data small.hoje,.pz-data small.urgente{color:var(--amber);font-weight:600;}
+.pz-data small.ok{color:var(--text-2);}
+/* Trello (funil) e Helpdesk (funil): bloco à esquerda do cartão */
+.tcard.tem-dias{display:flex;gap:10px;align-items:flex-start;}
+.tcard.tem-dias .tcard-corpo{flex:1;min-width:0;}
+.hd-card.tem-dias{flex-direction:row;align-items:flex-start;gap:11px;}
+.hd-card.tem-dias .hd-card-corpo{flex:1;min-width:0;display:flex;flex-direction:column;gap:8px;}
+.hd-card.tem-dias{padding-left:11px;gap:9px;}
+.hd-card.tem-dias .wk-dias.mini{width:40px;height:40px;border-radius:12px;}
+.hd-card.tem-dias .wk-dias.mini b{font-size:15px;}
+.hd-card.tem-dias .wk-dias.mini span{font-size:7.5px;max-width:38px;}
+.hd-card.tem-dias .hd-card-prot{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;}
+
 /* dock aposentado — a navegação vive no rail lateral */
 .dock-wrap{display:none !important;}
 
@@ -2072,7 +2097,7 @@ button.agenda-stat{text-align:left;font:inherit;color:inherit;cursor:pointer;pos
       <button class="btn btn-primary btn-sm" onclick="abrirNovoTrelloCardGenerico()">+ Novo Card</button>
     </div>
     <div class="table-wrap" id="trelloTableWrap"><table>
-      <thead><tr><th>Card</th><th>Quadro</th><th>Lista</th><th>Responsável</th><th>Vencimento</th><th>Concluído</th><th></th></tr></thead>
+      <thead><tr><th>Data limite</th><th>Card</th><th>Quadro</th><th>Lista</th><th>Responsável</th><th>Concluído</th><th></th></tr></thead>
       <tbody id="tbodyTrello"></tbody>
     </table></div>
     <div class="cowork-tabs" id="trelloTabs" style="display:none;margin:0 20px 14px;"></div>
@@ -2108,7 +2133,7 @@ button.agenda-stat{text-align:left;font:inherit;color:inherit;cursor:pointer;pos
         <button class="btn btn-primary btn-sm" onclick="openPrazoModal()">+ Novo Prazo</button>
       </div>
       <div class="table-wrap"><table>
-        <thead><tr><th>Nº Processo</th><th>Município</th><th>Parte</th><th>Tipo</th><th>Data Limite</th><th></th></tr></thead>
+        <thead><tr><th>Data limite</th><th>Nº Processo</th><th>Município</th><th>Parte</th><th>Tipo</th><th></th></tr></thead>
         <tbody id="tbodyPrazos"></tbody>
       </table></div>
     </div>
@@ -2140,7 +2165,7 @@ button.agenda-stat{text-align:left;font:inherit;color:inherit;cursor:pointer;pos
         <button class="btn btn-primary btn-sm" onclick="openModal('contrato')">+ Novo</button>
       </div>
       <div class="table-wrap"><table>
-        <thead><tr><th>Nº Contrato</th><th>Objeto</th><th>Contratante</th><th>Contratado</th><th>Responsável</th><th>Início</th><th>Vencimento</th><th class="num">Valor Fixo</th><th>Status</th><th></th></tr></thead>
+        <thead><tr><th>Data limite</th><th>Nº Contrato</th><th>Objeto</th><th>Contratante</th><th>Contratado</th><th>Responsável</th><th>Início</th><th class="num">Valor Fixo</th><th>Status</th><th></th></tr></thead>
         <tbody id="tbodyContratos"></tbody>
       </table></div>
     </div>
@@ -2291,7 +2316,7 @@ button.agenda-stat{text-align:left;font:inherit;color:inherit;cursor:pointer;pos
         <div class="hd-funil-nota" id="hdFunilNota" style="display:none;">Arraste um cartão para outra coluna para mudar o status. Só as colunas permitidas pelo Helpdesk aceitam o cartão. Fechados e cancelados aparecem na Lista.</div>
         <div class="table-wrap" id="hdListaWrap">
           <table class="hd-tbl">
-            <thead><tr><th>Protocolo</th><th>Chamado</th><th>Status</th><th>Prioridade</th><th>Responsável</th><th>Atualizado</th><th></th></tr></thead>
+            <thead><tr><th>Data limite</th><th>Protocolo</th><th>Chamado</th><th>Status</th><th>Prioridade</th><th>Responsável</th><th>Atualizado</th><th></th></tr></thead>
             <tbody id="hdTbody"></tbody>
           </table>
         </div>
@@ -2799,7 +2824,7 @@ button.agenda-stat{text-align:left;font:inherit;color:inherit;cursor:pointer;pos
 // URL do Apps Script, pode deixar como está: essa URL não é usada nesse
 // caso. Veja a função call(), logo abaixo, pra entender como isso é usado.
 // ═══════════════════════════════════════════
-var API_URL = 'https://script.google.com/macros/s/AKfycbxdZte5X3nboRrtM1MHiNHRVKkwmvcI83ccOB54R4fr6n8h2_3Fp-1h4OMH3BGVKbNWYg/exec';
+var API_URL = 'https://script.google.com/macros/s/AKfycbzdkVNYIbV_w8AXJeQAVIi_Gmt3rNmOlAl9UwWO5lmm_CRQKm6cy23T4CjvySZU_oT7/exec';
 
 // ═══════════════════════════════════════════
 // CONSTANTES
@@ -4249,7 +4274,7 @@ function renderTable(tipo,search,status,resp,sortMode){
   if(resp)   data=data.filter(function(p){return ((tipo==='paf'||tipo==='judicial')?p.municipio:p.responsavel)===resp;});
   data=sortData(data,sortMode,tipo);
   if(tipo==='contrato'){
-    document.getElementById('tbodyContratos').innerHTML=!data.length?'<tr class="empty-row"><td colspan="10">Nenhum contrato encontrado.</td></tr>':data.map(function(c){return'<tr><td class="mono">'+(c.numero||'—')+'</td><td>'+trunc(c.objeto,46)+'</td><td>'+(c.contratante||'—')+'</td><td>'+(c.contratado||'—')+'</td><td>'+(c.responsavel||'—')+'</td><td>'+fmtDate(c.data_inicio)+'</td><td>'+prazoCell(c.data_fim)+'</td><td class="num">'+fmtMoeda(c.valor)+'</td><td>'+statusBadge(c.status,'contrato')+'</td><td style="white-space:nowrap">'+(c.link&&c.link.trim()?'<a class="btn btn-teal btn-sm" href="'+escHtml(c.link)+'" target="_blank" rel="noopener" title="Abrir link do contrato">Abrir</a> ':'')+'<button class="btn btn-outline btn-sm" onclick="openModal(\'contrato\',\''+c.id+'\')">Editar</button> <button class="btn btn-danger btn-sm" onclick="deleteProcess(\'contrato\',\''+c.id+'\')">Excluir</button></td></tr>';}).join('');
+    document.getElementById('tbodyContratos').innerHTML=!data.length?'<tr class="empty-row"><td colspan="10">Nenhum contrato encontrado.</td></tr>':data.map(function(c){return'<tr><td>'+pzCelula(c.data_fim,{vencido:true,fim:c.status==='Encerrado'?'encerrado':''})+'</td><td class="mono">'+(c.numero||'—')+'</td><td>'+trunc(c.objeto,46)+'</td><td>'+(c.contratante||'—')+'</td><td>'+(c.contratado||'—')+'</td><td>'+(c.responsavel||'—')+'</td><td>'+fmtDate(c.data_inicio)+'</td><td class="num">'+fmtMoeda(c.valor)+'</td><td>'+statusBadge(c.status,'contrato')+'</td><td style="white-space:nowrap">'+(c.link&&c.link.trim()?'<a class="btn btn-teal btn-sm" href="'+escHtml(c.link)+'" target="_blank" rel="noopener" title="Abrir link do contrato">Abrir</a> ':'')+'<button class="btn btn-outline btn-sm" onclick="openModal(\'contrato\',\''+c.id+'\')">Editar</button> <button class="btn btn-danger btn-sm" onclick="deleteProcess(\'contrato\',\''+c.id+'\')">Excluir</button></td></tr>';}).join('');
   } else if(tipo==='judicial'){
     document.getElementById('tbodyJudicial').innerHTML=!data.length?'<tr class="empty-row"><td colspan="7">Nenhum processo judicial encontrado.</td></tr>':data.map(function(p){return'<tr><td class="mono">'+(p.numero||'—')+relacionadosBadge(p)+'</td><td>'+(p.vara||'—')+'</td><td>'+(p.parte||'—')+'</td><td>'+(p.municipio||'—')+'</td><td>'+trunc(p.assunto,40)+'</td><td>'+statusBadge(p.status)+'</td><td style="white-space:nowrap"><button class="btn btn-outline btn-sm" onclick="openModal(\'judicial\',\''+p.id+'\')">Editar</button> <button class="btn btn-danger btn-sm" onclick="deleteProcess(\'judicial\',\''+p.id+'\')">Excluir</button></td></tr>';}).join('');
   } else {
@@ -4977,9 +5002,10 @@ function renderPrazos(){
   var data=prazos.slice();
   if(q){ var ql=q.toLowerCase(); data=data.filter(function(p){return Object.values(p).some(function(v){return String(v).toLowerCase().indexOf(ql)>=0;});}); }
   if(tipo) data=data.filter(function(p){return p.tipo===tipo;});
+  data=pzOrdenar(data,function(p){return p.data_limite;},function(){return false;},false);
   if(!data.length){ tbody.innerHTML='<tr class="empty-row"><td colspan="6">Nenhum prazo cadastrado.</td></tr>'; return; }
   tbody.innerHTML=data.map(function(p){
-    return '<tr><td class="mono">'+(p.numero||'—')+'</td><td>'+(p.municipio||'—')+'</td><td>'+(p.parte||'—')+'</td><td>'+(p.tipo?'<span class="badge badge-paf">'+escHtml(p.tipo)+'</span>':'—')+'</td><td>'+prazoCell(p.data_limite)+'</td><td style="white-space:nowrap"><button class="btn btn-outline btn-sm" onclick="openPrazoModal(\''+p.id+'\')">Editar</button> <button class="btn btn-danger btn-sm" onclick="quickDeletePrazo(\''+p.id+'\')">Excluir</button></td></tr>';
+    return '<tr><td>'+pzCelula(p.data_limite)+'</td><td class="mono">'+(p.numero||'—')+'</td><td>'+(p.municipio||'—')+'</td><td>'+(p.parte||'—')+'</td><td>'+(p.tipo?'<span class="badge badge-paf">'+escHtml(p.tipo)+'</span>':'—')+'</td><td style="white-space:nowrap"><button class="btn btn-outline btn-sm" onclick="openPrazoModal(\''+p.id+'\')">Editar</button> <button class="btn btn-danger btn-sm" onclick="quickDeletePrazo(\''+p.id+'\')">Excluir</button></td></tr>';
   }).join('');
 }
 function quickDeletePrazo(id){
@@ -5462,16 +5488,13 @@ function renderTrelloList(){
   if(resp) data=data.filter(function(c){ return (c.responsaveis||[]).indexOf(resp)>=0; });
   if(boardF) data=data.filter(function(c){ return c.boardId===boardF; });
   data=filtrarPorStatusTrello(data,statusF);
-  data.sort(function(a,b){
-    var da=diasAgenda(a.due), db=diasAgenda(b.due);
-    return (da===null?99999:da)-(db===null?99999:db);
-  });
+  data=pzOrdenar(data,function(c){return c.due;},function(c){return c.concluido;},true);
   if(!data.length){ tbody.innerHTML='<tr class="empty-row"><td colspan="7">Nenhum card encontrado.</td></tr>'; return; }
   tbody.innerHTML=data.map(function(c){
     var respTxt=(c.responsaveis&&c.responsaveis.length)?escHtml(c.responsaveis.join(', ')):'<span style="color:var(--text-3)">—</span>';
-    var dueTxt=c.due?prazoCell(c.due):'<span style="color:var(--text-3)">—</span>';
+    var dueTxt=pzCelula(c.due,{instante:true,fim:c.concluido?'concluído':''});
     var concluidoTd='<label class="trello-check-inline"><input type="checkbox" '+(c.concluido?'checked':'')+' onclick="event.stopPropagation();toggleTrelloConcluidoRapido(\''+c.id+'\',this.checked)">'+(c.concluido?'<span class="trello-check-yes">Concluído</span>':'<span style="color:var(--text-3)">—</span>')+'</label>';
-    return '<tr'+(c.concluido?' style="opacity:.6"':'')+'><td>'+escHtml(trunc(c.nome,60))+'</td><td>'+escHtml(c.board)+'</td><td>'+escHtml(c.lista)+'</td><td>'+respTxt+'</td><td>'+dueTxt+'</td><td>'+concluidoTd+'</td><td style="white-space:nowrap"><button class="btn btn-outline btn-sm" onclick="abrirTrelloCardEdit(\''+c.id+'\')">Editar</button> '+(c.url?'<a class="btn btn-trello-open btn-sm" href="'+escHtml(c.url)+'" target="_blank" rel="noopener">Abrir</a>':'')+'</td></tr>';
+    return '<tr'+(c.concluido?' style="opacity:.6"':'')+'><td>'+dueTxt+'</td><td>'+escHtml(trunc(c.nome,60))+'</td><td>'+escHtml(c.board)+'</td><td>'+escHtml(c.lista)+'</td><td>'+respTxt+'</td><td>'+concluidoTd+'</td><td style="white-space:nowrap"><button class="btn btn-outline btn-sm" onclick="abrirTrelloCardEdit(\''+c.id+'\')">Editar</button> '+(c.url?'<a class="btn btn-trello-open btn-sm" href="'+escHtml(c.url)+'" target="_blank" rel="noopener">Abrir</a>':'')+'</td></tr>';
   }).join('');
 }
 function renderTrelloTabs(){
@@ -5522,14 +5545,15 @@ function trelloCardHtml(c){
   var resp=(c.responsaveis&&c.responsaveis.length)
     ? '<span class="tcard-resp"><span class="tcard-avatar">'+escHtml(iniciais(c.responsaveis[0]).toUpperCase())+'</span>'+escHtml(c.responsaveis.length>1?(c.responsaveis[0]+' +'+(c.responsaveis.length-1)):c.responsaveis[0])+'</span>'
     : '<span class="tcard-resp unassigned">Sem responsável</span>';
-  var prazo=c.due?'<span class="tcard-prazo">'+prazoCell(c.due)+'</span>':'';
+  var prazo=c.due?'<span class="tcard-prazo">'+escHtml(pzDataFmt(c.due,true))+'</span>':'';
   var metaHtml='<div class="tcard-meta">'+resp+prazo+'</div>';
   var abrirLink=c.url?'<a class="tcard-open" href="'+escHtml(c.url)+'" target="_blank" rel="noopener" onclick="event.stopPropagation()" title="Abrir no Trello">&#8599;</a>':'';
   var checkPrefix=c.concluido?'<span title="Concluído" style="color:var(--green);margin-right:5px;">&#10003;</span>':'';
-  return '<div class="tcard'+(c.concluido?' tcard-done':'')+'" onclick="abrirTrelloCardEdit(\''+c.id+'\')" style="cursor:pointer;">'+
+  return '<div class="tcard tem-dias'+(c.concluido?' tcard-done':'')+'" onclick="abrirTrelloCardEdit(\''+c.id+'\')" style="cursor:pointer;">'+
+    pzTile(c.due,{instante:true,fim:c.concluido?'concluído':'',mini:true})+'<div class="tcard-corpo">'+
     '<div class="tcard-top">'+checkPrefix+'<span class="tcard-nome">'+escHtml(c.nome||'(sem título)')+'</span>'+abrirLink+'</div>'+
     tagsHtml+metaHtml+
-  '</div>';
+  '</div></div>';
 }
 
 // ── EDIÇÃO DE CARDS DO TRELLO (direto pelo app, sem abrir o Trello) ──────
@@ -6231,6 +6255,9 @@ function renderHelpdesk(){
   renderHelpdeskLista();
 }
 
+// Chamado encerrado ou cancelado não tem contagem de prazo
+function hdFinalizado(c){ var g=hdGrupo(c.status); return g==='encerrados'||g==='cancelado'; }
+function hdFimRotulo(c){ var g=hdGrupo(c.status); return g==='encerrados'?'encerrado':(g==='cancelado'?'cancelado':''); }
 function renderHelpdeskLista(){
   var tb=document.getElementById('hdTbody'); if(!tb||!hdDados) return;
   if(hdVis==='funil'){ renderHelpdeskFunil(); return; }
@@ -6248,12 +6275,13 @@ function renderHelpdeskLista(){
     }
     return true;
   }).sort(function(a,b){ return String(b.atualizado_em||'').localeCompare(String(a.atualizado_em||'')); });
+  lista=pzOrdenar(lista,function(c){return c.prazo;},hdFinalizado,true);
 
   if(!lista.length){
     var vazio=(hdDados.chamados||[]).length
       ? 'Nenhum chamado neste filtro.'
       : (hdDados.escopo==='todos'?'Nenhum chamado visível no Helpdesk.':'Você não tem chamados atribuídos no Helpdesk.');
-    tb.innerHTML='<tr class="empty-row"><td colspan="7" class="hd-vazio">'+vazio+'</td></tr>';
+    tb.innerHTML='<tr class="empty-row"><td colspan="8" class="hd-vazio">'+vazio+'</td></tr>';
     return;
   }
   var stCls={abertos:'s-aberto',atendimento:'s-atend',aguardando:'s-aguard',encerrados:'s-fim',cancelado:'s-cancel'};
@@ -6262,6 +6290,7 @@ function renderHelpdeskLista(){
     var sub=[c.organizacao,c.produto].filter(Boolean).join(', ');
     var pr=String(c.prioridade||'').toUpperCase();
     return '<tr data-i="'+i+'" onclick="abrirDetalheHelpdesk('+i+')">'+
+      '<td>'+pzCelula(c.prazo,{instante:true,fim:hdFimRotulo(c)})+'</td>'+
       '<td class="hd-prot">'+escHtml(c.protocolo||'#'+c.id)+'</td>'+
       '<td class="hd-tit"><strong title="'+escHtml(c.titulo)+'">'+escHtml(c.titulo)+'</strong>'+(sub?'<span>'+escHtml(sub)+'</span>':'')+'</td>'+
       '<td><span class="hd-st '+(stCls[hdGrupo(c.status)]||'s-aberto')+'"><i></i>'+escHtml(hdNomeStatus(c.status))+'</span></td>'+
@@ -6356,6 +6385,7 @@ function abrirDetalheChamado(c){
     }
     if(res.usuario_id!==undefined&&hdConta) hdConta.usuario_id=res.usuario_id;
     renderDetalheHelpdesk(res.chamado);
+    if(String(c.prazo||'')!==String(res.chamado.prazo||'')){ hdAplicarNoCache(c.id,{prazo:res.chamado.prazo||''}); c.prazo=res.chamado.prazo||''; renderHelpdeskLista(); }
   }).catch(function(e){
     if(hdDetalheAberto!==c.id) return;
     document.getElementById('hdDetBody').innerHTML='<div class="hd-state show"><strong>Erro de conexão</strong><span>'+escHtml(e.message)+'</span></div>';
@@ -6695,6 +6725,7 @@ function renderHelpdeskFunil(){
     if(!busca) return true;
     return [c.protocolo,c.titulo,c.organizacao,c.produto,c.responsavel,hdNomeStatus(c.status)].join(' ').toLowerCase().indexOf(busca)>=0;
   }).sort(function(a,b){ return String(b.atualizado_em||'').localeCompare(String(a.atualizado_em||'')); });
+  todos=pzOrdenar(todos,function(c){return c.prazo;},hdFinalizado,true);
   hdListaVisivel=todos;
   var prCls={CRITICA:'v',URGENTE:'v',ALTA:'u',MEDIA:'o',NORMAL:'o',BAIXA:'p'};
   box.innerHTML=HD_COLUNAS.map(function(st){
@@ -6705,14 +6736,15 @@ function renderHelpdeskFunil(){
       var cls=(pr==='CRITICA'||pr==='URGENTE')?' p-crit':(pr==='ALTA'?' p-alta':'');
       var org=[c.organizacao,c.produto].filter(Boolean).join(', ');
       var arrasta=(HD_TRANSICOES[st]||[]).length?' draggable="true" ondragstart="hdArrastar(event,'+i+')" ondragend="hdSoltarFim()"':'';
-      return '<button type="button" class="hd-card'+cls+'" data-i="'+i+'"'+arrasta+' onclick="abrirDetalheHelpdesk('+i+')">'+
+      return '<button type="button" class="hd-card tem-dias'+cls+'" data-i="'+i+'"'+arrasta+' onclick="abrirDetalheHelpdesk('+i+')">'+
+        pzTile(c.prazo,{instante:true,fim:hdFimRotulo(c),mini:true}).replace(/^<div/,'<span').replace(/<\/div>$/,'</span>')+'<span class="hd-card-corpo">'+
         '<span class="hd-card-top"><span class="hd-card-prot">'+escHtml(c.protocolo||('#'+c.id))+'</span>'+
           (pr?'<span class="dpill '+(prCls[pr]||'o')+'">'+escHtml(HD_PRIOR_NOME[pr]||pr)+'</span>':'')+'</span>'+
         '<span class="hd-card-tit">'+escHtml(c.titulo)+'</span>'+
         (org?'<span class="hd-card-org">'+escHtml(org)+'</span>':'')+
         '<span class="hd-card-foot"><span class="hd-card-resp">'+hdAvatares(c,22)+'<span>'+escHtml((c.responsaveis||[]).map(hdNomeExibido).join(', ')||'Sem responsável')+'</span></span>'+
           '<span>'+escHtml(hdQuando(c.atualizado_em))+'</span></span>'+
-      '</button>';
+      '</span></button>';
     }).join('');
     return '<section class="hd-col" data-st="'+st+'" style="--col:'+HD_COR_STATUS[st]+'" ondragover="hdSobreColuna(event,this)" ondragleave="this.classList.remove(\'drop-hover\')" ondrop="hdSoltar(event,this)">'+
       '<div class="hd-col-h"><b>'+escHtml(hdNomeStatus(st))+'</b><span>'+itens.length+'</span></div>'+
@@ -7243,6 +7275,57 @@ window.addEventListener('load',function(){
 document.addEventListener('keydown',function(e){
   if(e.key==='Escape'){document.querySelectorAll('.modal-overlay.open').forEach(function(o){o.classList.remove('open');});}
 });
+
+// ═══════════════════════════════════════════
+// CONTAGEM DE DIAS (o mesmo bloco do Work Space) para Trello, Helpdesk,
+// Contratos e Prazos. "instante" = data com hora (Trello, Helpdesk): conta
+// pelo dia no fuso do computador. Sem hora: usa a data como está gravada.
+// ═══════════════════════════════════════════
+function pzDataLocal(v,instante){
+  if(!v) return null;
+  var s=String(v);
+  if(instante&&/T\d{2}:\d{2}/.test(s)){ var d=new Date(s); if(!isNaN(d)){ d.setHours(0,0,0,0); return d; } }
+  var p=parseDate(s); if(!p) return null; p=new Date(p); p.setHours(0,0,0,0); return p;
+}
+function pzDias(v,instante){
+  var d=pzDataLocal(v,instante); if(!d) return null;
+  var h=new Date(); h.setHours(0,0,0,0);
+  return Math.round((d-h)/86400000);
+}
+// o = {instante, fim:'concluído'|'encerrado'|'cancelado'|'', vencido:true para "vencido" no lugar de "de atraso"}
+function pzInfo(v,o){
+  o=o||{};
+  var d=pzDias(v,o.instante);
+  if(o.fim==='cancelado') return {cls:'sem',num:'–',rot:'cancelado',txt:'Cancelado',d:d};
+  if(o.fim) return {cls:'feito',num:'',rot:o.fim,txt:o.fim.charAt(0).toUpperCase()+o.fim.slice(1),d:d};
+  if(d===null) return {cls:'sem',num:'–',rot:'sem prazo',txt:'Sem prazo',d:null};
+  if(d<0){ var a=-d; return {cls:'vencido',num:String(a),rot:o.vencido?(a===1?'dia vencido':'dias vencido'):(a===1?'dia de atraso':'dias de atraso'),txt:a===1?(o.vencido?'Venceu ontem':'Venceu ontem'):'Venceu há '+a+' dias',d:d}; }
+  if(d===0) return {cls:'hoje',num:'Hoje',rot:'',txt:'Vence hoje',d:0};
+  if(d===1) return {cls:'urgente',num:'1',rot:'dia',txt:'Vence amanhã',d:1};
+  return {cls:d<=7?'urgente':'ok',num:String(d),rot:'dias',txt:'Faltam '+d+' dias',d:d};
+}
+function pzTile(v,o){
+  o=o||{}; var p=pzInfo(v,o), mini=o.mini?' mini':'';
+  if(p.cls==='feito') return '<div class="wk-dias feito'+mini+'" title="'+escHtml(p.txt)+'"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>'+escHtml(p.rot)+'</span></div>';
+  return '<div class="wk-dias '+p.cls+mini+'" title="'+escHtml(p.txt)+'"><b>'+escHtml(p.num)+'</b>'+(p.rot?'<span>'+escHtml(p.rot)+'</span>':'')+'</div>';
+}
+function pzDataFmt(v,instante){ var d=pzDataLocal(v,instante); return d?d.toLocaleDateString('pt-BR'):''; }
+// Célula de tabela: bloco de dias + data + frase ("Faltam 3 dias")
+function pzCelula(v,o){
+  o=o||{}; var p=pzInfo(v,o), data=pzDataFmt(v,o.instante);
+  return '<div class="pz-cel">'+pzTile(v,{instante:o.instante,fim:o.fim,vencido:o.vencido,mini:true})+
+    '<span class="pz-data"><b>'+(data||'Sem data')+'</b>'+(data||o.fim?'<small class="'+(o.fim?'':p.cls)+'">'+escHtml(p.txt)+'</small>':'')+'</span></div>';
+}
+// Ordena pelo prazo: vencidos e próximos primeiro, sem prazo e finalizados no fim
+function pzOrdenar(lista,getData,getFim,instante){
+  return lista.map(function(x,i){ return {x:x,i:i}; }).sort(function(a,b){
+    var fa=getFim(a.x)?1:0, fb=getFim(b.x)?1:0; if(fa!==fb) return fa-fb;
+    var da=pzDias(getData(a.x),instante), db=pzDias(getData(b.x),instante);
+    if(da===null&&db!==null) return 1; if(db===null&&da!==null) return -1;
+    if(da!==null&&db!==null&&da!==db) return da-db;
+    return a.i-b.i;
+  }).map(function(o){ return o.x; });
+}
 
 // ═══════════════════════════════════════════
 // ANEXOS DAS ANOTAÇÕES
